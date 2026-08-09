@@ -60,7 +60,7 @@ function parseArgs(argv) {
       case '--format': {
         const f = (next() || '').toLowerCase();
         if (!FORMATS.has(f)) {
-          console.error(`[webship-js] Unknown format "${f}". Use: ${[...FORMATS].join(', ')}`);
+          console.error(`[varbase-e2e] Unknown format "${f}". Use: ${[...FORMATS].join(', ')}`);
           process.exit(1);
         }
         if (f === 'all') opts.formats.push('html', 'pdf');
@@ -83,7 +83,7 @@ function parseArgs(argv) {
       }
       default:
         if (a.startsWith('--')) {
-          console.error(`[webship-js] Unknown option: ${a}`);
+          console.error(`[varbase-e2e] Unknown option: ${a}`);
           opts.help = true;
         }
     }
@@ -100,9 +100,9 @@ function printHelp() {
       'Generate HTML / PDF report from cucumber JSON output.',
       '',
       'Input / Output:',
-      '  --json <path>         JSON input  (env WEBSHIP_REPORT_JSON,',
+      '  --json <path>         JSON input  (env VARBASE_E2E_REPORT_JSON,',
       '                        default: tests/reports/cucumber_report.json)',
-      '  --out <path>          HTML output (env WEBSHIP_REPORT_OUT,',
+      '  --out <path>          HTML output (env VARBASE_E2E_REPORT_OUT,',
       '                        default: tests/reports/cucumber_report.html)',
       '  --format <kind>       html | pdf | all  (repeatable)',
       '                        default: html',
@@ -119,8 +119,8 @@ function printHelp() {
       '',
       'Format:',
       '  --theme <name>        bootstrap | hierarchy | foundation | simple',
-      '                        (env WEBSHIP_REPORT_THEME, default: bootstrap)',
-      '  --title <s>           Brand title (env WEBSHIP_REPORT_TITLE)',
+      '                        (env VARBASE_E2E_REPORT_THEME, default: bootstrap)',
+      '  --title <s>           Brand title (env VARBASE_E2E_REPORT_TITLE)',
       '  --name <s>            Report name',
       '  --layout <1|2>        Column layout (default: 1)',
       '  --launch              Launch report in browser after generation',
@@ -133,12 +133,12 @@ function printHelp() {
       '  --ignore-bad-json         Do not fail on malformed JSON entries',
       '',
       'Metadata:',
-      '  --app-version <s>     App Version         (env WEBSHIP_REPORT_APP_VERSION)',
-      '  --env <s>             Test Environment    (env WEBSHIP_REPORT_ENV)',
+      '  --app-version <s>     App Version         (env VARBASE_E2E_REPORT_APP_VERSION)',
+      '  --env <s>             Test Environment    (env VARBASE_E2E_REPORT_ENV)',
       '  --browser <s>         Browser             (env BROWSER)',
       '  --platform <s>        Platform            (default: process.platform)',
       '  --parallel <s>        Parallel            (default: Scenarios)',
-      '  --executed <s>        Executed            (env WEBSHIP_REPORT_EXECUTED)',
+      '  --executed <s>        Executed            (env VARBASE_E2E_REPORT_EXECUTED)',
       '  --metadata key=value  Arbitrary key/value (repeatable)',
       '',
       '  -h, --help            Show this help',
@@ -275,21 +275,21 @@ async function run(argv) {
   const jsonFile = path.resolve(
     cwd,
     args.jsonFile ||
-      process.env.WEBSHIP_REPORT_JSON ||
+      process.env.VARBASE_E2E_REPORT_JSON ||
       'tests/reports/cucumber_report.json'
   );
   const output = path.resolve(
     cwd,
     args.output ||
-      process.env.WEBSHIP_REPORT_OUT ||
+      process.env.VARBASE_E2E_REPORT_OUT ||
       'tests/reports/cucumber_report.html'
   );
 
   const theme =
-    args.theme || process.env.WEBSHIP_REPORT_THEME || 'bootstrap';
+    args.theme || process.env.VARBASE_E2E_REPORT_THEME || 'bootstrap';
   if (!THEMES.has(theme)) {
     console.error(
-      `[webship-js] Unknown theme "${theme}". Use one of: ${[...THEMES].join(', ')}`
+      `[varbase-e2e] Unknown theme "${theme}". Use one of: ${[...THEMES].join(', ')}`
     );
     process.exit(1);
   }
@@ -297,11 +297,11 @@ async function run(argv) {
   const metadata = {
     'App Version':
       args.metadata['App Version'] ||
-      process.env.WEBSHIP_REPORT_APP_VERSION ||
+      process.env.VARBASE_E2E_REPORT_APP_VERSION ||
       '2.0.0',
     'Test Environment':
       args.metadata['Test Environment'] ||
-      process.env.WEBSHIP_REPORT_ENV ||
+      process.env.VARBASE_E2E_REPORT_ENV ||
       'development',
     Browser:
       args.metadata['Browser'] ||
@@ -310,7 +310,7 @@ async function run(argv) {
     Parallel: args.metadata['Parallel'] || 'Scenarios',
     Executed:
       args.metadata['Executed'] ||
-      process.env.WEBSHIP_REPORT_EXECUTED ||
+      process.env.VARBASE_E2E_REPORT_EXECUTED ||
       'Remote',
   };
   for (const [k, v] of Object.entries(args.metadata)) {
@@ -329,8 +329,8 @@ async function run(argv) {
     scenarioTimestamp: args.scenarioTimestamp,
     launchReport: args.launchReport && wantHtml,
     brandTitle:
-      args.brandTitle || process.env.WEBSHIP_REPORT_TITLE || 'Test Report',
-    name: args.name || process.env.WEBSHIP_REPORT_NAME,
+      args.brandTitle || process.env.VARBASE_E2E_REPORT_TITLE || 'Test Report',
+    name: args.name || process.env.VARBASE_E2E_REPORT_NAME,
     columnLayout: args.columnLayout || 1,
     noInlineScreenshots: args.noInlineScreenshots,
     storeScreenshots: args.storeScreenshots,
@@ -342,20 +342,20 @@ async function run(argv) {
 
   if (wantHtml || needsHtmlForExport) {
     reporter.generate(options);
-    console.log(`[webship-js] HTML report → ${output}`);
+    console.log(`[varbase-e2e] HTML report → ${output}`);
   }
 
   if (wantPdf) {
     const pdfOut = path.resolve(cwd, args.pdfOut || output.replace(/\.html?$/i, '') + '.pdf');
     await generatePdf(output, pdfOut, args);
-    console.log(`[webship-js] PDF report  → ${pdfOut}`);
+    console.log(`[varbase-e2e] PDF report  → ${pdfOut}`);
   }
 
 }
 
 if (require.main === module) {
   Promise.resolve(run(process.argv.slice(2))).catch(err => {
-    console.error(`[webship-js] ${err.message || err}`);
+    console.error(`[varbase-e2e] ${err.message || err}`);
     process.exit(1);
   });
 }

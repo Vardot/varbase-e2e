@@ -19,10 +19,10 @@ Feature: Save screenshots to disk.
     Then I save fullscreen 1200 x 800 screenshot
 
   Scenario: Save a screenshot with an explicit filename.
-    Then I save screenshot with name "webship-home.png"
+    Then I save screenshot with name "varbase-e2e-home.png"
 
   Scenario: Save a full-page screenshot with an explicit filename.
-    Then I save fullscreen screenshot with name "webship-home-full.png"
+    Then I save fullscreen screenshot with name "varbase-e2e-home-full.png"
 
   Scenario: Save a screenshot with filename tokens.
     Then I save screenshot with name "{feature_file}_{step_line}_{datetime}.png"

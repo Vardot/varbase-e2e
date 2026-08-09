@@ -1,6 +1,6 @@
 'use strict';
 
-const { friendly } = require('./webship');
+const { friendly } = require('./varbase-e2e');
 
 // Pointer input steps not covered by the core element/click steps:
 // hover variants, drag-and-drop, double-click, right-click, viewport size.

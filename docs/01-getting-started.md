@@ -1,11 +1,11 @@
 # Getting Started
 
-Webship-js is an automated functional testing harness built on Playwright + Cucumber-js. You write feature files in plain Gherkin; webship-js handles the browser, smart waits, screenshots, reports, and CMS-aware selectors out of the box.
+Varbase E2E is an automated functional testing harness built on Playwright + Cucumber-js. You write feature files in plain Gherkin; varbase-e2e handles the browser, smart waits, screenshots, reports, and CMS-aware selectors out of the box.
 
 ## Install
 
 ```bash
-npm install webship-js --save-dev
+npm install @vardot/varbase-e2e --save-dev
 ```
 
 The post-install script copies a starter `cucumber.js`, `playwright.config.ts`, and `tests/` skeleton into your project on first install.
@@ -74,7 +74,7 @@ npx cucumber-js --parallel 4 --retry 1 --retry-tag-filter @flaky
 | `BROWSER` | `chromium` | `chromium` / `firefox` / `webkit` |
 | `HEADLESS` | `true` | Set to `false` for headed mode |
 | `SLOW_MO` | `300` headed: `800` | Per-action delay (ms); set `0` for fast runs |
-| `WEBSHIP_AUTO_SETTLE` | on | Set to `off` to disable auto edge-wait after actions |
+| `VARBASE_E2E_AUTO_SETTLE` | on | Set to `off` to disable auto edge-wait after actions |
 
 ## First feature file
 

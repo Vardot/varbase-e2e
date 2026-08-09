@@ -3,7 +3,7 @@
 
 ## Overview
 
-This documentation page covers screenshot capture functionality in Webship JS 2.0.x. The feature enables testers to capture PNG screenshots during Cucumber scenarios using Playwright, supporting fullscreen, custom viewport, and named captures.
+This documentation page covers screenshot capture functionality in Varbase E2E 2.0.x. The feature enables testers to capture PNG screenshots during Cucumber scenarios using Playwright, supporting fullscreen, custom viewport, and named captures.
 
 ## Key Features
 
@@ -35,7 +35,7 @@ worldParameters: {
 
 ## Priority Chain
 
-1. Environment variables (`WEBSHIP_SCREENSHOT_*`)
+1. Environment variables (`VARBASE_E2E_SCREENSHOT_*`)
 2. cucumber.js project defaults
 3. Built-in defaults
 
@@ -47,6 +47,6 @@ Each capture generates two files:
 
 ## Sub-pages
 
-- [Then I save "width" x "height" screenshot](/docs/webship-js/2.0.x/advanced-screenshots/then-i-save-width-x-height-screenshot)
-- [Then I save fullscreen screenshot](/docs/webship-js/2.0.x/advanced-screenshots/then-i-save-fullscreen-screenshot)
-- [When I save screenshot with name "filename"](/docs/webship-js/2.0.x/advanced-screenshots/when-i-save-screenshot-name-filename)
+- [Then I save "width" x "height" screenshot](/docs/varbase-e2e/2.0.x/advanced-screenshots/then-i-save-width-x-height-screenshot)
+- [Then I save fullscreen screenshot](/docs/varbase-e2e/2.0.x/advanced-screenshots/then-i-save-fullscreen-screenshot)
+- [When I save screenshot with name "filename"](/docs/varbase-e2e/2.0.x/advanced-screenshots/when-i-save-screenshot-name-filename)

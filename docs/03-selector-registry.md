@@ -1,6 +1,6 @@
 # Selector Registry
 
-Long, brittle CSS strings poison feature files. Webship-js solves this with a **named selector registry**: register a CSS or XPath string once, refer to it by a friendly name in every step.
+Long, brittle CSS strings poison feature files. Varbase E2E solves this with a **named selector registry**: register a CSS or XPath string once, refer to it by a friendly name in every step.
 
 ## Three ways to register
 
@@ -41,7 +41,7 @@ Every scenario starts with a fresh registry. Later entries with the same name ov
 
 ## Built-in CMS / framework presets
 
-Webship-js ships ready-made selector packs:
+Varbase E2E ships ready-made selector packs:
 
 ```
 tests/selectors/

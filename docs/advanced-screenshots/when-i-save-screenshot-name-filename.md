@@ -18,7 +18,7 @@ When I save screenshot with name "homepage.png"
 
 **Example #2:**
 ```
-When we save screenshot with name "webship-home"
+When we save screenshot with name "varbase-e2e-home"
 ```
 
 **Example #3:**

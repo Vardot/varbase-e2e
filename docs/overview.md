@@ -1,7 +1,7 @@
 
-# Webship JS 2.0.x
+# Varbase E2E 2.0.x
 
-Webship-js is an Automated Functional Acceptance Testing tool that streamlines end-to-end testing for web applications. It combines [Playwright](https://playwright.dev/) and [Cucumber-js](https://github.com/cucumber/cucumber-js) with custom step definitions.
+Varbase E2E is an Automated Functional Acceptance Testing tool that streamlines end-to-end testing for web applications. It combines [Playwright](https://playwright.dev/) and [Cucumber-js](https://github.com/cucumber/cucumber-js) with custom step definitions.
 
 ## Key Features
 
@@ -26,15 +26,15 @@ Feature: Login page
 
 ## Benefits
 
-Webship-js offers "increased testing efficiency, reduced human error, improved test coverage, and faster time-to-market."
+Varbase E2E offers "increased testing efficiency, reduced human error, improved test coverage, and faster time-to-market."
 
 ## Documentation Sub-pages
 
-- [Install Webship JS](/docs/webship-js/2.0.x/install-webship-js)
-- [Global Settings](/docs/webship-js/2.0.x/global-settings)
-- [Step Definitions](/docs/webship-js/2.0.x/step-definitions)
-- [API Step Definitions](/docs/webship-js/2.0.x/api-step-definitions)
-- [Advanced Screenshots](/docs/webship-js/2.0.x/advanced-screenshots)
-- [Advanced Selectors](/docs/webship-js/2.0.x/advanced-selectors)
-- [Assertions](/docs/webship-js/2.0.x/assertions)
-- [Commands](/docs/webship-js/2.0.x/commands)
+- [Install Varbase E2E](/docs/varbase-e2e/2.0.x/install-varbase-e2e)
+- [Global Settings](/docs/varbase-e2e/2.0.x/global-settings)
+- [Step Definitions](/docs/varbase-e2e/2.0.x/step-definitions)
+- [API Step Definitions](/docs/varbase-e2e/2.0.x/api-step-definitions)
+- [Advanced Screenshots](/docs/varbase-e2e/2.0.x/advanced-screenshots)
+- [Advanced Selectors](/docs/varbase-e2e/2.0.x/advanced-selectors)
+- [Assertions](/docs/varbase-e2e/2.0.x/assertions)
+- [Commands](/docs/varbase-e2e/2.0.x/commands)

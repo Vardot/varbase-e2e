@@ -19,7 +19,7 @@ const {
   isAnyModalVisible,
   waitForModalState,
   friendly,
-} = require('./webship');
+} = require('./varbase-e2e');
 
 // ---------------------------------------------------------------------------
 // Visibility

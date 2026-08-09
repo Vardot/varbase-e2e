@@ -8,7 +8,7 @@ Feature: An example of navigating forward and backward by one page.
      Then I should see "About Us"
      When I move backward one page
       And I wait max of 3 seconds
-     Then I should see "Welcome to the homepage of the Webship-js Examples"
+     Then I should see "Welcome to the homepage of the Varbase E2E Examples"
      When I move forward one page
       And I wait max of 3 seconds
      Then I should see "About Us"

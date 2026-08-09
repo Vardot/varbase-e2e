@@ -1,7 +1,7 @@
 const { Given, When, Then, Before } = require('@cucumber/cucumber');
 const axios = require('axios');
 const assert = require('assert');
-const { friendly } = require('./webship');
+const { friendly } = require('./varbase-e2e');
 
 // Global variables to store API response and request data
 let apiResponse = null;
@@ -86,7 +86,7 @@ Given(/^(?:I |we )?set header "([^"]*)" with value "([^"]*)"$/, function (name, 
  * Example #3: Given the base URL is "http://localhost:3000/api"
  * Example #4: Given the API base URL is "https://un.org/api"
  * Example #5: Given I set the API base URL to "/api/v2"
- * Example #6: Given the base URL is "/webship.co/api"
+ * Example #6: Given the base URL is "/vardot.com/api"
  * Example #7: Given the API base URL is "http://127.0.0.1:8080"
  *
  */
@@ -153,7 +153,7 @@ Given(/^(?:I|we) set the following headers:$/, function (table) {
  *
  * Example #1: Given I set the request body to '{"name": "John", "email": "john@example.com"}'
  * Example #2: Given the request body is '{"title": "Test Post", "body": "This is a test"}'
- * Example #3: Given we set the request body to '{"org": "Webship.co", "active": true}'
+ * Example #3: Given we set the request body to '{"org": "Vardot", "active": true}'
  * Example #4: Given I set the request body to '{"id": 1, "tags": ["qa","api"]}'
  * Example #5: Given the request body is '{"username": "admin", "password": "secret"}'
  * Example #6: Given we set the request body to '{"email": "hello@un.org"}'
@@ -177,7 +177,7 @@ Given(/^(?:I set the request body to|we set the request body to|the request body
  *               | age   | 30                 |
  *
  * Example #2: Given we set the request body with:
- *               | org     | Webship.co       |
+ *               | org     | Vardot       |
  *               | country | UN               |
  *               | active  | true             |
  *
@@ -256,7 +256,7 @@ When(/^(?:I |we )?send a ([A-Z]+) request to "([^"]+)"$/, async function (method
  *
  * Example #4: When we send a POST request to "/posts" with values:
  *               | title  | Welcome         |
- *               | body   | Hello Webship.co|
+ *               | body   | Hello Vardot|
  *               | userId | 1               |
  */
 When(/^(?:I |we )?send a ([A-Z]+) request to "([^"]+)" with values:$/, async function (method, endpoint, table) {
@@ -307,7 +307,7 @@ When(/^(?:I |we )?send a ([A-Z]+) request to "([^"]+)" with values:$/, async fun
  *               """
  *               {
  *                 "name": "Updated",
- *                 "org": "Webship.co"
+ *                 "org": "Vardot"
  *               }
  *               """
  *
@@ -375,7 +375,7 @@ When(/^(?:I |we )?send a ([A-Z]+) request to "([^"]+)" with body:$/, async funct
  * Example #3: When I send a POST request to "/contact" with form data:
  *               """
  *               name=Alice
- *               org=Webship.co
+ *               org=Vardot
  *               message=Hello
  *               """
  *
@@ -451,7 +451,7 @@ Then(/^(?:the )?API response code should be (\d+)$/, function (expectedCode) {
  *
  * Example #1: Then the API response should contain "success"
  * Example #2: Then API response should contain "John Doe"
- * Example #3: Then the API response should contain "Webship.co"
+ * Example #3: Then the API response should contain "Vardot"
  * Example #4: Then API response should contain "UN"
  * Example #5: Then the API response should contain "published"
  * Example #6: Then API response should contain "id"
@@ -510,7 +510,7 @@ Then(/^(?:the )?API response should not contain "([^"]*)"$/, function (unexpecte
  * Example #2: Then API response should contain json:
  *               """
  *               {
- *                 "org": "Webship.co",
+ *                 "org": "Vardot",
  *                 "active": true
  *               }
  *               """
@@ -566,7 +566,7 @@ Then(/^(?:the )?API response should contain json:$/, function (docString) {
  * Example #1: Then the JSON response should have "name" equal to "John Doe"
  * Example #2: Then the API response should have "id" equal to 1
  * Example #3: Then the JSON property "active" should be true
- * Example #4: Then the JSON response should have "org" equal to "Webship.co"
+ * Example #4: Then the JSON response should have "org" equal to "Vardot"
  * Example #5: Then the API response should have "email" equal to "hello@un.org"
  * Example #6: Then the JSON property "count" should be 42
  * Example #7: Then the JSON response should have "user.role" equal to "admin"
@@ -673,7 +673,7 @@ Then(/^(?:the response should be valid JSON|the API response should be valid JSO
  * Example #1: Then the response header "Content-Type" should be "application/json"
  * Example #2: Then the header "Cache-Control" should contain "no-cache"
  * Example #3: Then the response header "Content-Type" should contain "charset=utf-8"
- * Example #4: Then the header "X-Powered-By" should be "Webship.co"
+ * Example #4: Then the header "X-Powered-By" should be "Vardot"
  * Example #5: Then the response header "ETag" should contain "etag"
  * Example #6: Then the header "Location" should contain "/users/1"
  * Example #7: Then the response header "Access-Control-Allow-Origin" should be "*"
@@ -721,7 +721,7 @@ Then(/^print API response$/, function () {
  * Example #1: Given I set placeholder "{{userId}}" to "123"
  * Example #2: Given we set placeholder "{{token}}" to "abcd-1234"
  * Example #3: Given I set placeholder "{{postId}}" to "42"
- * Example #4: Given we set placeholder "{{org}}" to "Webship.co"
+ * Example #4: Given we set placeholder "{{org}}" to "Vardot"
  * Example #5: Given I set placeholder "{{email}}" to "hello@un.org"
  * Example #6: Given we set placeholder "{{apiKey}}" to "secret-xyz"
  * Example #7: Given I set placeholder "{{version}}" to "v2"

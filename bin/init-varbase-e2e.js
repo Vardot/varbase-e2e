@@ -13,7 +13,7 @@ const CUCUMBER_JS = `module.exports = {
     timeout: 30000,
     requireModule: ['ts-node/register'],
     require: [
-      'node_modules/webship-js/tests/step-definitions/**/*.js',          // Webship-js core step definitions (auto HTML report on exit; disable: WEBSHIP_REPORT_DISABLE=1).
+      'node_modules/@vardot/varbase-e2e/tests/step-definitions/**/*.js',          // Varbase E2E core step definitions (auto HTML report on exit; disable: VARBASE_E2E_REPORT_DISABLE=1).
       'tests/step-definitions/**/*.js',                                  // Your custom step definitions.
     ],
     paths: ['tests/features/**/*.feature'],
@@ -122,7 +122,7 @@ const TSCONFIG_JSON = {
     types: ['node'],
   },
   'ts-node': {
-    ignore: ['node_modules/(?!webship-js/)'],
+    ignore: ['node_modules/(?!@vardot/varbase-e2e/)'],
   },
 };
 
@@ -169,7 +169,7 @@ const DEFAULT_PKG = {
   license: 'MIT',
   private: false,
   scripts: {},
-  homepage: 'https://github.com/webship/webship-js',
+  homepage: 'https://github.com/Vardot/varbase-e2e',
   dependencies: {},
 };
 
@@ -188,9 +188,9 @@ function parseArgs(argv) {
 function printHelp() {
   process.stdout.write(
     [
-      'Usage: init-webship-js [options]',
+      'Usage: init-varbase-e2e [options]',
       '',
-      'Scaffold a webship-js project: cucumber.js, playwright.config.ts,',
+      'Scaffold a varbase-e2e project: cucumber.js, playwright.config.ts,',
       'tsconfig.json, tests/ tree, and package.json scripts.',
       'Idempotent — safe to run multiple times.',
       '',
@@ -263,8 +263,8 @@ function ensurePackageJson(projectPath, opts) {
   }
 
   pkg.dependencies = pkg.dependencies || {};
-  if (opts.force || !pkg.dependencies['webship-js']) {
-    pkg.dependencies['webship-js'] = readPkgVersion();
+  if (opts.force || !pkg.dependencies['@vardot/varbase-e2e']) {
+    pkg.dependencies['@vardot/varbase-e2e'] = readPkgVersion();
   }
 
   fs.writeFileSync(pkgPath, JSON.stringify(pkg, null, 2) + '\n', 'utf8');
@@ -272,7 +272,7 @@ function ensurePackageJson(projectPath, opts) {
 }
 
 function installBrowsers(projectPath) {
-  console.log('\n  [webship-js] Installing Playwright browsers...\n');
+  console.log('\n  [varbase-e2e] Installing Playwright browsers...\n');
   const res = spawnSync(
     'npx',
     ['playwright', 'install', '--with-deps', 'chromium'],
@@ -293,11 +293,11 @@ function run(argv) {
     projectPath === packagePath ||
     projectPath.startsWith(path.join(packagePath, 'node_modules'))
   ) {
-    console.log('  [webship-js] Skipping init inside webship-js itself.');
+    console.log('  [varbase-e2e] Skipping init inside varbase-e2e itself.');
     return;
   }
 
-  console.log(`\n  [webship-js] Initializing project at ${projectPath}\n`);
+  console.log(`\n  [varbase-e2e] Initializing project at ${projectPath}\n`);
 
   ensureDir(projectPath);
   ensureDir(path.join(projectPath, 'tests', 'features'));
@@ -320,7 +320,7 @@ function run(argv) {
 
   if (!opts.skipBrowsers) installBrowsers(projectPath);
 
-  console.log('\n  [webship-js] Setup complete!\n');
+  console.log('\n  [varbase-e2e] Setup complete!\n');
 }
 
 if (require.main === module) {

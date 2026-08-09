@@ -1,6 +1,6 @@
 # API Testing
 
-Webship-js scenarios can talk to an HTTP API directly without leaving the cucumber-js runtime. The browser context's cookie jar is shared, so a UI login can be followed by REST-level assertions in the same scenario.
+Varbase E2E scenarios can talk to an HTTP API directly without leaving the cucumber-js runtime. The browser context's cookie jar is shared, so a UI login can be followed by REST-level assertions in the same scenario.
 
 ## Setting headers and base URL
 

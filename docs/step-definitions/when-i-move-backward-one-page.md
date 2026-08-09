@@ -18,7 +18,7 @@ This step definition represents user interaction for navigating backward through
 
 ## Related Step Definitions
 
-The documentation includes related navigation steps such as "When I move forward one page" and "When I reload the page," available within the Webship JS 2.0.x step definitions library.
+The documentation includes related navigation steps such as "When I move forward one page" and "When I reload the page," available within the Varbase E2E 2.0.x step definitions library.
 
 ## More examples
 

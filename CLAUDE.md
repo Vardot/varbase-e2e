@@ -2,7 +2,7 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-It is also the durable contract between human maintainers of webship-js and
+It is also the durable contract between human maintainers of varbase-e2e and
 any AI coding assistant working on the repository. Read it in full before
 making changes. Follow it to the letter — these rules emerged from real
 sessions and reflect strong preferences. `AGENTS.md` is the short,
@@ -10,11 +10,11 @@ machine-readable extract of the same rules; keep the two in sync.
 
 ## 0. Identity
 
-webship-js is a BDD-first browser automation harness built on
+varbase-e2e is a BDD-first browser automation harness built on
 **Playwright + Cucumber-js**. It is its own product. It is **NOT** Behat,
 DrevOps, Drupal, or PHP. Code, file names, comments, and step phrasings
-must never reference those tools or imply that webship-js was ported from
-them. Treat webship-js as the source of truth.
+must never reference those tools or imply that varbase-e2e was ported from
+them. Treat varbase-e2e as the source of truth.
 
 Current line: **2.0.x** (branch `2.0.x`; `1.0.x` is the older main branch).
 Node **≥ 20**.
@@ -53,10 +53,10 @@ HEADLESS=false SLOW_MO=800 npx cucumber-js tests/features/x.feature   # watch a 
 ```
 
 Env vars: `LAUNCH_URL`, `BROWSER`, `HEADLESS`, `SLOW_MO`, `FORCE_COLOR`,
-`WEBSHIP_AUTO_SETTLE`, `WEBSHIP_REPORT_DISABLE`, `WEBSHIP_REPORT_ARGS`,
-`WEBSHIP_FILTER_HOOK_LINES`, `WEBSHIP_SCREENSHOT_*`, `WEBSHIP_VIDEO*`,
-`WEBSHIP_JS_ERROR_*`, `WEBSHIP_SELECTORS_OFFSET`,
-`WEBSHIP_SELECTORS_BREAKPOINTS`, `DIFFY_*`. Every one of them mirrors a
+`VARBASE_E2E_AUTO_SETTLE`, `VARBASE_E2E_REPORT_DISABLE`, `VARBASE_E2E_REPORT_ARGS`,
+`VARBASE_E2E_FILTER_HOOK_LINES`, `VARBASE_E2E_SCREENSHOT_*`, `VARBASE_E2E_VIDEO*`,
+`VARBASE_E2E_JS_ERROR_*`, `VARBASE_E2E_SELECTORS_OFFSET`,
+`VARBASE_E2E_SELECTORS_BREAKPOINTS`, `DIFFY_*`. Every one of them mirrors a
 `worldParameters` key in `cucumber.js` — that file is the annotated
 reference; read it before inventing a new knob.
 
@@ -70,19 +70,19 @@ against the static fixtures in `examples/`. A change to a step must keep
 both roles green.
 
 Consumer projects install the package and get scaffolded by
-`bin/postinstall.js` → `bin/init-webship.js`, which writes a `cucumber.js`
+`bin/postinstall.js` → `bin/init-varbase-e2e.js`, which writes a `cucumber.js`
 whose `require` array points at
-`node_modules/webship-js/tests/step-definitions/**/*.js` plus the
+`node_modules/@vardot/varbase-e2e/tests/step-definitions/**/*.js` plus the
 project's own `tests/step-definitions/`. Postinstall is a no-op when a
 `cucumber.js` already exists, so re-installs never clobber user config.
 **If you change the shape of `cucumber.js` `worldParameters`, update the
-`CUCUMBER_JS` template inside `bin/init-webship.js` in the same change** —
+`CUCUMBER_JS` template inside `bin/init-varbase-e2e.js` in the same change** —
 otherwise new projects get scaffolded with a stale config.
 
-### 2.2 `tests/step-definitions/webship.js` — the single canonical entry point
+### 2.2 `tests/step-definitions/varbase-e2e.js` — the single canonical entry point
 
 Everything shared lives here; every `*.steps.js` does
-`require('./webship')`. It owns, in one file:
+`require('./varbase-e2e')`. It owns, in one file:
 
 * **The World** (`PlaywrightWorld extends World`) — `page`, `context`,
   `playwrightBrowser`, `frame` (iframe scope), `launchUrl`, `minWaitTime`,
@@ -94,8 +94,8 @@ Everything shared lives here; every `*.steps.js` does
 * **The init script** installed via `context.addInitScript()` in
   `openBrowser()` — monkey-patches `fetch`, `XMLHttpRequest.send`,
   `setTimeout`/`clearTimeout` and attaches a `MutationObserver` to
-  maintain `window.__webshipAjaxCount`, `__webshipPendingTimers`,
-  `__webshipLastMutation`. This is the substrate the whole wait policy
+  maintain `window.__varbaseE2eAjaxCount`, `__varbaseE2ePendingTimers`,
+  `__varbaseE2eLastMutation`. This is the substrate the whole wait policy
   stands on. **Never strip it.**
 * **Hooks** — `Before({order:5})` opens the browser (merging
   `recordVideo` context options when video is on); `After({order:5})`
@@ -111,15 +111,15 @@ Everything shared lives here; every `*.steps.js` does
   `formatRelativeDate`), and the error builders (`friendly`, `humanize`).
 * **Two process-level side effects**: a stdout/stderr filter that strips
   noisy `✔ Before # …` hook lines from cucumber's failure dump
-  (`WEBSHIP_FILTER_HOOK_LINES=off` to disable), and a `process.on('exit')`
+  (`VARBASE_E2E_FILTER_HOOK_LINES=off` to disable), and a `process.on('exit')`
   hook that auto-generates the HTML report via `bin/generate-reports`
-  (`WEBSHIP_REPORT_DISABLE=1` to disable, `WEBSHIP_REPORT_ARGS` to pass
+  (`VARBASE_E2E_REPORT_DISABLE=1` to disable, `VARBASE_E2E_REPORT_ARGS` to pass
   flags).
 
 ### 2.3 Config layering
 
 `playwright.config.ts` (browser choice, launch args, context options) is
-loaded by `webship.js` from `process.cwd()` — so a consumer project's own
+loaded by `varbase-e2e.js` from `process.cwd()` — so a consumer project's own
 copy wins. `cucumber.js` supplies `worldParameters` (launch URL, wait
 padding, selector registry + files + breakpoints, screenshot, video,
 and javascript-error settings). Resolution order everywhere is
@@ -151,7 +151,7 @@ names matter more than they look.
 ### 2.6 Visual regression lives outside this repo
 
 The Diffy step-pack was extracted to its own plugin,
-[`diffy-steps`](https://github.com/webship/diffy-steps). webship-js no
+[`diffy-steps`](https://github.com/webship/diffy-steps). varbase-e2e no
 longer ships `tests/step-definitions-diffy/`, the `diffy`
 `worldParameters` block, or the mock Diffy API. Consumers install the
 plugin and add `node_modules/@webship-js/diffy-steps/tests/step-definitions/**/*.js`
@@ -161,13 +161,9 @@ Treat any `diffy` question as a `diffy-steps` question.
 
 ### 2.7 CI
 
-Fifteen provider configs at the repo root (`.github/workflows/`,
-`.gitlab-ci.yml`, `.circleci/`, `azure-pipelines.yml`,
-`bitbucket-pipelines.yml`, `buildspec.yml`, `cloudbuild.yaml`,
-`codefresh.yml`, `.drone.yml`, `Jenkinsfile`, `.semaphore/`, `.teamcity/`,
-`bamboo-specs/`, `.harness/`, `.travis.yml`). They all run the same shape: install →
-`npx playwright install` → `npm start &` → `npm test`. Change one, change
-them all, and update `docs/16-ci-cd.md`.
+One provider: **GitHub Actions**, `.github/workflows/github-actions.yml`.
+It runs install → `npx playwright install --with-deps chromium` →
+`npm start &` → `npm test`. Change it and update `docs/16-ci-cd.md`.
 
 ## 3. Communication & change rules
 
@@ -190,11 +186,11 @@ them all, and update `docs/16-ci-cd.md`.
      etc.).
    * Selector preset added under `tests/selectors/` → add to the table in
      `docs/03-selector-registry.md`.
-   * New config key → `cucumber.js` comment, `bin/init-webship.js`
+   * New config key → `cucumber.js` comment, `bin/init-varbase-e2e.js`
      template, and `docs/global-settings.md`.
 5. **Backups.** When the user says "backup" or asks for a versioned zip,
    bump the patch version in `package.json` and produce
-   `~/workspace/products/webship-js-<version>.zip`. Excludes:
+   `~/workspace/products/varbase-e2e-<version>.zip`. Excludes:
    `node_modules/`, `tests/reports/`, `screenshots/`, `.git/`.
 
 ## 4. Step definition rules
@@ -209,7 +205,7 @@ them all, and update `docs/16-ci-cd.md`.
   * `session storage` — NOT `sessionStorage`
 * Keep technical identifiers (CSS selectors, JSON Pointer paths, header
   names) verbatim — they are domain language, not prose.
-* Never reference Behat, DrevOps, Drupal, PHP, or webship.co versioned
+* Never reference Behat, DrevOps, Drupal, PHP, or Vardot versioned
   product names in step phrasings or examples. Use neutral placeholders
   (`example`, `Sample title`, `test-runner`).
 
@@ -261,7 +257,7 @@ Some pairs look similar but cover different domains. NEVER merge:
 
 ```
 tests/step-definitions/
-├── webship.js              # World, hooks, init script, shared helpers — see §2.2. Not a steps file.
+├── varbase-e2e.js              # World, hooks, init script, shared helpers — see §2.2. Not a steps file.
 ├── a11y.steps.js           (26)  # axe-core WCAG audits + POUR hygiene probes (axe loaded lazily)
 ├── action.steps.js          (7)  # press / click / follow / attach file (actOrExplain lives here)
 ├── api.steps.js            (22)  # REST long form — base URL, headers, query, body, JSON Pointer
@@ -303,7 +299,7 @@ tests/features/                 # 71 .feature files
 tests/selectors/                # 26 JSON presets + _canonical-keys.json
 tests/assets/                   # upload fixtures (pdf, png)
 examples/                       # static HTML fixtures served by `npm start`
-bin/                            # init-webship / postinstall / generate-reports
+bin/                            # init-varbase-e2e / postinstall / generate-reports
 docs/                           # 17 numbered guides + mirrored reference pages
 ```
 
@@ -315,14 +311,14 @@ table above.
 ## 6. Behavior-Based Robotics (BBR) wait policy
 
 Static `sleep` is forbidden in step bodies. Every wait step uses
-`smartSettle(page, budget)` from `webship.js`, which composites:
+`smartSettle(page, budget)` from `varbase-e2e.js`, which composites:
 
 1. `<body>` attached
 2. `DOMContentLoaded` fired
 3. Playwright `networkidle`
-4. `window.__webshipAjaxCount === 0` (custom fetch / XHR counter)
-5. `window.__webshipPendingTimers === 0` (custom `setTimeout` counter)
-6. `Date.now() - window.__webshipLastMutation >= 250 ms` (DOM-quiet)
+4. `window.__varbaseE2eAjaxCount === 0` (custom fetch / XHR counter)
+5. `window.__varbaseE2ePendingTimers === 0` (custom `setTimeout` counter)
+6. `Date.now() - window.__varbaseE2eLastMutation >= 250 ms` (DOM-quiet)
 
 Conditions 4/5/6 are evaluated atomically in one `waitForFunction`, so a
 late-firing `setTimeout` that mutates the DOM re-arms the wait.
@@ -331,7 +327,7 @@ Auto-settle hook: `AfterStep` runs `smartSettle(page, 1500)` after every
 step whose text matches `STATE_MUTATING_STEP` (click / press / fill /
 select / check / attach / reload / navigate / …). This is what makes
 `When I click "X" Then I should see "Y"` work without an explicit wait.
-Disable per-run with `WEBSHIP_AUTO_SETTLE=off`. If a wait is flaky only in
+Disable per-run with `VARBASE_E2E_AUTO_SETTLE=off`. If a wait is flaky only in
 CI, raise the budget — never add a static sleep.
 
 ## 7. Selector registry
@@ -347,7 +343,7 @@ CI, raise the budget — never add a static sleep.
   add "X" selector for "Y" css selector`), bulk via data table, or JSON
   files listed in `worldParameters.selectors.files`.
 * Custom modal selector: every preset SHOULD expose a `modal` key. The
-  modal helpers in `webship.js` use it before falling back to
+  modal helpers in `varbase-e2e.js` use it before falling back to
   `[role="dialog"], dialog`.
 * When a UI change breaks tests, fix the selector in the JSON preset —
   not the feature files.
@@ -367,7 +363,7 @@ Before declaring a task done:
 
 ## 9. AI agent wisdom — see [docs/12-ai-agent-guide.md](docs/12-ai-agent-guide.md)
 
-That page distils the canonical guidance from *Webship-js-Recipes v1.0.30*
+That page distils the canonical guidance from *Varbase-E2E-Recipes v1.0.30*
 into one reference. Internalise these:
 
 * **AI generates. Humans validate. Tests verify.** AI does not know what
@@ -377,7 +373,7 @@ into one reference. Internalise these:
   prompts AI → AI implements → tests verify. Pass = ship. Fail =
   iterate.
 * **SPDD REASONS canvas.** Every prompt covers Requirements, Entities,
-  Approach, Structure, Operations, Norms, Safeguards. Webship-js
+  Approach, Structure, Operations, Norms, Safeguards. Varbase E2E
   feature files map cleanly to it.
 * **Cardinal SPDD rule.** When reality diverges from the prompt,
   **fix the prompt first**, then update the code.
@@ -445,7 +441,7 @@ Re-run. Iterate until green. Commit prompt + code + selector changes together.
 ```
 Re-run with HEADLESS=false SLOW_MO=800 to watch what really happens.
 Look at screenshots/failed_*.png for the moment of failure.
-Record it: WEBSHIP_VIDEO=on npx cucumber-js <path>  (or tag the scenario @video).
+Record it: VARBASE_E2E_VIDEO=on npx cucumber-js <path>  (or tag the scenario @video).
 Replace any wait Ns with an edge wait:
   wait until the URL contains "..."
   wait for "selector" to appear
@@ -466,46 +462,46 @@ When the user gives an ambiguous task, ASK before guessing. Specifically:
 - "Should I update docs?" — yes, in the same change. See §3.4.
 - "Should I bump the version + zip?" — only when the user says "backup".
 
-## 11. Local AI agents & skills that drive webship-js
+## 11. Local AI agents & skills that drive varbase-e2e
 
-Seven local Claude Code definitions target webship-js. They are **not**
+Seven local Claude Code definitions target varbase-e2e. They are **not**
 part of this repo (`.gitignore` excludes `.claude`) — they are authored in
 the workspace repos and installed into `~/.claude/`:
 
 | Source of truth | Installed to | Sync |
 | --- | --- | --- |
-| `~/workspace/agents/*.md` | `~/.claude/agents/` | `agents/cmd-tool-sync-agents.sh --install` (also mirrors the shared `webship/ai-agents` repo) |
+| `~/workspace/agents/*.md` | `~/.claude/agents/` | `agents/cmd-tool-sync-agents.sh --install` (also mirrors the shared `Vardot/ai-agents` repo) |
 | `~/workspace/skills/<name>/SKILL.md` | `~/.claude/skills/` | `skills/cmd-tool-sync-skills.sh` |
 
 ### Agents
 
 | Agent | Model | Scope |
 | --- | --- | --- |
-| `agent-webship-js` | opus | The full specialist. Scaffold (Node.js or DDEV) → author `.feature` files → write custom steps → run → debug → HTML/PDF report. Carries a distilled copy of the whole step catalog, the BBR/selector/tag sections, the 20-recipe cookbook, Varbase learnings, and recipes AI-1…AI-5. Use for anything non-trivial. |
-| `webship-ai-agent` | sonnet | The loop-until-green worker for a consumer project: read available steps → write/fix scenarios → run → fix root cause → iterate to zero failures. Lighter, autonomous, Drupal/DDEV-flavoured (`NN-NN-NN-name.feature`, `https://<project>.ddev.site`). |
+| `agent-varbase-e2e` | opus | The full specialist. Scaffold (Node.js or DDEV) → author `.feature` files → write custom steps → run → debug → HTML/PDF report. Carries a distilled copy of the whole step catalog, the BBR/selector/tag sections, the 20-recipe cookbook, Varbase learnings, and recipes AI-1…AI-5. Use for anything non-trivial. |
+| `varbase-e2e-ai-agent` | sonnet | The loop-until-green worker for a consumer project: read available steps → write/fix scenarios → run → fix root cause → iterate to zero failures. Lighter, autonomous, Drupal/DDEV-flavoured (`NN-NN-NN-name.feature`, `https://<project>.ddev.site`). |
 
 ### Skills (slash commands)
 
 | Skill | Does |
 | --- | --- |
-| `/webship-js-init` | Scaffold a test project for a URL, or `--ddev` for the `ddev-webship-js` add-on. Idempotent; never clobbers `cucumber.js` without `--force`. |
-| `/webship-js-create` | Author `tests/features/<page>--<category>.feature` for a page or flow — desktop + mobile, web-first assertions, named selectors, tags. |
-| `/webship-js-run` | Run the suite (tag expression or feature path), generate HTML/PDF, and return a root-cause summary per failure. |
-| `/webship-js-audit` | Lint features + custom steps against the documented anti-patterns — sleep-driven waits, god scenarios, brittle selectors, implementation testing, premature custom steps, leaked module state. Output is `file:line — severity — pattern — fix`. |
-| `/webship-js-steps` | Step catalog reference, filterable by category. |
+| `/varbase-e2e-init` | Scaffold a test project for a URL, or `--ddev` for the `ddev-varbase-e2e` add-on. Idempotent; never clobbers `cucumber.js` without `--force`. |
+| `/varbase-e2e-create` | Author `tests/features/<page>--<category>.feature` for a page or flow — desktop + mobile, web-first assertions, named selectors, tags. |
+| `/varbase-e2e-run` | Run the suite (tag expression or feature path), generate HTML/PDF, and return a root-cause summary per failure. |
+| `/varbase-e2e-audit` | Lint features + custom steps against the documented anti-patterns — sleep-driven waits, god scenarios, brittle selectors, implementation testing, premature custom steps, leaked module state. Output is `file:line — severity — pattern — fix`. |
+| `/varbase-e2e-steps` | Step catalog reference, filterable by category. |
 
-`barmoog-webship-js-{init,create,run,audit,steps}` are the same five skills
+`barmoog-varbase-e2e-{init,create,run,audit,steps}` are the same five skills
 hard-targeted at a Barmoog Odoo 18.0 instance. Don't edit them for
-webship-js changes — fix the `webship-js-*` originals and let the Barmoog
+varbase-e2e changes — fix the `varbase-e2e-*` originals and let the Barmoog
 copies be re-derived.
 
 ### What this means when working *inside* this repo
 
-1. **Every one of them reads `node_modules/webship-js/…` as the source of
+1. **Every one of them reads `node_modules/@vardot/varbase-e2e/…` as the source of
    truth.** That path does not exist here — this *is* the package. Translate:
-   `node_modules/webship-js/tests/step-definitions/` → `tests/step-definitions/`,
-   `node_modules/webship-js/docs/` → `docs/`,
-   `node_modules/webship-js/bin/` → `bin/`.
+   `node_modules/@vardot/varbase-e2e/tests/step-definitions/` → `tests/step-definitions/`,
+   `node_modules/@vardot/varbase-e2e/docs/` → `docs/`,
+   `node_modules/@vardot/varbase-e2e/bin/` → `bin/`.
    Running one of these skills unmodified in this repo will find nothing and
    fall back to fetching from GitHub — i.e. it will read the *published*
    step regex, not your uncommitted change. Read the local files directly
@@ -517,9 +513,9 @@ copies be re-derived.
    is the real reason for the docs rule in §3.4 and the ≥5-examples rule
    in §4.2.
 3. **Known drift to be aware of, not to "fix" here:** the agents and the
-   `/webship-js-run` skill reference a `worldParameters.users` registry and
+   `/varbase-e2e-run` skill reference a `worldParameters.users` registry and
    an auth helper built on it. There is no `users` key in this repo's
-   `cucumber.js` or in `bin/init-webship.js` — it is a Varbase-project
+   `cucumber.js` or in `bin/init-varbase-e2e.js` — it is a Varbase-project
    convention layered on top. If a user asks about `users`, say so rather
    than adding the key on the agents' say-so.
 4. **Guardrails they already carry** (so don't re-litigate them): never

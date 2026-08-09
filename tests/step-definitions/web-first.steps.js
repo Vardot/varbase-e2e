@@ -1,6 +1,6 @@
 'use strict';
 
-const { friendly } = require('./webship');
+const { friendly } = require('./varbase-e2e');
 
 // Web-first assertion steps — each matcher polls the live page until the
 // condition holds or the per-step timeout elapses. The assertion IS the
@@ -228,7 +228,7 @@ Then(/^"([^"]*)" should have value "([^"]*)"(?: within (\d+) seconds?)?$/, async
  *
  * Example #1: Then "#tab-1" should have attribute "aria-selected" with value "true"
  * Example #2: Then "[data-testid=cta]" should have attribute "data-state" with value "open"
- * Example #3: And "img.logo" should have attribute "alt" with value "Webship.co"
+ * Example #3: And "img.logo" should have attribute "alt" with value "Vardot"
  * Example #4: Then "a.signup" should have attribute "href" with value "/signup"
  * Example #5: Then "input#email" should have attribute "type" with value "email"
  *

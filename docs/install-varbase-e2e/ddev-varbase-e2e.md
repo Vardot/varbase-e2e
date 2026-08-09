@@ -1,16 +1,16 @@
 
-# DDEV Webship-JS
+# DDEV Varbase E2E
 
 ## Overview
 
-This add-on integrates "Webship-JS — a Playwright + Cucumber-JS Automated Functional Acceptance Testing framework" into DDEV projects, enabling automated browser testing via Gherkin `.feature` files within the DDEV environment.
+This add-on integrates "Varbase E2E — a Playwright + Cucumber-JS Automated Functional Acceptance Testing framework" into DDEV projects, enabling automated browser testing via Gherkin `.feature` files within the DDEV environment.
 
 ## Installation
 
 Execute the command to add and configure the tool:
 
 ```
-ddev add-on get webship/ddev-webship-js
+ddev add-on get Vardot/ddev-varbase-e2e
 ```
 
 The installation automatically scaffolds required configuration files, creates a starter feature file, installs Playwright browsers, and restarts the DDEV environment.

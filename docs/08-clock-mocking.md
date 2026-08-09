@@ -1,6 +1,6 @@
 # Clock Mocking
 
-Time-dependent UI is hard to test in real time: a "5 minutes ago" label takes 5 minutes to verify, a session-timeout warning sits idle for 14 minutes before firing. Webship-js wraps Playwright's `page.clock` API in BDD steps so scenarios can advance virtual time at full speed.
+Time-dependent UI is hard to test in real time: a "5 minutes ago" label takes 5 minutes to verify, a session-timeout warning sits idle for 14 minutes before firing. Varbase E2E wraps Playwright's `page.clock` API in BDD steps so scenarios can advance virtual time at full speed.
 
 ## Install a fake clock
 

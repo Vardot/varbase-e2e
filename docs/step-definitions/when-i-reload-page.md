@@ -20,7 +20,7 @@ When we reload page
 
 ## Context
 
-The step definition supports flexible phrasing with optional words, allowing testers to write natural language scenarios. It's part of the Webship JS 2.0.x testing framework and appears within the broader "Step Definitions" documentation section alongside other navigation and interaction steps.
+The step definition supports flexible phrasing with optional words, allowing testers to write natural language scenarios. It's part of the Varbase E2E 2.0.x testing framework and appears within the broader "Step Definitions" documentation section alongside other navigation and interaction steps.
 
 ## More examples
 

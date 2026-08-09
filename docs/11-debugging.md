@@ -22,11 +22,11 @@ Override per-run via env vars:
 
 | Variable | Effect |
 | --- | --- |
-| `WEBSHIP_SCREENSHOT_DIR` | Output directory |
-| `WEBSHIP_SCREENSHOT_PURGE` | `1` to wipe `dir` at the start of the run |
-| `WEBSHIP_SCREENSHOT_ON_FAILED` | `0` to disable failure screenshots |
-| `WEBSHIP_SCREENSHOT_ON_EVERY_STEP` | `1` to screenshot every step |
-| `WEBSHIP_SCREENSHOT_FULLSCREEN` | `1` to always full-page |
+| `VARBASE_E2E_SCREENSHOT_DIR` | Output directory |
+| `VARBASE_E2E_SCREENSHOT_PURGE` | `1` to wipe `dir` at the start of the run |
+| `VARBASE_E2E_SCREENSHOT_ON_FAILED` | `0` to disable failure screenshots |
+| `VARBASE_E2E_SCREENSHOT_ON_EVERY_STEP` | `1` to screenshot every step |
+| `VARBASE_E2E_SCREENSHOT_FULLSCREEN` | `1` to always full-page |
 
 ## Headed mode
 
@@ -55,7 +55,7 @@ Then there should be no JavaScript errors
 
 After every run, `tests/reports/cucumber_report.html` is regenerated. Open it for a clickable summary of features, scenarios, durations, screenshots, and per-step output.
 
-Disable: `WEBSHIP_REPORT_DISABLE=1`.
+Disable: `VARBASE_E2E_REPORT_DISABLE=1`.
 
 ### Export to PDF
 
@@ -108,7 +108,7 @@ s.sort((a,b)=>b.ms-a.ms).slice(0,10).forEach(x =>
 
 ## Trace viewer
 
-Webship-js does not enable Playwright traces by default (they are heavy). To opt in for a single run, edit `playwright.config.ts`:
+Varbase E2E does not enable Playwright traces by default (they are heavy). To opt in for a single run, edit `playwright.config.ts`:
 
 ```ts
 contextOptions: {

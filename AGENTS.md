@@ -1,4 +1,4 @@
-# AGENTS.md — webship-js
+# AGENTS.md — varbase-e2e
 
 This file follows the [agents.md](https://agents.md) convention: short,
 machine-readable rules for any AI agent (Claude, Codex, Cursor, Copilot,
@@ -13,7 +13,7 @@ same change.
 
 ## Identity
 
-webship-js is a BDD browser-automation harness built on Playwright +
+varbase-e2e is a BDD browser-automation harness built on Playwright +
 Cucumber-js. It is its own product. Never reference Behat, DrevOps,
 Drupal, or PHP in code, file names, comments, or step phrasings.
 
@@ -24,14 +24,14 @@ Drupal, or PHP in code, file names, comments, or step phrasings.
    shared repository / registry without explicit per-action consent.
 2. **Update docs in the same change.** Step / selector / config changes
    must update the matching page in `docs/`. A `worldParameters` change
-   must also update the scaffold template in `bin/init-webship.js`.
+   must also update the scaffold template in `bin/init-varbase-e2e.js`.
 3. **Stay green.** Every change must keep `npx cucumber-js --dry-run`
    ambiguity-free and `npx cucumber-js` passing. `node_modules/` is not
    committed — run `npm install` first, and `npm start` (the `examples/`
    fixture server on :8080) before the suite. If you could not run it,
    say so; never imply green.
 4. **Backups.** When asked, bump `package.json` `version` and emit
-   `~/workspace/products/webship-js-<version>.zip` excluding
+   `~/workspace/products/varbase-e2e-<version>.zip` excluding
    `node_modules/`, `tests/reports/`, `screenshots/`, `.git/`.
 
 ## Step definition rules
@@ -44,7 +44,7 @@ Drupal, or PHP in code, file names, comments, or step phrasings.
   lines. Each example header line must match the step pattern when the
   Gherkin keyword is stripped.
 * No static `sleep` calls. Wait steps go through `smartSettle()` in
-  `webship.js`.
+  `varbase-e2e.js`.
 * Never let a raw Playwright error reach the tester. Wrap risky locator
   work and re-throw through `friendly()` / `humanize()` — see
   `actOrExplain()` in `action.steps.js` for the reference shape.
@@ -87,14 +87,14 @@ Before reporting a task complete:
       selector preset changed.
 * [ ] Updated `docs/README.md` source layout + step counts if a step file
       was added or steps were added / removed.
-* [ ] Updated `bin/init-webship.js` if `worldParameters` changed.
+* [ ] Updated `bin/init-varbase-e2e.js` if `worldParameters` changed.
 * [ ] Verified examples match patterns (no audit mismatches).
 * [ ] Bumped version + produced backup zip if user requested it.
 
 ## Wisdom from the Recipes book
 
 `docs/12-ai-agent-guide.md` is the AI-specific guide distilled from
-*Webship-js-Recipes v1.0.30*. Read it before authoring features or
+*Varbase-E2E-Recipes v1.0.30*. Read it before authoring features or
 step definitions. Critical takeaways:
 
 * **AI generates. Humans validate. Tests verify.**
@@ -110,7 +110,7 @@ step definitions. Critical takeaways:
 ## Source map
 
 Step definitions: `tests/step-definitions/` — 413 steps across 36
-`*.steps.js` files, all auto-loaded. The `webship.js` file there is the
+`*.steps.js` files, all auto-loaded. The `varbase-e2e.js` file there is the
 single canonical entry point — World, hooks, init script, and shared
 helpers (`smartSettle`, `waitForPageLoad`, `buildSelector`, `gotoUrl`,
 `fillField`, `getLocatorText`, `pad`, the modal probes
@@ -128,17 +128,17 @@ list: `tests/selectors/_canonical-keys.json`.
 
 Config: `cucumber.js` (`worldParameters`, annotated) and
 `playwright.config.ts` (browser launch + context), plus the scaffold
-template in `bin/init-webship.js` that must mirror them.
+template in `bin/init-varbase-e2e.js` that must mirror them.
 
 Visual regression: extracted to the [`diffy-steps`](https://github.com/webship/diffy-steps)
 plugin — not in this repository.
 
 ## This repo is the package
 
-webship-js ships `tests/` to consumers on npm, so `tests/` is both the
+varbase-e2e ships `tests/` to consumers on npm, so `tests/` is both the
 step library and its own test suite. The local agents and skills that
-drive this project (`agent-webship-js`, `webship-ai-agent`, and the
-`/webship-js-*` skills) all read `node_modules/webship-js/...` as their
+drive this project (`agent-varbase-e2e`, `varbase-e2e-ai-agent`, and the
+`/varbase-e2e-*` skills) all read `node_modules/@vardot/varbase-e2e/...` as their
 source of truth. That path does not exist here — translate it to
 `tests/step-definitions/`, `docs/`, `bin/`. Running one of them
 unmodified inside this repository reads the published copy from GitHub,

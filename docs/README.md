@@ -1,12 +1,12 @@
-# Webship-js Documentation
+# Varbase E2E Documentation
 
-Webship-js is a BDD-first browser-automation harness built on Playwright + Cucumber-js. Feature files in plain Gherkin; selectors that survive redesigns; smart waits that never sleep.
+Varbase E2E is a BDD-first browser-automation harness built on Playwright + Cucumber-js. Feature files in plain Gherkin; selectors that survive redesigns; smart waits that never sleep.
 
 **411 built-in steps** across **36 step files**. **288 example scenarios / 1,406 step executions** in the bundled suite, all green on chromium, firefox, and webkit.
 
 ## Reading order
 
-### Webship-js essentials (custom)
+### Varbase E2E essentials (custom)
 
 | Doc | Topic |
 | --- | --- |
@@ -26,15 +26,15 @@ Webship-js is a BDD-first browser-automation harness built on Playwright + Cucum
 | [13 FAQ](13-faq.md) | Common questions for newcomers |
 | [14 Recipes cookbook](14-recipes-cookbook.md) | 20 paste-and-go scenarios |
 | [15 Tag conventions](15-tag-conventions.md) | Standard tags + CI lane patterns |
-| [16 CI / CD setup](16-ci-cd.md) | Per-provider setup steps and config notes |
+| [16 CI / CD setup](16-ci-cd.md) | GitHub Actions setup steps and config notes |
 
-### Reference (mirrored from webship.co/docs/webship-js/2.0.x)
+### Reference (mirrored from vardot.com/docs/varbase-e2e/2.0.x)
 
 | Doc | Topic |
 | --- | --- |
-| [Overview](overview.md) | Webship-js v2.0.x at a glance |
-| [Install](install-webship-js.md) | Install Webship-js |
-| [Install — DDEV](install-webship-js/ddev-webship-js.md) | DDEV-Webship-js variant |
+| [Overview](overview.md) | Varbase E2E v2.0.x at a glance |
+| [Install](install-varbase-e2e.md) | Install Varbase E2E |
+| [Install — DDEV](install-varbase-e2e/ddev-varbase-e2e.md) | DDEV-Varbase-E2E variant |
 | [Global settings](global-settings.md) | `cucumber.js` `worldParameters` reference |
 | [Commands](commands.md) | CLI commands |
 | [Assertions](assertions.md) | Built-in assertions |
@@ -45,7 +45,7 @@ Webship-js is a BDD-first browser-automation harness built on Playwright + Cucum
 
 > **Visual regression moved out.** The Diffy step-pack now ships as its own
 > plugin, [`diffy-steps`](https://github.com/webship/diffy-steps) — install it
-> alongside webship-js and add its step-definition path to `cucumber.js`.
+> alongside varbase-e2e and add its step-definition path to `cucumber.js`.
 
 ## At a glance
 
@@ -67,13 +67,13 @@ Feature: Smoke
 ## Source layout
 
 ```
-webship-js/
+varbase-e2e/
 ├── docs/                       <— You are here
 ├── tests/
 │   ├── features/               <— Your *.feature files
 │   ├── selectors/              <— CMS / framework JSON presets
 │   └── step-definitions/                  <— Built-in steps (auto-loaded)
-│       ├── webship.js                          # World setup, hooks, shared helpers (smartSettle, modal, selectors, date tokens)
+│       ├── varbase-e2e.js                          # World setup, hooks, shared helpers (smartSettle, modal, selectors, date tokens)
 │       ├── a11y.steps.js               (26)   # axe-core audits + WCAG hygiene probes
 │       ├── action.steps.js              (7)   # press / click / follow / attach
 │       ├── api.steps.js                (22)   # REST long form (base URL, headers, query, body, JSON Pointer)

@@ -1,9 +1,9 @@
 'use strict';
 
-const { friendly } = require('./webship');
+const { friendly } = require('./varbase-e2e');
 
 // ---------------------------------------------------------------------------
-// Webship-JS — Selectors step definitions
+// Varbase E2E — Selectors step definitions
 //
 // Uses Playwright Locator API (locator.boundingBox, locator.isVisible,
 // locator.isHidden, locator.click) to assert named page components are
@@ -15,13 +15,13 @@ const { friendly } = require('./webship');
 // from worldParameters, JSON files, or registered inline via steps.
 //
 // Configuration: resolved per-scenario with this priority:
-//   1. process.env.WEBSHIP_SELECTORS_*             (CI / shell — highest)
+//   1. process.env.VARBASE_E2E_SELECTORS_*             (CI / shell — highest)
 //   2. cucumber.js worldParameters.selectors.*     (project-level defaults)
 //   3. built-in defaults
 //
 // Supported env vars / worldParameters keys:
-//   WEBSHIP_SELECTORS_OFFSET      offset        scroll offset in px, default 60
-//   WEBSHIP_SELECTORS_BREAKPOINTS (JSON string) named breakpoints
+//   VARBASE_E2E_SELECTORS_OFFSET      offset        scroll offset in px, default 60
+//   VARBASE_E2E_SELECTORS_BREAKPOINTS (JSON string) named breakpoints
 //
 // Unified config block (worldParameters.selectors):
 //   selectors: {
@@ -91,12 +91,12 @@ function resolveConfig(parameters) {
     xxxl: { width: 1920, height: 1080 },
   };
 
-  if (process.env.WEBSHIP_SELECTORS_BREAKPOINTS) {
-    try { breakpoints = JSON.parse(process.env.WEBSHIP_SELECTORS_BREAKPOINTS); } catch { /* ignore */ }
+  if (process.env.VARBASE_E2E_SELECTORS_BREAKPOINTS) {
+    try { breakpoints = JSON.parse(process.env.VARBASE_E2E_SELECTORS_BREAKPOINTS); } catch { /* ignore */ }
   }
 
   return {
-    offset:     parseInt(pick(process.env.WEBSHIP_SELECTORS_OFFSET, s.offset, '60'), 10),
+    offset:     parseInt(pick(process.env.VARBASE_E2E_SELECTORS_OFFSET, s.offset, '60'), 10),
     breakpoints,
     filesPath:  s.filesPath || '',
     files:      Array.isArray(s.files) ? s.files : [],
@@ -935,7 +935,7 @@ When(/^(I |we )*select from (\d+) to (\d+) text in "([^"]*)" field$/, async func
  * Example #3: When I select "hello" text in "Body" field
  * Example #4: When I select "admin" text in "Username" field
  * Example #5: When I select "example" text in "Email" field
- * Example #6: When we select "webship" text in "Search" field
+ * Example #6: When we select "varbase-e2e" text in "Search" field
  * Example #7: When select "lorem" text in "Notes" field
  * Example #8: When I select "street" text in "Address" field
  * Example #9: When we select "555" text in "Phone" field

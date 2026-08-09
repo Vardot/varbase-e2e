@@ -4,12 +4,12 @@
 
 const fs = require('fs');
 const path = require('path');
-const { run } = require('./init-webship');
+const { run } = require('./init-varbase-e2e');
 
 const packagePath = path.join(__dirname, '..');
 const projectPath = process.env.INIT_CWD || process.cwd();
 
-// Skip when invoked from webship-js itself (development / CI).
+// Skip when invoked from varbase-e2e itself (development / CI).
 if (
   projectPath === packagePath ||
   projectPath.startsWith(path.join(packagePath, 'node_modules'))

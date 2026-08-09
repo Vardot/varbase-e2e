@@ -1,8 +1,8 @@
 # AI Agent Guide — Wisdom from the Recipes Book
 
 This page distills the canonical guidance from
-**Webship-js-Recipes v1.0.30** (583 pages, 35 chapters, 340+ recipes) into
-a compact reference for AI coding assistants working on any webship-js
+**Varbase-E2E-Recipes v1.0.30** (583 pages, 35 chapters, 340+ recipes) into
+a compact reference for AI coding assistants working on any varbase-e2e
 project.
 
 The wisdom here is the product of years of BDD practice — Kent Beck's
@@ -19,7 +19,7 @@ Apply it on every change.
 AI does not know what "correct" means for the business. It can write
 code that compiles, runs, and looks reasonable — but only the test
 suite can prove the code does what the business actually needs. That is
-why webship-js scenarios exist: they are the executable contract.
+why varbase-e2e scenarios exist: they are the executable contract.
 
 Three corollaries:
 
@@ -42,7 +42,7 @@ DRIVE  →  human prompts AI: "implement what passes these scenarios".
 DEVELOP → AI writes code. Tests pass → ship. Tests fail → iterate.
 ```
 
-The webship-js suite is the verification step. If green, AI produced
+The varbase-e2e suite is the verification step. If green, AI produced
 code matching the structured prompt. If red, AI iterates against the
 failing scenario name + step + expected/actual — no human bottleneck.
 
@@ -67,9 +67,9 @@ Every prompt should pass through these seven sections:
 | **N** | Norms | Cross-cutting engineering standards (i18n, a11y, perf, logging) |
 | **S** | Safeguards | Non-negotiable boundaries (security, privacy, rate limits, failure modes) |
 
-Webship-js feature files are SPDD prompts in disguise. Map:
+Varbase E2E feature files are SPDD prompts in disguise. Map:
 
-| REASONS | Webship-js artifact |
+| REASONS | Varbase E2E artifact |
 | --- | --- |
 | Requirements | `Feature:` + `As / I want / So that` |
 | Entities | Domain nouns in step text |
@@ -164,7 +164,7 @@ first one is verified green.
 
 ---
 
-## The Golden Rules of webship-js Testing
+## The Golden Rules of varbase-e2e Testing
 
 These ten rules emerged from years of BDD practice. Internalise them.
 
@@ -185,7 +185,7 @@ These ten rules emerged from years of BDD practice. Internalise them.
 
 ### Recipe AI-1: Generate a feature file from a user story
 
-When asked to author a webship-js `.feature` file:
+When asked to author a varbase-e2e `.feature` file:
 
 1. Read `templates/spdd-feature.md` if it exists, or use the REASONS
    canvas from this guide.
@@ -266,7 +266,7 @@ A test passes locally but fails in CI.
 | Quality assurance | Critical | Critical (AI output needs validation) |
 
 The economic shift: code is cheaper to produce, but specification and
-verification are MORE valuable. Webship-js positions you on the
+verification are MORE valuable. Varbase E2E positions you on the
 valuable side — Gherkin is the spec, step definitions are the
 verification.
 
@@ -316,7 +316,7 @@ After SPDD: **prompts are primary, code is the artifact the prompt produces.**
 This is not academic. It changes how you debug. It changes how you
 onboard. It changes how AI-driven refactors stay safe over years.
 
-Webship-js was built for this world. Every step definition is a verb.
+Varbase E2E was built for this world. Every step definition is a verb.
 Every feature file is a contract. Stack SPDD on top, and you have a
 system where:
 
@@ -332,7 +332,7 @@ Master the loop.
 
 ## Source
 
-This page summarises *Webship-js-Recipes v1.0.30* — chapters 1, 7, 21,
+This page summarises *Varbase-E2E-Recipes v1.0.30* — chapters 1, 7, 21,
 24, 26, 29, 30, 31, 33, 34, 35 plus appendices. The full PDF lives at
-`/home/rajab/Desktop/w-book/Webship-js-Recipes-v1.0.30.pdf`. The
+`/home/rajab/Desktop/w-book/Varbase-E2E-Recipes-v1.0.30.pdf`. The
 chapter Markdown sources live at `/home/rajab/Desktop/w-book/chapters/`.

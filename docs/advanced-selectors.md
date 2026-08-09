@@ -3,7 +3,7 @@
 
 ## Overview
 
-This documentation page describes a unified selector system for Webship-JS 2.0.x that consolidates CSS selectors, XPath selectors, layout components, viewport breakpoints, and relative-position assertions into a single module.
+This documentation page describes a unified selector system for Varbase E2E 2.0.x that consolidates CSS selectors, XPath selectors, layout components, viewport breakpoints, and relative-position assertions into a single module.
 
 ## Key Features
 

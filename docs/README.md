@@ -38,8 +38,6 @@ The full step catalogue — one page per category, generated from the step defin
 | [Install](install-varbase-e2e.md) | Install Varbase E2E |
 | [Install — DDEV](install-varbase-e2e/ddev-varbase-e2e.md) | DDEV-Varbase-E2E variant |
 | [Global settings](global-settings.md) | `cucumber.js` `worldParameters` reference |
-| [Commands](commands.md) | CLI commands |
-| [Assertions](assertions.md) | Built-in assertions |
 | [Step definitions](step-definitions.md) | Step-definition hub — what a step is, the rules, where the catalogue lives |
 | [Step catalogue](steps/README.md) | All 495 steps, 44 category pages under `steps/`, generated from the source |
 | [API step definitions](api-step-definitions.md) | REST step definitions |

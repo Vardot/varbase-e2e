@@ -1,0 +1,5 @@
+.github/
+videos/
+tests/reports/
+screenshots/
+*.tgz

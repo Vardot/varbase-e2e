@@ -109,8 +109,11 @@ step definitions. Critical takeaways:
 
 ## Source map
 
-Step definitions: `tests/step-definitions/` — 413 steps across 36
-`*.steps.js` files, all auto-loaded. The `varbase-e2e.js` file there is the
+Step definitions: `tests/step-definitions/` — 495 steps across 44
+`*.steps.js` files, all auto-loaded, including the Drupal and Varbase packs
+(`drupal-core`, `drupal-ckeditor`, `drupal-media`, `drupal-moderation`,
+`drupal-layout-builder`, `drupal-paragraphs`, `drupal-canvas`, `varbase`)
+with their shared plumbing in `drupal-helpers.js`. The `varbase-e2e.js` file there is the
 single canonical entry point — World, hooks, init script, and shared
 helpers (`smartSettle`, `waitForPageLoad`, `buildSelector`, `gotoUrl`,
 `fillField`, `getLocatorText`, `pad`, the modal probes

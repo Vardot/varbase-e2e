@@ -61,9 +61,9 @@ module.exports = {
         // Load additional selectors from JSON files at scenario start.
         filesPath: './tests/selectors/',             // base path for selector files
         files: [],                                   // e.g. ['homepage-selectors.json'] or ['front-end-selectors.json', 'back-end-selectors.json']
-        // Relative-position scroll offset (px) — WEBSHIP_SELECTORS_OFFSET
+        // Relative-position scroll offset (px) — VARBASE_E2E_SELECTORS_OFFSET
         offset: 60,
-        // Viewport breakpoints — WEBSHIP_SELECTORS_BREAKPOINTS (JSON string)
+        // Viewport breakpoints — VARBASE_E2E_SELECTORS_BREAKPOINTS (JSON string)
         breakpoints: {
           xs:   { width: 375,  height: 667  },                    // phone portrait
           sm:   { width: 576,  height: 800  },                    // large phone / phablet
@@ -75,15 +75,15 @@ module.exports = {
         },
       },
       screenshot: {
-        dir: './screenshots',                        // WEBSHIP_SCREENSHOT_DIR
-        purge: false,                                // WEBSHIP_SCREENSHOT_PURGE
-        onFailed: true,                              // WEBSHIP_SCREENSHOT_ON_FAILED
-        onEveryStep: false,                          // WEBSHIP_SCREENSHOT_ON_EVERY_STEP
-        alwaysFullscreen: false,                     // WEBSHIP_SCREENSHOT_FULLSCREEN
-        failedPrefix: 'failed_',                     // WEBSHIP_SCREENSHOT_FAILED_PREFIX
-        filenamePattern: '{datetime}.{feature_file}.feature_{step_line}.{ext}', // WEBSHIP_SCREENSHOT_PATTERN
-        filenamePatternFailed: '{failed_prefix}{datetime}.{feature_file}.feature_{step_line}.{ext}', // WEBSHIP_SCREENSHOT_PATTERN_FAIL
-        infoTypes: '',                               // WEBSHIP_SCREENSHOT_INFO_TYPES  e.g. "url,feature,step,datetime"
+        dir: './screenshots',                        // VARBASE_E2E_SCREENSHOT_DIR
+        purge: false,                                // VARBASE_E2E_SCREENSHOT_PURGE
+        onFailed: true,                              // VARBASE_E2E_SCREENSHOT_ON_FAILED
+        onEveryStep: false,                          // VARBASE_E2E_SCREENSHOT_ON_EVERY_STEP
+        alwaysFullscreen: false,                     // VARBASE_E2E_SCREENSHOT_FULLSCREEN
+        failedPrefix: 'failed_',                     // VARBASE_E2E_SCREENSHOT_FAILED_PREFIX
+        filenamePattern: '{datetime}.{feature_file}.feature_{step_line}.{ext}', // VARBASE_E2E_SCREENSHOT_PATTERN
+        filenamePatternFailed: '{failed_prefix}{datetime}.{feature_file}.feature_{step_line}.{ext}', // VARBASE_E2E_SCREENSHOT_PATTERN_FAIL
+        infoTypes: '',                               // VARBASE_E2E_SCREENSHOT_INFO_TYPES  e.g. "url,feature,step,datetime"
       },
       video: {
         // Record the browser as a webm video.
@@ -94,9 +94,9 @@ module.exports = {
         // Override per scenario with tags:
         //   @video    — force recording on (independent of mode).
         //   @no-video — suppress recording for this scenario.
-        // Override per run with env: WEBSHIP_VIDEO.
-        mode: 'off',                                 // WEBSHIP_VIDEO
-        dir: './videos',                             // WEBSHIP_VIDEO_DIR
+        // Override per run with env: VARBASE_E2E_VIDEO.
+        mode: 'off',                                 // VARBASE_E2E_VIDEO
+        dir: './videos',                             // VARBASE_E2E_VIDEO_DIR
         size: { width: 1280, height: 720 },          // viewport size of the recording
         // Filename template tokens: {datetime} {feature_file} {feature} {scenario}
         // {status} {ext}. Sanitised to filesystem-safe characters.
@@ -108,17 +108,17 @@ module.exports = {
         //   'fail'           — fail the scenario.
         //   'off'            — silent.
         // Override per scenario with tags: @js-fail, @js-warn, @js-off.
-        // Override per run with env: WEBSHIP_JS_ERROR_MODE.
-        mode: 'warn',                                // WEBSHIP_JS_ERROR_MODE
+        // Override per run with env: VARBASE_E2E_JS_ERROR_MODE.
+        mode: 'warn',                                // VARBASE_E2E_JS_ERROR_MODE
         // Console levels to capture in addition to `pageerror`.
         // Common: ['error'], ['error','warning'], ['error','warning','info'].
-        levels: ['error'],                           // WEBSHIP_JS_ERROR_LEVELS (csv)
+        levels: ['error'],                           // VARBASE_E2E_JS_ERROR_LEVELS (csv)
         // Regex string. Errors whose message matches are ignored.
-        ignore: '',                                  // WEBSHIP_JS_ERROR_IGNORE
+        ignore: '',                                  // VARBASE_E2E_JS_ERROR_IGNORE
         // Snapshot any pre-existing errors at scenario start.
-        beforeScenario: false,                       // WEBSHIP_JS_ERROR_BEFORE
+        beforeScenario: false,                       // VARBASE_E2E_JS_ERROR_BEFORE
         // Report collected errors at scenario end (default true).
-        afterScenario: true,                         // WEBSHIP_JS_ERROR_AFTER
+        afterScenario: true,                         // VARBASE_E2E_JS_ERROR_AFTER
       },
     },
   },

@@ -1,6 +1,6 @@
 'use strict';
 
-const { friendly } = require('./webship');
+const { friendly } = require('./varbase-e2e');
 
 // Authentication-state helpers built on Playwright's `storageState` API.
 //
@@ -57,7 +57,7 @@ When(/^(I |we )*save the auth state to "([^"]*)"$/, async function (pronoun, tar
  * Restore cookies + localStorage from a previously saved JSON file.
  *
  * The current browser context is closed and a fresh one is opened with the
- * saved state. The webship-js init script (AJAX/timer/mutation tracker) is
+ * saved state. The varbase-e2e init script (AJAX/timer/mutation tracker) is
  * re-installed automatically so smart waits keep working. Subsequent steps
  * proceed against the restored, authenticated session.
  *
@@ -83,11 +83,11 @@ Given(/^(I |we )*restore the auth state from "([^"]*)"$/, async function (pronou
     storageState: file,
   });
   await newContext.addInitScript(() => {
-    if (window.__webshipAjaxInstalled) return;
-    window.__webshipAjaxInstalled = true;
-    window.__webshipAjaxCount = 0;
-    window.__webshipPendingTimers = 0;
-    window.__webshipLastMutation = Date.now();
+    if (window.__varbaseE2eAjaxInstalled) return;
+    window.__varbaseE2eAjaxInstalled = true;
+    window.__varbaseE2eAjaxCount = 0;
+    window.__varbaseE2ePendingTimers = 0;
+    window.__varbaseE2eLastMutation = Date.now();
   });
   if (this.context) await this.context.close();
   this.context = newContext;

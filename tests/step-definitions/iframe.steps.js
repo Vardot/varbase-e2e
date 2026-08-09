@@ -1,6 +1,6 @@
 'use strict';
 
-const { friendly } = require('./webship');
+const { friendly } = require('./varbase-e2e');
 
 // Iframe / frame steps backed by Playwright's `frameLocator` API.
 //

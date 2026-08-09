@@ -5,12 +5,12 @@ Feature: An example of testing for being on the homepage.
   
   Scenario: Ensure that you are on the homepage by using 'the' before the word 'homepage'.
     Given I am on the homepage
-     Then I should see "Welcome to the homepage of the Webship-js Examples"
+     Then I should see "Welcome to the homepage of the Varbase E2E Examples"
 
   Scenario: Ensure that you are on the homepage without using 'the' before the word 'homepage'.
     Given I am on homepage
-     Then I should see "Welcome to the homepage of the Webship-js Examples"
+     Then I should see "Welcome to the homepage of the Varbase E2E Examples"
 
   Scenario: Ensure that you are on the homepage without using 'the' before the word 'homepage' and using 'we' instead of 'I'.
     Given we are on homepage
-     Then we should see "Welcome to the homepage of the Webship-js Examples"
+     Then we should see "Welcome to the homepage of the Varbase E2E Examples"

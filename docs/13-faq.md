@@ -2,9 +2,9 @@
 
 Common questions for newcomers.
 
-## How is webship-js different from raw Playwright?
+## How is varbase-e2e different from raw Playwright?
 
-Playwright is a browser-automation library. Webship-js is a **BDD layer on
+Playwright is a browser-automation library. Varbase E2E is a **BDD layer on
 top of Playwright + Cucumber-js** with:
 
 * 280+ pre-built Gherkin steps (so you write English, not JavaScript).
@@ -25,7 +25,7 @@ it in `tests/step-definitions/<topic>.steps.js`, not in feature files.
 
 ## Why no `wait 5 seconds` in the example tests?
 
-Webship-js installs a smart-settle hook that runs after every
+Varbase E2E installs a smart-settle hook that runs after every
 state-changing step. The hook waits for: DOM ready, no in-flight
 fetch/XHR, no pending `setTimeout`, and a 250 ms DOM-quiet window. That
 covers the cases that historically needed manual sleeps. Read
@@ -229,7 +229,7 @@ state, safe to parallelise.
 
 Read [12 AI agent guide](12-ai-agent-guide.md) and follow the
 Test-Drive-Develop loop: human writes the feature file (the
-specification), AI implements code, tests verify. The webship-js
+specification), AI implements code, tests verify. The varbase-e2e
 suite is the validation layer that prevents AI from "looking right"
 while doing the wrong thing.
 

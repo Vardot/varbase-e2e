@@ -3,7 +3,7 @@
 
 ## Overview
 
-webship-js ships native HTTP / REST API step definitions powered by
+varbase-e2e ships native HTTP / REST API step definitions powered by
 Playwright's request fixture and `axios`. They share the browser
 context's cookie jar so the same scenario can mix UI actions and
 direct API calls.

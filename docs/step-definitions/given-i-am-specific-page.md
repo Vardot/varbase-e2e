@@ -29,7 +29,7 @@ Given on the "/about-us" page
 
 ## Key Information
 
-This step definition is part of the Webship JS 2.0.x documentation's Step Definitions section. It supports flexible phrasing patterns, allowing users to specify page locations using various grammatical structures. The pattern accepts optional articles ("the") and the word "page," accommodating different natural language preferences while directing the test to navigate to the specified URL or page identifier.
+This step definition is part of the Varbase E2E 2.0.x documentation's Step Definitions section. It supports flexible phrasing patterns, allowing users to specify page locations using various grammatical structures. The pattern accepts optional articles ("the") and the word "page," accommodating different natural language preferences while directing the test to navigate to the specified URL or page identifier.
 
 ## More examples
 

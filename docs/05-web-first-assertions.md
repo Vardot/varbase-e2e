@@ -1,6 +1,6 @@
 # Web-first Assertions
 
-A "web-first" assertion is an auto-retrying matcher: it polls the page until the condition holds or a budget elapses, instead of taking a single snapshot. Webship-js exposes a thin BDD wrapper over Playwright's locator state-checks so feature files never need explicit waits between an action and its assertion.
+A "web-first" assertion is an auto-retrying matcher: it polls the page until the condition holds or a budget elapses, instead of taking a single snapshot. Varbase E2E exposes a thin BDD wrapper over Playwright's locator state-checks so feature files never need explicit waits between an action and its assertion.
 
 ## Default timeout
 

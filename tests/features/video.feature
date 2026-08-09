@@ -7,7 +7,7 @@ Feature: 🎬 Video recording
   Scenario: 🎥 Record a tiny click flow with emojis
     When I start video recording
     Given I am on "/video-demo.html"
-    Then I should see "Webship-js Video Demo"
+    Then I should see "Varbase E2E Video Demo"
     When I press "👋 Wave"
     Then I should see "Hello, world"
     When I press "🚀 Launch"

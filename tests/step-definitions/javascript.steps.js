@@ -13,7 +13,7 @@
 //
 // Mode resolution priority (first match wins):
 //   1. scenario tag       @js-fail / @js-warn / @js-off / @javascript / @js-errors
-//   2. env var            WEBSHIP_JS_ERROR_MODE = warn | fail | off
+//   2. env var            VARBASE_E2E_JS_ERROR_MODE = warn | fail | off
 //   3. worldParameters    parameters.javascript.mode
 //   4. default            'warn'
 //
@@ -39,18 +39,18 @@ function resolveSettings(world, scope) {
   if (tag('@js-fail') || tag('@javascript'))      mode = 'fail';
   else if (tag('@js-warn'))                        mode = 'warn';
   else if (tag('@js-off') || tag('@js-errors'))    mode = 'off';
-  else if (process.env.WEBSHIP_JS_ERROR_MODE)      mode = process.env.WEBSHIP_JS_ERROR_MODE;
+  else if (process.env.VARBASE_E2E_JS_ERROR_MODE)      mode = process.env.VARBASE_E2E_JS_ERROR_MODE;
   else if (cfg.mode)                               mode = cfg.mode;
   else                                             mode = 'warn';
   if (!VALID_MODES.has(mode)) mode = 'warn';
 
   const levelsRaw =
-    process.env.WEBSHIP_JS_ERROR_LEVELS ||
+    process.env.VARBASE_E2E_JS_ERROR_LEVELS ||
     (Array.isArray(cfg.levels) ? cfg.levels.join(',') : cfg.levels) ||
     DEFAULT_CONSOLE_LEVELS.join(',');
   const levels = String(levelsRaw).split(',').map((s) => s.trim()).filter(Boolean);
 
-  const ignoreSrc = process.env.WEBSHIP_JS_ERROR_IGNORE || cfg.ignore || null;
+  const ignoreSrc = process.env.VARBASE_E2E_JS_ERROR_IGNORE || cfg.ignore || null;
   let ignore = null;
   if (ignoreSrc) {
     try { ignore = new RegExp(ignoreSrc); }
@@ -58,11 +58,11 @@ function resolveSettings(world, scope) {
   }
 
   const beforeScenario =
-    process.env.WEBSHIP_JS_ERROR_BEFORE === '1'
+    process.env.VARBASE_E2E_JS_ERROR_BEFORE === '1'
       ? true
       : cfg.beforeScenario === true;
   const afterScenario  =
-    process.env.WEBSHIP_JS_ERROR_AFTER === '0'
+    process.env.VARBASE_E2E_JS_ERROR_AFTER === '0'
       ? false
       : cfg.afterScenario !== false;   // default true
 
@@ -87,7 +87,7 @@ function reportWarning(scope, errs) {
   const name = (scope && scope.pickle && scope.pickle.name) || 'scenario';
   // Yellow ANSI when FORCE_COLOR is on, plain otherwise — let the runtime
   // decide. cucumber-js sets FORCE_COLOR=1 by default in interactive shells.
-  const head = `[webship-js] JavaScript errors during "${name}" (mode=warn):`;
+  const head = `[varbase-e2e] JavaScript errors during "${name}" (mode=warn):`;
   process.stderr.write(`\n\x1b[33m${head}\n${formatErrors(errs)}\x1b[0m\n`);
 }
 
@@ -117,7 +117,7 @@ Before({ order: 200 }, function (scope) {
     const errs = filterErrors(this._jsErrors, this._jsSettings.ignore);
     if (errs.length > 0) {
       process.stderr.write(
-        `\n\x1b[33m[webship-js] Pre-scenario JavaScript errors:\n${formatErrors(errs)}\x1b[0m\n`
+        `\n\x1b[33m[varbase-e2e] Pre-scenario JavaScript errors:\n${formatErrors(errs)}\x1b[0m\n`
       );
     }
   }
@@ -151,7 +151,7 @@ Then(/^there should be no JavaScript errors$/, function () {
 /**
  * Assert that no JavaScript console warnings were collected. Requires
  * 'warning' to be in the captured console levels (see worldParameters or
- * WEBSHIP_JS_ERROR_LEVELS).
+ * VARBASE_E2E_JS_ERROR_LEVELS).
  *
  * Example #1: Then there should be no JavaScript warnings
  * Example #2: And there should be no JavaScript warnings

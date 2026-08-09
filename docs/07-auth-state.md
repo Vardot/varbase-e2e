@@ -1,6 +1,6 @@
 # Auth State
 
-Logging in once per scenario adds 1–3 seconds per test. Webship-js uses Playwright's `storageState` API to **save the cookies + localStorage of an authenticated session** and replay it in later scenarios — instant sign-in, no UI flow.
+Logging in once per scenario adds 1–3 seconds per test. Varbase E2E uses Playwright's `storageState` API to **save the cookies + localStorage of an authenticated session** and replay it in later scenarios — instant sign-in, no UI flow.
 
 ## Save once, restore everywhere
 

@@ -1,6 +1,6 @@
 # Accessibility (a11y)
 
-Webship-js ships **two layers** of accessibility coverage:
+Varbase E2E ships **two layers** of accessibility coverage:
 
 1. **Custom JS probes** — fast, dependency-free assertions for POUR
    fundamentals (Perceivable, Operable, Understandable, Robust). Each

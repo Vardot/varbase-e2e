@@ -15,14 +15,14 @@ Override paths with env vars:
 
 | Variable | Default | Effect |
 | --- | --- | --- |
-| `WEBSHIP_REPORT_JSON` | `tests/reports/cucumber_report.json` | JSON output path |
-| `WEBSHIP_REPORT_OUT`  | `tests/reports/cucumber_report.html` | HTML output path |
-| `WEBSHIP_REPORT_DISABLE` | _unset_ | `1` to skip HTML generation |
-| `WEBSHIP_REPORT_THEME` | `bootstrap` | `bootstrap` / `hierarchy` / `foundation` / `simple` |
-| `WEBSHIP_REPORT_TITLE` | `Test Report` | Brand title in the HTML header |
-| `WEBSHIP_REPORT_APP_VERSION` | `2.0.0` | Metadata field |
-| `WEBSHIP_REPORT_ENV` | `development` | Test-environment metadata |
-| `WEBSHIP_REPORT_EXECUTED` | `Remote` | Execution location metadata |
+| `VARBASE_E2E_REPORT_JSON` | `tests/reports/cucumber_report.json` | JSON output path |
+| `VARBASE_E2E_REPORT_OUT`  | `tests/reports/cucumber_report.html` | HTML output path |
+| `VARBASE_E2E_REPORT_DISABLE` | _unset_ | `1` to skip HTML generation |
+| `VARBASE_E2E_REPORT_THEME` | `bootstrap` | `bootstrap` / `hierarchy` / `foundation` / `simple` |
+| `VARBASE_E2E_REPORT_TITLE` | `Test Report` | Brand title in the HTML header |
+| `VARBASE_E2E_REPORT_APP_VERSION` | `2.0.0` | Metadata field |
+| `VARBASE_E2E_REPORT_ENV` | `development` | Test-environment metadata |
+| `VARBASE_E2E_REPORT_EXECUTED` | `Remote` | Execution location metadata |
 
 ## Regenerate manually
 

@@ -361,7 +361,7 @@ When(/^(I |we )*choose the radio button "([^"]*)"$/, async function (pronoun, se
 });
 
 // Note: "the radio button :sel should be selected" is already provided by
-// webship.js core via a regex with the same phrasing. Skipped to avoid
+// varbase-e2e.js core via a regex with the same phrasing. Skipped to avoid
 // ambiguous step matches.
 
 /**
@@ -474,12 +474,12 @@ When(/^(I |we )*fill in the end datetime field "([^"]*)" with date "([^"]*)" and
 
 // ---------------------------------------------------------------------------
 // Field text content + checkbox / radio state assertions
-// (relocated from webship.js; field-related assertions live in this file).
+// (relocated from varbase-e2e.js; field-related assertions live in this file).
 // ---------------------------------------------------------------------------
 
 const { Then: ThenF } = require('@cucumber/cucumber');
 const assertF = require('assert');
-const { getLocatorText: getLocatorTextF } = require('./webship');
+const { getLocatorText: getLocatorTextF } = require('./varbase-e2e');
 
 /**
  * Assert that a form field contains or does not contain specific text.

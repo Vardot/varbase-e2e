@@ -5,7 +5,7 @@
 
 const { When } = require('@cucumber/cucumber');
 const path = require('path');
-const { buildSelector, friendly } = require('./webship');
+const { buildSelector, friendly } = require('./varbase-e2e');
 
 // Wrap a Playwright action with a friendlier error pointing at the
 // failing locator + Gherkin step. Pass `label` describing the step

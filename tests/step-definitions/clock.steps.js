@@ -1,6 +1,6 @@
 'use strict';
 
-const { friendly } = require('./webship');
+const { friendly } = require('./varbase-e2e');
 
 // Clock / time-mocking steps backed by Playwright's `page.clock` API.
 

@@ -7,11 +7,11 @@
 // as the page is at the *edge* of activity, bounded by a budget so a runaway
 // page cannot stall the run.
 //
-// Shared smartSettle and modal probes are imported from webship.js
+// Shared smartSettle and modal probes are imported from varbase-e2e.js
 // so this file never duplicates BBR plumbing.
 
 const { When } = require('@cucumber/cucumber');
-const { smartSettle, waitForModalState } = require('./webship');
+const { smartSettle, waitForModalState } = require('./varbase-e2e');
 
 /**
  * Wait UP TO N seconds for the page to settle. Returns early on idle.
@@ -354,8 +354,8 @@ When(/^(I |we )*wait until( the)* page is interactive$/, async function () {
  *
  * Catches "fade-out then display:none" close transitions, debounced renders,
  * and any UI flow that schedules a delayed update without making a network
- * request. Reads `window.__webshipPendingTimers`, the counter installed by
- * webship.js's init script.
+ * request. Reads `window.__varbaseE2ePendingTimers`, the counter installed by
+ * varbase-e2e.js's init script.
  *
  * Example #1: When I wait until pending timers settle
  * Example #2: When I press "Close"
@@ -371,7 +371,7 @@ When(/^(I |we )*wait until( the)* page is interactive$/, async function () {
 When(/^(I |we )*wait until pending timers settle$/, async function () {
   await this.page.waitForFunction(
     () => {
-      const t = window.__webshipPendingTimers;
+      const t = window.__varbaseE2ePendingTimers;
       return typeof t !== 'number' || t <= 0;
     },
     null, { timeout: 10000, polling: 100 }

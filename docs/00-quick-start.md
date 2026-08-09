@@ -1,6 +1,6 @@
 # Quick Start (5 minutes)
 
-Brand new to webship-js? Read this page once. You'll be writing tests in
+Brand new to varbase-e2e? Read this page once. You'll be writing tests in
 five minutes.
 
 ## What you write
@@ -33,7 +33,7 @@ code. No selector jargon.
 ## 30-second install
 
 ```bash
-npm install webship-js --save-dev
+npm install @vardot/varbase-e2e --save-dev
 ```
 
 The post-install script copies a starter `cucumber.js`,
@@ -78,7 +78,7 @@ names the step that failed and the expected vs actual.
 
 ## The golden rule
 
-**Wait for events, not time.** Webship-js does this for you in the
+**Wait for events, not time.** Varbase E2E does this for you in the
 common case. If you ever feel tempted to add `wait 5 seconds` because
 something flaked, look for an event-based wait first:
 

@@ -11,7 +11,7 @@
 const { Then } = require('@cucumber/cucumber');
 const assert = require('assert');
 const axios = require('axios');
-const { buildSelector, getLocatorText, friendly } = require('./webship');
+const { buildSelector, getLocatorText, friendly } = require('./varbase-e2e');
 
 // ---------------------------------------------------------------------------
 // Plain page-text

@@ -1,6 +1,6 @@
 'use strict';
 
-const { friendly } = require('./webship');
+const { friendly } = require('./varbase-e2e');
 
 // Parse and assert against an XML response loaded from a file or doc string.
 
@@ -211,7 +211,7 @@ Then('the XML element {string} should not be equal to {string}', async function 
  * Example #1: Then the XML element "/root/item" should contain "Hello"
  * Example #2: Then the XML element "//status" should contain "ship"
  * Example #3: And the XML element "/order/customer/name" should contain "Alice"
- * Example #4: Then the XML element "/book/title" should contain "Webship"
+ * Example #4: Then the XML element "/book/title" should contain "Varbase E2E"
  * Example #5: Then the XML element "/feed/entry/summary" should contain "release"
  *
  */

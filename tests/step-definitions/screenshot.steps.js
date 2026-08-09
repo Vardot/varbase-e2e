@@ -1,33 +1,33 @@
 'use strict';
 
 // ---------------------------------------------------------------------------
-// Webship-JS — Screenshot step definitions
+// Varbase E2E — Screenshot step definitions
 //
 // Saves PNG (and matching .html) screenshots to a configurable directory.
 // Supports manual steps, automatic capture on failed step, and per-step
 // capture for scenarios tagged @screenshots.
 //
 // Configuration: resolved per-scenario with this priority:
-//   1. process.env.WEBSHIP_SCREENSHOT_*        (CI / shell — highest)
+//   1. process.env.VARBASE_E2E_SCREENSHOT_*        (CI / shell — highest)
 //   2. cucumber.js worldParameters.screenshot.*   (project-level defaults)
 //   3. built-in defaults
 //
 // Supported env vars / worldParameters keys:
-//   WEBSHIP_SCREENSHOT_DIR           dir                    default "./screenshots"
-//   WEBSHIP_SCREENSHOT_PURGE         purge                  "true"/"false" — default false
-//   WEBSHIP_SCREENSHOT_ON_FAILED     onFailed               default true
-//   WEBSHIP_SCREENSHOT_ON_EVERY_STEP onEveryStep            default false
-//   WEBSHIP_SCREENSHOT_FULLSCREEN    alwaysFullscreen       default false
-//   WEBSHIP_SCREENSHOT_FAILED_PREFIX failedPrefix           default "failed_"
-//   WEBSHIP_SCREENSHOT_PATTERN       filenamePattern        default "{datetime}.{feature_file}.feature_{step_line}.{ext}"
-//   WEBSHIP_SCREENSHOT_PATTERN_FAIL  filenamePatternFailed  default "{failed_prefix}{datetime}.{feature_file}.feature_{step_line}.{ext}"
-//   WEBSHIP_SCREENSHOT_INFO_TYPES    infoTypes              comma list: url,feature,step,datetime
+//   VARBASE_E2E_SCREENSHOT_DIR           dir                    default "./screenshots"
+//   VARBASE_E2E_SCREENSHOT_PURGE         purge                  "true"/"false" — default false
+//   VARBASE_E2E_SCREENSHOT_ON_FAILED     onFailed               default true
+//   VARBASE_E2E_SCREENSHOT_ON_EVERY_STEP onEveryStep            default false
+//   VARBASE_E2E_SCREENSHOT_FULLSCREEN    alwaysFullscreen       default false
+//   VARBASE_E2E_SCREENSHOT_FAILED_PREFIX failedPrefix           default "failed_"
+//   VARBASE_E2E_SCREENSHOT_PATTERN       filenamePattern        default "{datetime}.{feature_file}.feature_{step_line}.{ext}"
+//   VARBASE_E2E_SCREENSHOT_PATTERN_FAIL  filenamePatternFailed  default "{failed_prefix}{datetime}.{feature_file}.feature_{step_line}.{ext}"
+//   VARBASE_E2E_SCREENSHOT_INFO_TYPES    infoTypes              comma list: url,feature,step,datetime
 // ---------------------------------------------------------------------------
 
 const { When, Then, Before, After, AfterStep, BeforeAll } = require('@cucumber/cucumber');
 const fs = require('fs');
 const path = require('path');
-const { pad } = require('./webship');
+const { pad } = require('./varbase-e2e');
 
 function pick(envVal, paramVal, fallback) {
   if (envVal !== undefined && envVal !== '') return envVal;
@@ -45,23 +45,23 @@ function asBool(v, fallback) {
 function resolveConfig(parameters) {
   const p = (parameters && parameters.screenshot) || {};
   return {
-    dir: pick(process.env.WEBSHIP_SCREENSHOT_DIR, p.dir, './screenshots'),
-    purge: asBool(pick(process.env.WEBSHIP_SCREENSHOT_PURGE, p.purge, undefined), false),
-    onFailed: asBool(pick(process.env.WEBSHIP_SCREENSHOT_ON_FAILED, p.onFailed, undefined), true),
-    onEveryStep: asBool(pick(process.env.WEBSHIP_SCREENSHOT_ON_EVERY_STEP, p.onEveryStep, undefined), false),
-    alwaysFullscreen: asBool(pick(process.env.WEBSHIP_SCREENSHOT_FULLSCREEN, p.alwaysFullscreen, undefined), false),
-    failedPrefix: pick(process.env.WEBSHIP_SCREENSHOT_FAILED_PREFIX, p.failedPrefix, 'failed_'),
+    dir: pick(process.env.VARBASE_E2E_SCREENSHOT_DIR, p.dir, './screenshots'),
+    purge: asBool(pick(process.env.VARBASE_E2E_SCREENSHOT_PURGE, p.purge, undefined), false),
+    onFailed: asBool(pick(process.env.VARBASE_E2E_SCREENSHOT_ON_FAILED, p.onFailed, undefined), true),
+    onEveryStep: asBool(pick(process.env.VARBASE_E2E_SCREENSHOT_ON_EVERY_STEP, p.onEveryStep, undefined), false),
+    alwaysFullscreen: asBool(pick(process.env.VARBASE_E2E_SCREENSHOT_FULLSCREEN, p.alwaysFullscreen, undefined), false),
+    failedPrefix: pick(process.env.VARBASE_E2E_SCREENSHOT_FAILED_PREFIX, p.failedPrefix, 'failed_'),
     filenamePattern: pick(
-      process.env.WEBSHIP_SCREENSHOT_PATTERN,
+      process.env.VARBASE_E2E_SCREENSHOT_PATTERN,
       p.filenamePattern,
       '{datetime}.{feature_file}.feature_{step_line}.{ext}'
     ),
     filenamePatternFailed: pick(
-      process.env.WEBSHIP_SCREENSHOT_PATTERN_FAIL,
+      process.env.VARBASE_E2E_SCREENSHOT_PATTERN_FAIL,
       p.filenamePatternFailed,
       '{failed_prefix}{datetime}.{feature_file}.feature_{step_line}.{ext}'
     ),
-    infoTypes: String(pick(process.env.WEBSHIP_SCREENSHOT_INFO_TYPES, p.infoTypes, ''))
+    infoTypes: String(pick(process.env.VARBASE_E2E_SCREENSHOT_INFO_TYPES, p.infoTypes, ''))
       .split(',')
       .map(s => s.trim())
       .filter(Boolean),
@@ -291,7 +291,7 @@ AfterStep(async function (step) {
  *             When I scroll to "#latest"
  *             Then I save screenshot
  * Example #7: Given I am on "/contact"
- *             When I fill in "email" with "info@webship.co"
+ *             When I fill in "email" with "info@vardot.com"
  *             Then I save screenshot
  * Example #8: Given I am on "/search?q=UN"
  *             Then I save screenshot
@@ -319,7 +319,7 @@ When(/^(I |we )*save screenshot$/, async function (pronounCase) {
  * Example #7: Given I am on "/partners"
  *             When I wait 2 seconds
  *             Then I save fullscreen screenshot
- * Example #8: Given I am on "/webship"
+ * Example #8: Given I am on "/varbase-e2e"
  *             Then I save fullscreen screenshot
  * Example #9: Given I am on "/un.org/reports"
  *             Then I save fullscreen screenshot
@@ -344,7 +344,7 @@ When(/^(I |we )*save fullscreen screenshot$/, async function (pronounCase) {
  *             Then I save 375 x 812 screenshot
  * Example #8: Given I am on "/news"
  *             Then I save 1024 x 768 screenshot
- * Example #9: Given I am on "/webship.co"
+ * Example #9: Given I am on "/vardot.com"
  *             Then I save 1366 x 768 screenshot
  * Example #10: Given I am on "/un.org"
  *              Then I save 414 x 896 screenshot
@@ -366,7 +366,7 @@ When(/^(I |we )*save (\d+) x (\d+) screenshot$/, async function (pronounCase, wi
  *             Then I save fullscreen 1440 x 900 screenshot
  * Example #7: Given I am on homepage
  *             Then I save fullscreen 375 x 812 screenshot
- * Example #8: Given I am on "/webship.co"
+ * Example #8: Given I am on "/vardot.com"
  *             Then I save fullscreen 1366 x 768 screenshot
  * Example #9: Given I am on "/un.org"
  *             Then I save fullscreen 414 x 896 screenshot
@@ -382,15 +382,15 @@ When(/^(I |we )*save fullscreen (\d+) x (\d+) screenshot$/, async function (pron
  * Save a screenshot using an explicit filename (tokens supported).
  *
  * Example #1: Then I save screenshot with name "homepage.png"
- * Example #2: Then I save screenshot with name "webship-home"
+ * Example #2: Then I save screenshot with name "varbase-e2e-home"
  * Example #3: Then I save screenshot with name "un-landing-{datetime}.png"
  * Example #4: Then I save screenshot with name "about-us.png"
  * Example #5: Then I save screenshot with name "{feature_file}_{step_line}"
  * Example #6: Then I save screenshot with name "{url_path}.png"
  * Example #7: Given I am on "/news"
  *             Then I save screenshot with name "news-latest.png"
- * Example #8: Given I am on "/webship.co"
- *             Then I save screenshot with name "webship-index.png"
+ * Example #8: Given I am on "/vardot.com"
+ *             Then I save screenshot with name "varbase-e2e-index.png"
  * Example #9: Given I am on "/un.org"
  *             Then I save screenshot with name "un-home.png"
  * Example #10: Then I save screenshot with name "contact-form-before-submit.png"
@@ -403,15 +403,15 @@ When(/^(I |we )*save screenshot with name "([^"]*)"$/, async function (pronounCa
  * Save a full-page screenshot using an explicit filename (tokens supported).
  *
  * Example #1: Then I save fullscreen screenshot with name "homepage-full.png"
- * Example #2: Then I save fullscreen screenshot with name "webship-home-full"
+ * Example #2: Then I save fullscreen screenshot with name "varbase-e2e-home-full"
  * Example #3: Then I save fullscreen screenshot with name "news-{datetime}.png"
  * Example #4: Then I save fullscreen screenshot with name "about-us-full.png"
  * Example #5: Then I save fullscreen screenshot with name "{feature_file}_full.png"
  * Example #6: Then I save fullscreen screenshot with name "{url_path}-full.png"
  * Example #7: Given I am on "/news"
  *             Then I save fullscreen screenshot with name "news-full.png"
- * Example #8: Given I am on "/webship.co"
- *             Then I save fullscreen screenshot with name "webship-full.png"
+ * Example #8: Given I am on "/vardot.com"
+ *             Then I save fullscreen screenshot with name "varbase-e2e-full.png"
  * Example #9: Given I am on "/un.org"
  *             Then I save fullscreen screenshot with name "un-home-full.png"
  * Example #10: Then I save fullscreen screenshot with name "long-article-full.png"

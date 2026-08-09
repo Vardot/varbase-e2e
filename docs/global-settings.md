@@ -1,6 +1,6 @@
 # Global Settings
 
-Webship-js draws settings from three layers, evaluated in this order:
+Varbase E2E draws settings from three layers, evaluated in this order:
 
 1. **Environment variables** (CI / shell) — highest precedence.
 2. **`worldParameters` in `cucumber.js`** — project-level defaults.
@@ -101,8 +101,8 @@ selectors: {
 | `xpath` | `{}` | — |
 | `filesPath` | `./tests/selectors/` | — |
 | `files` | `[]` | — |
-| `offset` | `60` | `WEBSHIP_SELECTORS_OFFSET` |
-| `breakpoints` | xs..xxxl | `WEBSHIP_SELECTORS_BREAKPOINTS` (JSON string) |
+| `offset` | `60` | `VARBASE_E2E_SELECTORS_OFFSET` |
+| `breakpoints` | xs..xxxl | `VARBASE_E2E_SELECTORS_BREAKPOINTS` (JSON string) |
 
 ### `screenshot` — capture configuration
 
@@ -122,15 +122,15 @@ screenshot: {
 
 | Key | Default | Env override |
 | --- | --- | --- |
-| `dir` | `./screenshots` | `WEBSHIP_SCREENSHOT_DIR` |
-| `purge` | `false` | `WEBSHIP_SCREENSHOT_PURGE` |
-| `onFailed` | `true` | `WEBSHIP_SCREENSHOT_ON_FAILED` |
-| `onEveryStep` | `false` | `WEBSHIP_SCREENSHOT_ON_EVERY_STEP` |
-| `alwaysFullscreen` | `false` | `WEBSHIP_SCREENSHOT_FULLSCREEN` |
-| `failedPrefix` | `failed_` | `WEBSHIP_SCREENSHOT_FAILED_PREFIX` |
-| `filenamePattern` | `{datetime}...` | `WEBSHIP_SCREENSHOT_PATTERN` |
-| `filenamePatternFailed` | `{failed_prefix}...` | `WEBSHIP_SCREENSHOT_PATTERN_FAIL` |
-| `infoTypes` | `''` | `WEBSHIP_SCREENSHOT_INFO_TYPES` (e.g. `"url,feature,step,datetime"`) |
+| `dir` | `./screenshots` | `VARBASE_E2E_SCREENSHOT_DIR` |
+| `purge` | `false` | `VARBASE_E2E_SCREENSHOT_PURGE` |
+| `onFailed` | `true` | `VARBASE_E2E_SCREENSHOT_ON_FAILED` |
+| `onEveryStep` | `false` | `VARBASE_E2E_SCREENSHOT_ON_EVERY_STEP` |
+| `alwaysFullscreen` | `false` | `VARBASE_E2E_SCREENSHOT_FULLSCREEN` |
+| `failedPrefix` | `failed_` | `VARBASE_E2E_SCREENSHOT_FAILED_PREFIX` |
+| `filenamePattern` | `{datetime}...` | `VARBASE_E2E_SCREENSHOT_PATTERN` |
+| `filenamePatternFailed` | `{failed_prefix}...` | `VARBASE_E2E_SCREENSHOT_PATTERN_FAIL` |
+| `infoTypes` | `''` | `VARBASE_E2E_SCREENSHOT_INFO_TYPES` (e.g. `"url,feature,step,datetime"`) |
 
 Filename pattern tokens: `{datetime}`, `{date}`, `{time}`, `{feature_file}`,
 `{feature}`, `{scenario}`, `{step_line}`, `{ext}`, `{failed_prefix}`,
@@ -140,8 +140,8 @@ Filename pattern tokens: `{datetime}`, `{date}`, `{time}`, `{feature_file}`,
 
 ```js
 video: {
-  mode: 'off',                                   // WEBSHIP_VIDEO — 'off' | 'on' | 'on-failure' | 'tag'
-  dir: './videos',                               // WEBSHIP_VIDEO_DIR
+  mode: 'off',                                   // VARBASE_E2E_VIDEO — 'off' | 'on' | 'on-failure' | 'tag'
+  dir: './videos',                               // VARBASE_E2E_VIDEO_DIR
   size: { width: 1280, height: 720 },            // recording viewport
   filenamePattern: '{datetime}.{feature_file}.{scenario}.{status}.{ext}',
 }
@@ -169,11 +169,11 @@ Mid-scenario start / stop steps live in `video.steps.js`. Recording starts at co
 
 ```js
 javascript: {
-  mode: 'warn',                  // WEBSHIP_JS_ERROR_MODE — 'warn' | 'fail' | 'off'
-  levels: ['error'],             // WEBSHIP_JS_ERROR_LEVELS (csv) — console levels to capture
-  ignore: '',                    // WEBSHIP_JS_ERROR_IGNORE — regex of messages to drop
-  beforeScenario: false,         // WEBSHIP_JS_ERROR_BEFORE — snapshot pre-existing errors
-  afterScenario: true,           // WEBSHIP_JS_ERROR_AFTER — report at scenario end
+  mode: 'warn',                  // VARBASE_E2E_JS_ERROR_MODE — 'warn' | 'fail' | 'off'
+  levels: ['error'],             // VARBASE_E2E_JS_ERROR_LEVELS (csv) — console levels to capture
+  ignore: '',                    // VARBASE_E2E_JS_ERROR_IGNORE — regex of messages to drop
+  beforeScenario: false,         // VARBASE_E2E_JS_ERROR_BEFORE — snapshot pre-existing errors
+  afterScenario: true,           // VARBASE_E2E_JS_ERROR_AFTER — report at scenario end
 }
 ```
 
@@ -221,9 +221,9 @@ const config = {
 
 | Env var | Effect |
 | --- | --- |
-| `WEBSHIP_AUTO_SETTLE` | Set to `off` to disable the BBR auto-settle hook (`smartSettle(page, 1500)` after every state-changing step). |
-| `WEBSHIP_REPORT_DISABLE` | Set to `1` to skip auto-generating the HTML report on cucumber-js process exit. |
-| `WEBSHIP_REPORT_ARGS` | Extra CLI flags forwarded to `bin/generate-reports.js`. e.g. `--theme hierarchy --layout 2`. |
+| `VARBASE_E2E_AUTO_SETTLE` | Set to `off` to disable the BBR auto-settle hook (`smartSettle(page, 1500)` after every state-changing step). |
+| `VARBASE_E2E_REPORT_DISABLE` | Set to `1` to skip auto-generating the HTML report on cucumber-js process exit. |
+| `VARBASE_E2E_REPORT_ARGS` | Extra CLI flags forwarded to `bin/generate-reports.js`. e.g. `--theme hierarchy --layout 2`. |
 
 ---
 
@@ -259,7 +259,7 @@ const config = {
 LAUNCH_URL=https://staging.example.com \
 SLOW_MO=0 \
 BROWSER=chromium \
-WEBSHIP_SCREENSHOT_PURGE=1 \
+VARBASE_E2E_SCREENSHOT_PURGE=1 \
 npx cucumber-js --tags "@critical and not @wip" --parallel 4 --retry 1 --retry-tag-filter @flaky
 ```
 

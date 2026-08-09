@@ -1,6 +1,6 @@
 'use strict';
 
-const { friendly } = require('./webship');
+const { friendly } = require('./varbase-e2e');
 
 // Network interception and mocking via Playwright's `page.route()` API.
 //

@@ -8,13 +8,13 @@ This is a topical reference. For per-step examples, see the JSDoc comment above 
 
 | Step | Source |
 | --- | --- |
-| `Given I am on the homepage` | `webship.js` |
-| `Given I am on "/path"` | `webship.js` |
-| `When I go to the homepage` | `webship.js` |
-| `When I go to "/path"` | `webship.js` |
-| `When I move backward one page` | `webship.js` |
-| `When I move forward one page` | `webship.js` |
-| `When I reload the page` | `webship.js` |
+| `Given I am on the homepage` | `varbase-e2e.js` |
+| `Given I am on "/path"` | `varbase-e2e.js` |
+| `When I go to the homepage` | `varbase-e2e.js` |
+| `When I go to "/path"` | `varbase-e2e.js` |
+| `When I move backward one page` | `varbase-e2e.js` |
+| `When I move forward one page` | `varbase-e2e.js` |
+| `When I reload the page` | `varbase-e2e.js` |
 
 ## Click & press
 
@@ -213,7 +213,7 @@ Errors are always tracked (page errors + matched console levels). At scenario en
 Mode resolution (first match wins):
 
 1. **Scenario tag** — `@js-fail`, `@js-warn`, `@js-off`, plus back-compat `@javascript` (= fail) and `@js-errors` (= off).
-2. **Env var** — `WEBSHIP_JS_ERROR_MODE=warn|fail|off`.
+2. **Env var** — `VARBASE_E2E_JS_ERROR_MODE=warn|fail|off`.
 3. **`worldParameters.javascript.mode`** in `cucumber.js`.
 4. **Default** — `warn`.
 
@@ -221,11 +221,11 @@ Settings (`worldParameters.javascript`):
 
 | Key | Env override | Default | Effect |
 | --- | --- | --- | --- |
-| `mode` | `WEBSHIP_JS_ERROR_MODE` | `warn` | `warn` / `fail` / `off` |
-| `levels` | `WEBSHIP_JS_ERROR_LEVELS` | `['error']` | Console levels to capture (csv when via env: `error,warning`) |
-| `ignore` | `WEBSHIP_JS_ERROR_IGNORE` | _none_ | Regex; matching messages dropped before report |
-| `beforeScenario` | `WEBSHIP_JS_ERROR_BEFORE` | `false` | Snapshot pre-existing errors at scenario start |
-| `afterScenario` | `WEBSHIP_JS_ERROR_AFTER` | `true` | Report at scenario end |
+| `mode` | `VARBASE_E2E_JS_ERROR_MODE` | `warn` | `warn` / `fail` / `off` |
+| `levels` | `VARBASE_E2E_JS_ERROR_LEVELS` | `['error']` | Console levels to capture (csv when via env: `error,warning`) |
+| `ignore` | `VARBASE_E2E_JS_ERROR_IGNORE` | _none_ | Regex; matching messages dropped before report |
+| `beforeScenario` | `VARBASE_E2E_JS_ERROR_BEFORE` | `false` | Snapshot pre-existing errors at scenario start |
+| `afterScenario` | `VARBASE_E2E_JS_ERROR_AFTER` | `true` | Report at scenario end |
 
 The explicit step `Then there should be no JavaScript errors` always asserts (independent of `mode`) and suppresses the auto-report so a single error is not announced twice.
 
@@ -241,7 +241,7 @@ Then print video path
 Recording is **off by default**. Resolution priority:
 
 1. **Scenario tag** — `@video` (force on) / `@no-video` (force off).
-2. **Env var** — `WEBSHIP_VIDEO=on|off|on-failure|tag`.
+2. **Env var** — `VARBASE_E2E_VIDEO=on|off|on-failure|tag`.
 3. **`worldParameters.video.mode`** — `'off'` (default) / `'on'` / `'on-failure'` / `'tag'`.
 
 Mode semantics:
@@ -257,8 +257,8 @@ Settings (`worldParameters.video`):
 
 | Key | Env override | Default | Effect |
 | --- | --- | --- | --- |
-| `mode` | `WEBSHIP_VIDEO` | `off` | Activation mode. |
-| `dir` | `WEBSHIP_VIDEO_DIR` | `./videos` | Output directory (created automatically). |
+| `mode` | `VARBASE_E2E_VIDEO` | `off` | Activation mode. |
+| `dir` | `VARBASE_E2E_VIDEO_DIR` | `./videos` | Output directory (created automatically). |
 | `size` | _none_ | `{ width: 1280, height: 720 }` | Recording resolution. |
 | `filenamePattern` | _none_ | `{datetime}.{feature_file}.{scenario}.{status}.{ext}` | Per-scenario filename. Tokens: `{datetime} {feature_file} {feature} {scenario} {status} {ext}`. |
 

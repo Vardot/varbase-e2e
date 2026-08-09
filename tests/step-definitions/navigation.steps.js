@@ -6,7 +6,7 @@
 
 const { Given, When, Then } = require('@cucumber/cucumber');
 const assert = require('assert');
-const { gotoUrl, waitForPageLoad, smartSettle } = require('./webship');
+const { gotoUrl, waitForPageLoad, smartSettle } = require('./varbase-e2e');
 
 // ---------------------------------------------------------------------------
 // Sessions / visits

@@ -1,6 +1,6 @@
 'use strict';
 
-const { friendly } = require('./webship');
+const { friendly } = require('./varbase-e2e');
 
 // Video recording steps — start / stop / save mid-scenario.
 //
@@ -19,7 +19,7 @@ const path = require('path');
 function settings(world) {
   const cfg = (world.parameters && world.parameters.video) || {};
   return {
-    dir: process.env.WEBSHIP_VIDEO_DIR || cfg.dir || './videos',
+    dir: process.env.VARBASE_E2E_VIDEO_DIR || cfg.dir || './videos',
     size: cfg.size || { width: 1280, height: 720 },
   };
 }
@@ -87,11 +87,11 @@ When(/^(I |we )*stop video recording$/, async function (pronoun) {
         const dest = path.join(s.dir, name);
         await video.saveAs(dest);
         await video.delete().catch(() => {});
-        process.stderr.write(`\n[webship-js] video saved → ${dest}\n`);
+        process.stderr.write(`\n[varbase-e2e] video saved → ${dest}\n`);
         // Reset so the After hook does not try to re-save.
         this._videoSaveAsName = null;
       } catch (e) {
-        process.stderr.write(`\n[webship-js] video save failed: ${e.message}\n`);
+        process.stderr.write(`\n[varbase-e2e] video save failed: ${e.message}\n`);
       }
     }
     if (this.playwrightBrowser) {

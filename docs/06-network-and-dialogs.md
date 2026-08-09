@@ -1,6 +1,6 @@
 # Networking & Dialogs
 
-Webship-js makes it easy to stub external dependencies, simulate offline / slow networks, and respond to native browser dialogs from within a feature file.
+Varbase E2E makes it easy to stub external dependencies, simulate offline / slow networks, and respond to native browser dialogs from within a feature file.
 
 ## Stubbing requests
 

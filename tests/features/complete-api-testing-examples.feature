@@ -23,7 +23,7 @@ Feature: Complete API Testing Examples - All Step Definitions
     Given I set the following headers:
       | Content-Type  | application/json |
       | Accept        | application/json |
-      | User-Agent    | WebshipJS/1.0   |
+      | User-Agent    | VarbaseE2E/1.0   |
     When I send a GET request to "/posts"
     Then the API response code should be 200
 
@@ -146,7 +146,7 @@ Feature: Complete API Testing Examples - All Step Definitions
     And I set the following headers:
       | Content-Type | application/json      |
       | Accept       | application/json      |
-      | User-Agent   | WebshipJS-Testing/1.0 |
+      | User-Agent   | VarbaseE2E-Testing/1.0 |
     And I set the request body to '{"title": "{{newTitle}}", "body": "{{newBody}}", "userId": 1}'
     When I send a POST request to "/posts"
     Then the API response code should be 201

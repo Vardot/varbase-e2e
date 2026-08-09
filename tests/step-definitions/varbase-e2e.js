@@ -8,9 +8,9 @@ const path = require('path');
 // ---------------------------------------------------------------------------
 // Output filter — strip noisy `✔ Before # ...` / `✔ After # ...` hook lines
 // from cucumber-js's failure dump so tester-facing output stays focused on
-// the failing step + hint. Disable with WEBSHIP_FILTER_HOOK_LINES=off.
+// the failing step + hint. Disable with VARBASE_E2E_FILTER_HOOK_LINES=off.
 // ---------------------------------------------------------------------------
-if (process.env.WEBSHIP_FILTER_HOOK_LINES !== 'off') {
+if (process.env.VARBASE_E2E_FILTER_HOOK_LINES !== 'off') {
   const HOOK_LINE = /^\s*[✔✖✗⚠?-]\s+(?:Before|After|BeforeStep|AfterStep)\b.*$/;
   const wrap = (stream) => {
     const orig = stream.write.bind(stream);
@@ -32,15 +32,15 @@ if (process.env.WEBSHIP_FILTER_HOOK_LINES !== 'off') {
 
 // ===========================================================================
 // Internal helpers (BBR smart settle, modal probes, selector + text utilities).
-// Imported by every *.steps.js file via require('./webship'). Defined here
+// Imported by every *.steps.js file via require('./varbase-e2e'). Defined here
 // rather than in a shared sub-module so there is a single, canonical entry
-// point — `tests/step-definitions/webship.js`.
+// point — `tests/step-definitions/varbase-e2e.js`.
 // ===========================================================================
 
 /**
  * Shared shape of every Cucumber `this` (the World) at step time.
  *
- * @typedef {Object} WebshipWorld
+ * @typedef {Object} VarbaseE2eWorld
  * @property {import('playwright').Page} [page]                  - Active page (set in Before hook).
  * @property {import('playwright').BrowserContext} [context]     - Active browser context.
  * @property {import('playwright').Browser} [browser]            - Active browser instance.
@@ -61,9 +61,9 @@ if (process.env.WEBSHIP_FILTER_HOOK_LINES !== 'off') {
 //   1. <body> attached
 //   2. DOMContentLoaded fired
 //   3. Playwright "networkidle" (500ms with no in-flight network)
-//   4. window.__webshipAjaxCount === 0       (custom fetch/XHR counter)
-//   5. window.__webshipPendingTimers === 0   (custom setTimeout counter)
-//   6. Date.now() - window.__webshipLastMutation >= quietMs (DOM-quiet)
+//   4. window.__varbaseE2eAjaxCount === 0       (custom fetch/XHR counter)
+//   5. window.__varbaseE2ePendingTimers === 0   (custom setTimeout counter)
+//   6. Date.now() - window.__varbaseE2eLastMutation >= quietMs (DOM-quiet)
 //
 // Steps 4/5/6 are evaluated atomically via a single waitForFunction, so a
 // late-firing setTimeout that mutates the DOM re-arms the wait correctly.
@@ -88,9 +88,9 @@ async function smartSettle(page, timeout) {
   try {
     await page.waitForFunction(
       (quietMs) => {
-        const ajax = window.__webshipAjaxCount;
-        const timers = window.__webshipPendingTimers;
-        const last = window.__webshipLastMutation;
+        const ajax = window.__varbaseE2eAjaxCount;
+        const timers = window.__varbaseE2ePendingTimers;
+        const last = window.__varbaseE2eLastMutation;
         if (typeof ajax === 'number' && ajax > 0) return false;
         if (typeof timers === 'number' && timers > 0) return false;
         if (typeof last === 'number' && Date.now() - last < quietMs) return false;
@@ -122,7 +122,7 @@ async function waitForPageLoad(page, timeout) {
  * Resolve the CSS selector that targets a modal dialog. Prefers a named
  * `modal` selector from the registry; otherwise falls back to ARIA + native.
  *
- * @param {WebshipWorld} world
+ * @param {VarbaseE2eWorld} world
  * @returns {string}
  */
 function getModalSelector(world) {
@@ -136,7 +136,7 @@ function getModalSelector(world) {
  * Locator pointing at modal dialogs on the given page.
  *
  * @param {import('playwright').Page} page
- * @param {WebshipWorld} world
+ * @param {VarbaseE2eWorld} world
  * @returns {import('playwright').Locator}
  */
 function getModalLocator(page, world) {
@@ -151,7 +151,7 @@ function getModalLocator(page, world) {
  * @param {import('playwright').Page} page
  * @param {'visible'|'hidden'} state
  * @param {number} [timeout=10000]
- * @param {WebshipWorld} world
+ * @param {VarbaseE2eWorld} world
  * @returns {Promise<void>}
  */
 async function waitForModalState(page, state, timeout, world) {
@@ -181,7 +181,7 @@ async function waitForModalState(page, state, timeout, world) {
  * remediation hints when no modal is on screen.
  *
  * @param {import('playwright').Page} page
- * @param {WebshipWorld} world
+ * @param {VarbaseE2eWorld} world
  * @returns {Promise<import('playwright').Locator>}
  */
 async function findVisibleModal(page, world) {
@@ -204,7 +204,7 @@ async function findVisibleModal(page, world) {
  * visible per the same computed-style probe as `waitForModalState`.
  *
  * @param {import('playwright').Page} page
- * @param {WebshipWorld} world
+ * @param {VarbaseE2eWorld} world
  * @returns {Promise<boolean>}
  */
 async function isAnyModalVisible(page, world) {
@@ -596,19 +596,19 @@ module.exports = {
 
 // ---------------------------------------------------------------------------
 // Auto HTML report on cucumber-js process exit.
-// Disable: WEBSHIP_REPORT_DISABLE=1. Extra flags: WEBSHIP_REPORT_ARGS="--theme hierarchy --layout 2".
+// Disable: VARBASE_E2E_REPORT_DISABLE=1. Extra flags: VARBASE_E2E_REPORT_ARGS="--theme hierarchy --layout 2".
 // Registered once per process.
 // ---------------------------------------------------------------------------
-if (!global.__WEBSHIP_AUTO_REPORT__) {
-  global.__WEBSHIP_AUTO_REPORT__ = true;
+if (!global.__VARBASE_E2E_AUTO_REPORT__) {
+  global.__VARBASE_E2E_AUTO_REPORT__ = true;
   process.on('exit', () => {
-    if (process.env.WEBSHIP_REPORT_DISABLE) return;
+    if (process.env.VARBASE_E2E_REPORT_DISABLE) return;
     try {
       const { run } = require(path.join(__dirname, '..', '..', 'bin', 'generate-reports'));
-      const extra = (process.env.WEBSHIP_REPORT_ARGS || '').split(/\s+/).filter(Boolean);
+      const extra = (process.env.VARBASE_E2E_REPORT_ARGS || '').split(/\s+/).filter(Boolean);
       run(extra);
     } catch (err) {
-      console.error('[webship-js] Report generation failed:', err.message);
+      console.error('[varbase-e2e] Report generation failed:', err.message);
     }
   });
 }
@@ -642,19 +642,19 @@ class PlaywrightWorld extends World {
     // before any document script). The counter lets smartSettle() detect the
     // edge of background activity rather than guessing a fixed delay.
     await this.context.addInitScript(() => {
-      if (window.__webshipAjaxInstalled) return;
-      window.__webshipAjaxInstalled = true;
-      window.__webshipAjaxCount = 0;
-      window.__webshipPendingTimers = 0;
-      window.__webshipLastMutation = Date.now();
+      if (window.__varbaseE2eAjaxInstalled) return;
+      window.__varbaseE2eAjaxInstalled = true;
+      window.__varbaseE2eAjaxCount = 0;
+      window.__varbaseE2ePendingTimers = 0;
+      window.__varbaseE2eLastMutation = Date.now();
 
       // Track in-flight fetch requests.
       const origFetch = window.fetch;
       if (typeof origFetch === 'function') {
         window.fetch = function (...args) {
-          window.__webshipAjaxCount++;
+          window.__varbaseE2eAjaxCount++;
           const p = origFetch.apply(this, args);
-          const settle = () => { window.__webshipAjaxCount--; };
+          const settle = () => { window.__varbaseE2eAjaxCount--; };
           p.then(settle, settle);
           return p;
         };
@@ -665,8 +665,8 @@ class PlaywrightWorld extends World {
       if (XHR && XHR.prototype) {
         const origSend = XHR.prototype.send;
         XHR.prototype.send = function (...args) {
-          window.__webshipAjaxCount++;
-          const settle = () => { window.__webshipAjaxCount--; };
+          window.__varbaseE2eAjaxCount++;
+          const settle = () => { window.__varbaseE2eAjaxCount--; };
           this.addEventListener('loadend', settle, { once: true });
           return origSend.apply(this, args);
         };
@@ -681,13 +681,13 @@ class PlaywrightWorld extends World {
       const liveTimers = new Set();
       if (typeof origSetTimeout === 'function') {
         window.setTimeout = function (cb, delay, ...args) {
-          window.__webshipPendingTimers++;
+          window.__varbaseE2ePendingTimers++;
           let id;
           const wrapped = function () {
             try {
               if (typeof cb === 'function') return cb.apply(this, args);
             } finally {
-              if (liveTimers.delete(id)) window.__webshipPendingTimers--;
+              if (liveTimers.delete(id)) window.__varbaseE2ePendingTimers--;
             }
           };
           id = origSetTimeout(wrapped, delay);
@@ -696,7 +696,7 @@ class PlaywrightWorld extends World {
         };
         if (typeof origClearTimeout === 'function') {
           window.clearTimeout = function (id) {
-            if (liveTimers.delete(id)) window.__webshipPendingTimers--;
+            if (liveTimers.delete(id)) window.__varbaseE2ePendingTimers--;
             return origClearTimeout(id);
           };
         }
@@ -707,7 +707,7 @@ class PlaywrightWorld extends World {
       const startObserver = () => {
         if (!document || !document.documentElement) return false;
         try {
-          new MutationObserver(() => { window.__webshipLastMutation = Date.now(); })
+          new MutationObserver(() => { window.__varbaseE2eLastMutation = Date.now(); })
             .observe(document.documentElement, { childList: true, subtree: true, attributes: true, characterData: true });
           return true;
         } catch (e) { return false; }
@@ -742,11 +742,11 @@ const VIDEO_MODES = new Set(['off', 'on', 'on-failure', 'tag']);
 
 function videoSettings(world, scope) {
   const cfg = (world.parameters && world.parameters.video) || {};
-  let mode = process.env.WEBSHIP_VIDEO || cfg.mode || 'off';
+  let mode = process.env.VARBASE_E2E_VIDEO || cfg.mode || 'off';
   if (!VIDEO_MODES.has(mode)) mode = 'off';
   return {
     mode,
-    dir: process.env.WEBSHIP_VIDEO_DIR || cfg.dir || './videos',
+    dir: process.env.VARBASE_E2E_VIDEO_DIR || cfg.dir || './videos',
     size: cfg.size || { width: 1280, height: 720 },
     filenamePattern: cfg.filenamePattern || '{datetime}.{feature_file}.{scenario}.{status}.{ext}',
   };
@@ -833,10 +833,10 @@ After({ order: 5 }, async function (scope) {
       } else {
         await videoRef.saveAs(dest);
         await videoRef.delete().catch(() => {});
-        process.stderr.write(`\n[webship-js] video saved → ${dest}\n`);
+        process.stderr.write(`\n[varbase-e2e] video saved → ${dest}\n`);
       }
     } catch (e) {
-      process.stderr.write(`\n[webship-js] video save failed: ${e.message}\n`);
+      process.stderr.write(`\n[varbase-e2e] video save failed: ${e.message}\n`);
     }
     // Fallback: remove the Playwright scratch file via fs if it still exists.
     if (rawPath) {
@@ -870,7 +870,7 @@ AfterStep(async function (scope) {
     await this.page.waitForTimeout(this.minWaitTime.after_step);
   }
   // Auto-settle only after state-changing steps. Skip if disabled via env var.
-  if (process.env.WEBSHIP_AUTO_SETTLE === 'off') return;
+  if (process.env.VARBASE_E2E_AUTO_SETTLE === 'off') return;
   const text = scope && scope.pickleStep && scope.pickleStep.text;
   if (typeof text !== 'string') return;
   if (!STATE_MUTATING_STEP.test(text)) return;

@@ -7,7 +7,7 @@
 
 ## Available Scroll Step Definitions
 
-The following scroll-related steps are available in Webship JS 2.0.x:
+The following scroll-related steps are available in Varbase E2E 2.0.x:
 
 - When I scroll down
 - When I scroll up

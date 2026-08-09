@@ -1,6 +1,6 @@
 'use strict';
 
-const { friendly } = require('./webship');
+const { friendly } = require('./varbase-e2e');
 
 // Validate file downloads triggered via URL or link click.
 
@@ -11,7 +11,7 @@ const path = require('path');
 const os = require('os');
 
 function tmpDownloadDir() {
-  const d = path.join(os.tmpdir(), `webship-dl-${process.pid}`);
+  const d = path.join(os.tmpdir(), `varbase-e2e-dl-${process.pid}`);
   if (!fs.existsSync(d)) fs.mkdirSync(d, { recursive: true });
   return d;
 }

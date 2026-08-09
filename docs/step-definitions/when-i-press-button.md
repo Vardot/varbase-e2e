@@ -21,7 +21,7 @@ When I press "Log In"
 
 ## Related Documentation
 
-This step is part of the Webship JS 2.0.x Step Definitions documentation and has a sub-variant:
+This step is part of the Varbase E2E 2.0.x Step Definitions documentation and has a sub-variant:
 - When I press "button" by attribute
 
 ## More examples

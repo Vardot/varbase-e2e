@@ -165,23 +165,23 @@ Feature: Relative element positioning assertions and advanced selector system.
   Scenario: Select all text in a field.
     Given I am on "/test--when--i-fill-in.html"
     And I add "username" selector for "[name='username']" css selector
-    And I fill in "username" with "webship-tester"
+    And I fill in "username" with "varbase-e2e-tester"
     When I select all text in "username" field
     Then I see username has focus
 
   Scenario: Select a character range in a field.
     Given I am on "/test--when--i-fill-in.html"
-    And I fill in "username" with "webship-tester"
+    And I fill in "username" with "varbase-e2e-tester"
     When I select from 0 to 7 text in "username" field
 
   Scenario: Select a substring inside a field.
     Given I am on "/test--when--i-fill-in.html"
-    And I fill in "username" with "webship-tester"
+    And I fill in "username" with "varbase-e2e-tester"
     When I select "tester" text in "username" field
 
   Scenario: Pronoun variants on focus + selection.
     Given I am on "/test--when--i-fill-in.html"
-    And I fill in "username" with "webship-tester"
+    And I fill in "username" with "varbase-e2e-tester"
     When we move focus to "username" field
     And we select all text in "username" field
 
@@ -311,10 +311,10 @@ Feature: Relative element positioning assertions and advanced selector system.
   Scenario: End-to-end field workflow — focus, select all, refill, partial select.
     Given I am on "/test--when--i-fill-in.html"
     And I add "username" selector for "[name='username']" css selector
-    And I fill in "username" with "webship-initial"
+    And I fill in "username" with "varbase-e2e-initial"
     When I move focus to "username" field
     Then I see username has focus
     When I select all text in "username" field
-    And I fill in "username" with "webship-replacement-value"
+    And I fill in "username" with "varbase-e2e-replacement-value"
     And I select from 0 to 7 text in "username" field
     And I select "replacement" text in "username" field

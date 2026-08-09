@@ -1,24 +1,24 @@
 # BBR Smart Waits
 
-Webship-js follows a **Behavior-Based Robotics** philosophy: **react to the environment, not the clock.** A test never sleeps for a fixed N seconds. Instead, every wait step returns as soon as the page is at the **edge** of activity — DOM ready, no in-flight network, no pending timers, no live mutations.
+Varbase E2E follows a **Behavior-Based Robotics** philosophy: **react to the environment, not the clock.** A test never sleeps for a fixed N seconds. Instead, every wait step returns as soon as the page is at the **edge** of activity — DOM ready, no in-flight network, no pending timers, no live mutations.
 
 ## What gets tracked
 
-Webship-js installs a small init script in every browser context. It exposes four signals:
+Varbase E2E installs a small init script in every browser context. It exposes four signals:
 
 | Signal | Counter / time | Source |
 | --- | --- | --- |
-| Fetch / XHR in flight | `window.__webshipAjaxCount` | wraps `window.fetch` and `XMLHttpRequest.send` |
-| Pending `setTimeout` | `window.__webshipPendingTimers` | wraps `window.setTimeout` / `clearTimeout` |
-| Last DOM mutation | `window.__webshipLastMutation` | `MutationObserver` on `<html>` |
+| Fetch / XHR in flight | `window.__varbaseE2eAjaxCount` | wraps `window.fetch` and `XMLHttpRequest.send` |
+| Pending `setTimeout` | `window.__varbaseE2ePendingTimers` | wraps `window.setTimeout` / `clearTimeout` |
+| Last DOM mutation | `window.__varbaseE2eLastMutation` | `MutationObserver` on `<html>` |
 | Network idle | (Playwright internal) | `page.waitForLoadState('networkidle')` |
 
 `smartSettle(page, budget)` polls all four atomically and returns when:
 
 ```
-__webshipAjaxCount === 0
-  && __webshipPendingTimers === 0
-  && (Date.now() - __webshipLastMutation) >= 250 ms
+__varbaseE2eAjaxCount === 0
+  && __varbaseE2ePendingTimers === 0
+  && (Date.now() - __varbaseE2eLastMutation) >= 250 ms
 ```
 
 …or when `budget` elapses, whichever comes first. Each phase is best-effort, so a slow network does not stall the others.
@@ -60,7 +60,7 @@ Then eventually I should see "Done" within 10 seconds
 
 ## Auto-settle after actions
 
-After every state-changing step (click, press, fill, submit, select, check, uncheck, choose, attach, reload, navigate), webship-js silently runs `smartSettle(page, 1500)`. Tests do not need an explicit wait between an action and its follow-up assertion in the typical case. Disable per-run with `WEBSHIP_AUTO_SETTLE=off`.
+After every state-changing step (click, press, fill, submit, select, check, uncheck, choose, attach, reload, navigate), varbase-e2e silently runs `smartSettle(page, 1500)`. Tests do not need an explicit wait between an action and its follow-up assertion in the typical case. Disable per-run with `VARBASE_E2E_AUTO_SETTLE=off`.
 
 ## What this kills
 

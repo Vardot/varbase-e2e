@@ -5,7 +5,7 @@
 // check / uncheck, radio buttons.
 
 const { When } = require('@cucumber/cucumber');
-const { buildSelector, fillField, friendly } = require('./webship');
+const { buildSelector, fillField, friendly } = require('./varbase-e2e');
 
 // ---------------------------------------------------------------------------
 // Fill — by label, attribute, table, reverse syntax
@@ -16,7 +16,7 @@ const { buildSelector, fillField, friendly } = require('./webship');
  *
  * Example #1: When I fill in "Username" with "John Smith"
  * Example #2: When I fill in "Email" with "jon@example.com"
- * Example #3: And we fill in "Organization" with "Webship.co"
+ * Example #3: And we fill in "Organization" with "Vardot"
  * Example #4: And I fill in "Password" with "1234"
  *
  */
@@ -94,11 +94,11 @@ When(/^(I |we )*fill in "([^"]*)?" for "([^"]*)?" by( its)*(?: "([^"]*)?")* (att
  * `placeholder`, or `[name]` — whichever matches first.
  *
  * Example #1: When I fill in the following:
- *               | Username | webshipco       |
+ *               | Username | vardot       |
  *               | Password | s3cret          |
  * Example #2: When we fill in the following:
  *               | Email        | jon@example.com  |
- *               | Organization | Webship.co       |
+ *               | Organization | Vardot       |
  * Example #3: And I fill in the following:
  *               | First name | Alice         |
  *               | Last name  | Smith         |

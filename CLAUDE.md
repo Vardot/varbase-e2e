@@ -152,10 +152,26 @@ names matter more than they look.
 
 varbase-e2e ships no visual-regression steps: no
 `tests/step-definitions-diffy/`, no `diffy` `worldParameters` block, no
-mock Diffy API. Consumers who want visual regression install a separate
+mock Diffy API. Consumers who want visual regression install a
 step-pack plugin and add its step-definition path to their own
-`require:` list. Nothing in this repo depends on one — such packs only
-ever used `@cucumber/cucumber`, `axios`, and Node built-ins.
+`require:` list — the Diffy pack,
+[`@webship-js/diffy-steps`](https://github.com/webship/diffy-steps), is
+the reference example. Third-party `*-steps` packs built for the
+harness this grew from work with varbase-e2e unchanged: they only ever
+used `@cucumber/cucumber`, `axios`, and Node built-ins, none of which
+this rename touched. Its `DIFFY_*` env vars belong to that plugin, not
+to this package's `cucumber.js`.
+
+```js
+// consumer cucumber.js
+require: [
+  'node_modules/@vardot/varbase-e2e/tests/step-definitions/**/*.js',
+  'node_modules/@webship-js/diffy-steps/tests/step-definitions/**/*.js',
+  'tests/step-definitions/**/*.js',
+],
+```
+
+Treat any `diffy` question as a `diffy-steps` question.
 
 ### 2.7 CI
 

@@ -133,8 +133,10 @@ Config: `cucumber.js` (`worldParameters`, annotated) and
 `playwright.config.ts` (browser launch + context), plus the scaffold
 template in `bin/init-varbase-e2e.js` that must mirror them.
 
-Visual regression: not in this repository — consumers install a separate
-step-pack plugin.
+Visual regression: not in this repository — consumers install a step-pack
+plugin such as [`@webship-js/diffy-steps`](https://github.com/webship/diffy-steps).
+Third-party `*-steps` packs built for the harness this grew from work with
+varbase-e2e unchanged.
 
 ## This repo is the package
 

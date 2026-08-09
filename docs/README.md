@@ -45,8 +45,9 @@ The full step catalogue — one page per category, generated from the step defin
 | [Advanced selectors](advanced-selectors.md) | Named selector registry, position assertions |
 
 > **Visual regression moved out.** It ships as a separate step-pack plugin —
-> install it alongside varbase-e2e and add its step-definition path to
-> `cucumber.js`.
+> [`@webship-js/diffy-steps`](https://github.com/webship/diffy-steps) — install
+> it alongside varbase-e2e and add its step-definition path to `cucumber.js`.
+> `*-steps` packs built for the harness this grew from work unchanged.
 
 ## At a glance
 

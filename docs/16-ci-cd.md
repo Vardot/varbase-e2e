@@ -29,13 +29,16 @@ GitHub's native CI/CD. Free tier: 2,000 minutes per month for private repos,
 
 Single job `build` on `ubuntu-latest`:
 
-1. `actions/checkout@v3` — pulls the repo.
-2. `actions/setup-node@v3` — Node 20.x.
+1. `actions/checkout@v4` — pulls the repo.
+2. `actions/setup-node@v4` — Node 20.x.
 3. `npm install`.
 4. `npx playwright install --with-deps chromium`.
 5. `npm start &` — backgrounds the fixture server.
 6. `sleep 3`.
 7. `npm test`.
+8. `actions/upload-artifact@v4` — the HTML/JSON report and the failure screenshots, on every run.
+
+Triggers: `push`, `pull_request` and `workflow_dispatch`. The `pull_request` trigger is what puts a check on a PR; `workflow_dispatch` lets you start a run from the Actions tab or over the API.
 
 `FORCE_COLOR=1` is set on the job so cucumber-js v10 emits ANSI colours.
 
@@ -51,23 +54,24 @@ The badge follows the workflow file name and branch — no extra setup.
 
 ### Reports
 
-The current workflow does not upload artefacts. To add them, append:
+The workflow uploads a `cucumber-report` artifact on every run, pass or fail:
 
 ```yaml
-- uses: actions/upload-artifact@v4
+- name: Upload the report and screenshots
   if: always()
+  uses: actions/upload-artifact@v4
   with:
     name: cucumber-report
     path: |
       tests/reports/cucumber_report.html
-      tests/reports/cucumber_report.pdf
       tests/reports/cucumber_report.json
       screenshots/
+    if-no-files-found: ignore
 ```
 
 ### Notes
 
-- A deprecation warning fires on every run: `actions/checkout@v3` and `actions/setup-node@v3` use Node 20 internally; GitHub will force Node 24 on 2026-06-02. Bump to `@v4` (which targets Node 24) before then. We left them at `@v3` for now so existing forks do not need to rewrite YAML.
+- **A fork does not run workflows until someone says so.** If this repository is still a fork, GitHub blocks every run until the owner presses "I understand my workflows, go ahead and enable them" once in the Actions tab. There is no API for that button, and enabling Actions in the repository settings does not replace it.
 - The fixture server is a tiny `http-server` static site on port 8080 — no Docker daemon required on the runner.
 - For a per-browser matrix: add `strategy.matrix.browser: [chromium, firefox, webkit]` + `BROWSER: ${{ matrix.browser }}` to the env block, and replace `chromium` in the playwright install line with `${{ matrix.browser }}`.
 

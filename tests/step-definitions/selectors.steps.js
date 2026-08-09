@@ -962,6 +962,11 @@ When(/^(I |we )*select "([^"]*)" text in "([^"]*)" field$/, async function (pron
 /**
  * Click one or more named components — uses locator.click() which auto-scrolls.
  *
+ * The negative lookahead keeps three phrasings out of this greedy pattern —
+ * "the delete button", "on tasks in the toolbar" and "next button in tour" —
+ * because drupal-core / drupal-moderation / varbase own those exact steps and
+ * cucumber-js has no notion of a more-specific match winning.
+ *
  * Example #1: When I click nav
  * Example #2: When I click search button
  * Example #3: When click cta
@@ -986,7 +991,7 @@ When(/^(I |we )*select "([^"]*)" text in "([^"]*)" field$/, async function (pron
  *   When I add "cta primary" selector for ".cta .btn-primary" css selector
  *   And  I click cta primary
  */
-When(/^(I |we )*click (?:on |a )?([a-zA-Z0-9 ,\-]+)$/, async function (pronounCase, subjectsText) {
+When(/^(I |we )*click (?!the delete button$|on tasks in the toolbar$|next button in tour$)(?:on |a )?([a-zA-Z0-9 ,\-]+)$/, async function (pronounCase, subjectsText) {
   const names = parseNames(subjectsText);
   const errors = [];
   for (const name of names) {

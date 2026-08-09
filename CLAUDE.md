@@ -252,12 +252,13 @@ Some pairs look similar but cover different domains. NEVER merge:
 
 ## 5. File organisation
 
-413 built-in steps across 36 step files. Cucumber auto-loads every
+495 built-in steps across 44 step files. Cucumber auto-loads every
 `*.steps.js` in `tests/step-definitions/`.
 
 ```
 tests/step-definitions/
 ├── varbase-e2e.js              # World, hooks, init script, shared helpers — see §2.2. Not a steps file.
+├── drupal-helpers.js          # Shared helpers + Before hooks for the drupal-*/varbase step packs. Not a steps file.
 ├── a11y.steps.js           (26)  # axe-core WCAG audits + POUR hygiene probes (axe loaded lazily)
 ├── action.steps.js          (7)  # press / click / follow / attach file (actOrExplain lives here)
 ├── api.steps.js            (22)  # REST long form — base URL, headers, query, body, JSON Pointer
@@ -293,6 +294,14 @@ tests/step-definitions/
 ├── wait.steps.js           (21)  # ALL wait phrasings (BBR — see §6)
 ├── web-first.steps.js      (12)  # auto-retrying state matchers
 ├── xml.steps.js            (20)  # XPath equals / contains / count / attr
+├── drupal-canvas.steps.js  (12)  # Drupal Canvas editor + authoring API (pages, library, patterns, publish)
+├── drupal-ckeditor.steps.js (4)  # CKEditor 5 body writing, toolbar commands, Linkit dialog
+├── drupal-core.steps.js    (34)  # Drupal core: session, form controls, rows, operations, toolbar, waits
+├── drupal-layout-builder.steps.js (10) # Layout Builder sections: add / configure / save
+├── drupal-media.steps.js    (4)  # media library open / select / insert / submit dialog
+├── drupal-moderation.steps.js (3)# moderation sidebar open + shows / does not show
+├── drupal-paragraphs.steps.js (1)# choose a paragraph component in the add-widget dialog
+├── varbase.steps.js        (14)  # Varbase: users, tour, theme settings, sticky header, a11y checker, warm-up
 └── yaml.steps.js           (38)  # multi-doc, types, numerics, JSON Schema, diff
 
 tests/features/                 # 71 .feature files

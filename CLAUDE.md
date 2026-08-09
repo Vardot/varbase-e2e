@@ -56,7 +56,7 @@ Env vars: `LAUNCH_URL`, `BROWSER`, `HEADLESS`, `SLOW_MO`, `FORCE_COLOR`,
 `VARBASE_E2E_AUTO_SETTLE`, `VARBASE_E2E_REPORT_DISABLE`, `VARBASE_E2E_REPORT_ARGS`,
 `VARBASE_E2E_FILTER_HOOK_LINES`, `VARBASE_E2E_SCREENSHOT_*`, `VARBASE_E2E_VIDEO*`,
 `VARBASE_E2E_JS_ERROR_*`, `VARBASE_E2E_SELECTORS_OFFSET`,
-`VARBASE_E2E_SELECTORS_BREAKPOINTS`, `DIFFY_*`. Every one of them mirrors a
+`VARBASE_E2E_SELECTORS_BREAKPOINTS`. Every one of them mirrors a
 `worldParameters` key in `cucumber.js` — that file is the annotated
 reference; read it before inventing a new knob.
 
@@ -150,13 +150,27 @@ names matter more than they look.
 
 ### 2.6 Visual regression lives outside this repo
 
-The Diffy step-pack was extracted to its own plugin,
-[`diffy-steps`](https://github.com/webship/diffy-steps). varbase-e2e no
-longer ships `tests/step-definitions-diffy/`, the `diffy`
-`worldParameters` block, or the mock Diffy API. Consumers install the
-plugin and add `node_modules/@webship-js/diffy-steps/tests/step-definitions/**/*.js`
-to their own `require:` list. Nothing in this repo depends on it — the
-steps only ever used `@cucumber/cucumber`, `axios`, and Node built-ins.
+varbase-e2e ships no visual-regression steps: no
+`tests/step-definitions-diffy/`, no `diffy` `worldParameters` block, no
+mock Diffy API. Consumers who want visual regression install a
+step-pack plugin and add its step-definition path to their own
+`require:` list — the Diffy pack,
+[`@webship-js/diffy-steps`](https://github.com/webship/diffy-steps), is
+the reference example. Third-party `*-steps` packs built for the
+harness this grew from work with varbase-e2e unchanged: they only ever
+used `@cucumber/cucumber`, `axios`, and Node built-ins, none of which
+this rename touched. Its `DIFFY_*` env vars belong to that plugin, not
+to this package's `cucumber.js`.
+
+```js
+// consumer cucumber.js
+require: [
+  'node_modules/@vardot/varbase-e2e/tests/step-definitions/**/*.js',
+  'node_modules/@webship-js/diffy-steps/tests/step-definitions/**/*.js',
+  'tests/step-definitions/**/*.js',
+],
+```
+
 Treat any `diffy` question as a `diffy-steps` question.
 
 ### 2.7 CI

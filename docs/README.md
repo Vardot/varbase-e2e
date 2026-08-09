@@ -109,6 +109,7 @@ varbase-e2e/
 │       ├── wait.steps.js               (21)   # every wait phrasing — all BBR-backed
 │       ├── web-first.steps.js          (12)   # auto-retrying matchers (`within N seconds`)
 │       ├── drupal-core.steps.js        (37)   # Drupal core: session, form controls, rows, operations, waits
+│       ├── drupal-ckeditor.steps.js     (4)   # CKEditor 5 write / append / command button / Linkit
 │       ├── xml.steps.js                (20)   # XPath equals / contains / count / attr
 │       └── yaml.steps.js               (38)   # multi-doc + types + numerics + JSON Schema + diff
 ├── examples/                   <— Static HTML fixtures

@@ -108,6 +108,7 @@ varbase-e2e/
 │       ├── video.steps.js               (4)   # start / stop / save webm recording
 │       ├── wait.steps.js               (21)   # every wait phrasing — all BBR-backed
 │       ├── web-first.steps.js          (12)   # auto-retrying matchers (`within N seconds`)
+│       ├── drupal-core.steps.js        (37)   # Drupal core: session, form controls, rows, operations, waits
 │       ├── xml.steps.js                (20)   # XPath equals / contains / count / attr
 │       └── yaml.steps.js               (38)   # multi-doc + types + numerics + JSON Schema + diff
 ├── examples/                   <— Static HTML fixtures

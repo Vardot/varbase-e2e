@@ -86,7 +86,7 @@ Given(/^(?:I |we )?set header "([^"]*)" with value "([^"]*)"$/, function (name, 
  * Example #3: Given the base URL is "http://localhost:3000/api"
  * Example #4: Given the API base URL is "https://un.org/api"
  * Example #5: Given I set the API base URL to "/api/v2"
- * Example #6: Given the base URL is "/vardot.com/api"
+ * Example #6: Given the base URL is "https://staging.example.com/api"
  * Example #7: Given the API base URL is "http://127.0.0.1:8080"
  *
  */

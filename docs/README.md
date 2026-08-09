@@ -28,7 +28,7 @@ Varbase E2E is a BDD-first browser-automation harness built on Playwright + Cucu
 | [15 Tag conventions](15-tag-conventions.md) | Standard tags + CI lane patterns |
 | [16 CI / CD setup](16-ci-cd.md) | GitHub Actions setup steps and config notes |
 
-### Reference (mirrored from vardot.com/docs/varbase-e2e/2.0.x)
+### Reference
 
 | Doc | Topic |
 | --- | --- |

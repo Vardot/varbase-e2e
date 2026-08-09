@@ -344,7 +344,7 @@ When(/^(I |we )*save fullscreen screenshot$/, async function (pronounCase) {
  *             Then I save 375 x 812 screenshot
  * Example #8: Given I am on "/news"
  *             Then I save 1024 x 768 screenshot
- * Example #9: Given I am on "/vardot.com"
+ * Example #9: Given I am on "/about"
  *             Then I save 1366 x 768 screenshot
  * Example #10: Given I am on "/un.org"
  *              Then I save 414 x 896 screenshot
@@ -366,7 +366,7 @@ When(/^(I |we )*save (\d+) x (\d+) screenshot$/, async function (pronounCase, wi
  *             Then I save fullscreen 1440 x 900 screenshot
  * Example #7: Given I am on homepage
  *             Then I save fullscreen 375 x 812 screenshot
- * Example #8: Given I am on "/vardot.com"
+ * Example #8: Given I am on "/about"
  *             Then I save fullscreen 1366 x 768 screenshot
  * Example #9: Given I am on "/un.org"
  *             Then I save fullscreen 414 x 896 screenshot
@@ -389,7 +389,7 @@ When(/^(I |we )*save fullscreen (\d+) x (\d+) screenshot$/, async function (pron
  * Example #6: Then I save screenshot with name "{url_path}.png"
  * Example #7: Given I am on "/news"
  *             Then I save screenshot with name "news-latest.png"
- * Example #8: Given I am on "/vardot.com"
+ * Example #8: Given I am on "/about"
  *             Then I save screenshot with name "varbase-e2e-index.png"
  * Example #9: Given I am on "/un.org"
  *             Then I save screenshot with name "un-home.png"
@@ -410,7 +410,7 @@ When(/^(I |we )*save screenshot with name "([^"]*)"$/, async function (pronounCa
  * Example #6: Then I save fullscreen screenshot with name "{url_path}-full.png"
  * Example #7: Given I am on "/news"
  *             Then I save fullscreen screenshot with name "news-full.png"
- * Example #8: Given I am on "/vardot.com"
+ * Example #8: Given I am on "/about"
  *             Then I save fullscreen screenshot with name "varbase-e2e-full.png"
  * Example #9: Given I am on "/un.org"
  *             Then I save fullscreen screenshot with name "un-home-full.png"

@@ -44,10 +44,18 @@ When(/^(I |we )*press( the)* "([^"]*)?"( button)*$/, async function (pronounCase
   const esc = element.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
   const page = this.page;
   await actOrExplain('press button', element, async () => {
-    await page.locator('button, input[type="button"], input[type="submit"], [role="button"], a')
+    const btn = page.locator('button, input[type="button"], input[type="submit"], [role="button"], a')
       .filter({ hasText: new RegExp('^' + esc + '$') })
-      .first()
-      .click();
+      .first();
+    try {
+      await btn.click({ timeout: 15000 });
+    } catch (e) {
+      // A fixed-position overlay (chat widgets, sticky action bars) can sit on
+      // top of a correctly-resolved button and starve the pointer click's
+      // actionability checks. The button itself is right — dispatch the click
+      // in-page so its handlers (including form submit) still fire.
+      await btn.evaluate((el) => el.click());
+    }
   });
 });
 

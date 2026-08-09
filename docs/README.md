@@ -113,8 +113,8 @@ varbase-e2e/
 │       ├── web-first.steps.js          (12)   # auto-retrying matchers (`within N seconds`)
 │       ├── drupal-canvas.steps.js      (12)   # Canvas editor + authoring API
 │       ├── drupal-ckeditor.steps.js     (4)   # CKEditor 5 write / append / command button / Linkit
-│       ├── drupal-core.steps.js        (34)   # Drupal core: session, form controls, rows, operations, waits
-│       ├── drupal-layout-builder.steps.js (10) # Layout Builder sections: add / configure / save
+│       ├── drupal-core.steps.js        (27)   # Drupal core: session, rows, operations, breadcrumbs, waits
+│       ├── drupal-layout-builder.steps.js (17) # Layout Builder sections + their form controls
 │       ├── drupal-media.steps.js        (4)   # media library open / select / insert
 │       ├── drupal-moderation.steps.js   (3)   # moderation sidebar open + assertions
 │       ├── drupal-paragraphs.steps.js   (1)   # choose a paragraph component

@@ -11,7 +11,7 @@
 const { Given, When, Then } = require('@cucumber/cucumber');
 const assert = require('assert');
 const { smartSettle, friendly } = require('./varbase-e2e');
-const { navigate, resolveFieldId, budget, setCheckbox, setCkeditorData, checkboxStateByLabel, checkboxStateByHandle, waitForImage } = require('./drupal-helpers');
+const { navigate, resolveFieldId, budget, setCkeditorData, checkboxStateByLabel, checkboxStateByHandle, waitForImage } = require('./drupal-helpers');
 
 /**
  * Smart wait for the current page to reach a quiet edge — the same
@@ -224,67 +224,8 @@ When(/^(?:I |we )*go to "([^"]*)" website$/, async function (url) {
   await smartSettle(this.page, budget(this));
 });
 
-/**
- * Check a checkbox by its visible label (or id / name / css selector).
- *
- * Ports the Varbase suite's `I check the box "..."`. Varbase E2E core only
- * offers `I check "..."`; the profile features use "check the box", so this
- * matches that phrasing. Resolves the control by label text first (Drupal
- * renders role permission / field labels), then falls back to id / name / css.
- *
- * Example #1: When I check the box "Editor"
- * Example #2: And I check the box "Site Admin"
- * Example #3: When we check the box "Content Admin"
- * Example #4: And I check the box "Super Admin"
- * Example #5: Given I check the box "SEO Admin"
- */
-When(/^(?:I |we )*check the box "([^"]*)"$/, async function (label) {
-  await setCheckbox.call(this, label, true);
-  await smartSettle(this.page, budget(this));
-});
 
-/**
- * Uncheck a checkbox by its visible label (or id / name / css selector).
- *
- * Ports the Varbase suite's `I uncheck the box "..."`.
- *
- * Example #1: When I uncheck the box "Editor"
- * Example #2: And I uncheck the box "Subscribe"
- * Example #3: When we uncheck the box "Site Admin"
- * Example #4: And I uncheck the box "Enable"
- * Example #5: Given I uncheck the box "Published"
- */
-When(/^(?:I |we )*uncheck the box "([^"]*)"$/, async function (label) {
-  await setCheckbox.call(this, label, false);
-  await smartSettle(this.page, budget(this));
-});
 
-/**
- * Select a radio button by its visible label text.
- *
- * Ports VarbaseContext::iSelectTheRadioButton (`@When /^I select the "..."
- * radio button$/`): finds the <label> whose text matches, follows its `for`
- * attribute to the input, and selects it.
- *
- * Example #1: When I select the "Male" radio button
- * Example #2: And I select the "Female" radio button
- * Example #3: When we select the "Yes" radio button
- * Example #4: And I select the "Unpublished" radio button
- * Example #5: Given I select the "Published" radio button
- */
-When(/^(?:I |we )*select the "([^"]*)" radio button$/, async function (label) {
-  const ok = await this.page.evaluate((label) => {
-    const lbl = [...document.querySelectorAll('label')].find((l) => l.textContent.trim() === label);
-    if (!lbl) return false;
-    const forId = lbl.getAttribute('for');
-    const radio = forId ? document.getElementById(forId) : lbl.querySelector('input[type="radio"]');
-    if (!radio) return false;
-    if (!radio.checked) radio.click();
-    return true;
-  }, label);
-  if (!ok) throw friendly(`Could not find a radio button labelled "${label}".`, "The label must carry a 'for' attribute pointing to the radio input.");
-  await smartSettle(this.page, budget(this));
-});
 
 /**
  * Assert an entity row exposes (or does not expose) an operation link.
@@ -502,33 +443,6 @@ When(/^(?:I |we )*keypress "([^"]*)" in "([^"]*)" field$/, async function (key, 
   await smartSettle(this.page, budget(this));
 });
 
-/**
- * Open a collapsed <details>/fieldset by its element id so its inner fields
- * become interactable (e.g. the node form "Menu settings", the entityqueue
- * form widget).
- *
- * Example #1: And I expand the field "edit-menu"
- * Example #2: And I expand the field "edit-entityqueue-form-widget"
- */
-When(/^(?:I |we )*expand the field "([^"]*)"$/, async function (fieldId) {
-  const ok = await this.page.evaluate((id) => {
-    const el = document.getElementById(id);
-    if (!el) return false;
-    const details = el.tagName.toLowerCase() === 'details' ? el : el.closest('details');
-    if (details) {
-      details.setAttribute('open', '');
-      const summary = details.querySelector('summary');
-      if (summary) summary.setAttribute('aria-expanded', 'true');
-      return true;
-    }
-    // Fallback: a non-details collapsible — remove a "collapsed" class.
-    el.classList.remove('collapsed');
-    el.setAttribute('open', '');
-    return true;
-  }, fieldId);
-  if (!ok) throw friendly(`Could not find a collapsible field with id "${fieldId}".`);
-  await smartSettle(this.page, budget(this));
-});
 
 /**
  * Assert text appears in the breadcrumb trail.
@@ -590,76 +504,7 @@ When(/^(?:I |we )*(?:open (?:the )?top bar page actions(?: menu)?|hit (?:the )?m
   await smartSettle(this.page, budget(this));
 });
 
-/**
- * Press the confirm (Restore / OK / primary) button in a jQuery UI modal.
- *
- * Ports VarbaseContext::iPressTheConfirmButton (used by trash restore).
- *
- * Example #1: When I press the confirm button in modal
- * Example #2: And I press the confirm button in modal
- * Example #3: When we press the confirm button in modal
- * Example #4: Given I press the confirm button in modal
- * Example #5: And we press the confirm button in modal
- */
-When(/^(?:I |we )*press the confirm button in modal$/, async function () {
-  const ok = await this.page.evaluate(() => {
-    const scope = document.querySelector('.ui-dialog, [role="dialog"]') || document;
-    const candidates = [...scope.querySelectorAll('button, input[type="submit"]')];
-    const btn = candidates.find((b) => /^(Restore|OK|Confirm|Yes)$/i.test((b.textContent || b.value || '').trim()))
-      || scope.querySelector('.button--primary, .ui-dialog-buttonset button');
-    if (!btn) return false;
-    btn.click();
-    return true;
-  });
-  if (!ok) throw friendly('No confirm button was found in the modal.');
-  await smartSettle(this.page, budget(this));
-});
 
-/**
- * Click the first "Delete" button on the page (action link or submit).
- *
- * Ports VarbaseContext::iClickTheDeleteButton.
- *
- * Example #1: When I click the delete button
- * Example #2: And I click the delete button
- * Example #3: When we click the delete button
- * Example #4: Given I click the delete button
- * Example #5: And we click the delete button
- */
-When(/^(?:I |we )*click the delete button$/, async function () {
-  const ok = await this.page.evaluate(() => {
-    const label = (b) => (b.value || b.textContent || '').trim();
-    // The Varbase/Gin media & content delete confirm renders as an AJAX modal
-    // whose actual "Delete" control is a form SUBMIT button (input[type=submit]
-    // / button[type=submit]). The same page also carries several `use-ajax`
-    // "Delete" ACTION LINKS (the Gin sticky action bar #gin-sticky-edit-delete,
-    // the top-bar dropdown link, the edit-form #edit-delete link) which only
-    // (re)open that confirm dialog — clicking one of those never submits the
-    // deletion. So target the real submit button, preferring the one inside the
-    // open dialog, and never a use-ajax/action-link.
-    const isSubmit = (b) =>
-      (b.tagName === 'INPUT' && b.type === 'submit') ||
-      (b.tagName === 'BUTTON' && (b.type === 'submit' || !b.type));
-    const openDialog = [...document.querySelectorAll('.ui-dialog, [role="dialog"]')]
-      .find((d) => d.offsetParent !== null || getComputedStyle(d).display !== 'none');
-    const scopes = openDialog ? [openDialog, document] : [document];
-    for (const scope of scopes) {
-      const submit = [...scope.querySelectorAll('input[type="submit"], button')]
-        .find((b) => isSubmit(b) && label(b) === 'Delete');
-      if (submit) { submit.click(); return true; }
-    }
-    // Fallback: any "Delete" element that is not a use-ajax/action link (a
-    // plain full-page confirm form, e.g. the trash purge confirm).
-    const other = [...document.querySelectorAll('button, input[type="submit"], a')]
-      .find((b) => label(b) === 'Delete'
-        && !b.classList.contains('use-ajax')
-        && !b.classList.contains('action-link'));
-    if (other) { other.click(); return true; }
-    return false;
-  });
-  if (!ok) throw friendly('No "Delete" submit button was found on the page.');
-  await smartSettle(this.page, budget(this));
-});
 
 
 /**
@@ -714,25 +559,6 @@ When(/^(?:I |we )*wait max of (\d+)s for the page to be ready and loaded$/, asyn
   await smartSettle(this.page, parseInt(seconds, 10) * 1000);
 });
 
-/**
- * Select a radio button by its visible label text (alternate phrasing).
- *
- * Example #1: When I select the radio button "Published"
- * Example #2: And I select the radio button "Draft"
- * Example #3: When we select the radio button "Needs Review"
- * Example #4: And I select the radio button "Archived"
- * Example #5: Given I select the radio button "Yes"
- */
-When(/^(?:I |we )*select the radio button "([^"]*)"$/, async function (label) {
-  const radio = this.page.getByRole('radio', { name: label, exact: false }).first();
-  try {
-    await radio.check({ timeout: budget(this) });
-  } catch (e) {
-    // Fall back to clicking a label that contains the text.
-    const byLabel = this.page.locator('label', { hasText: label }).first();
-    await byLabel.click({ timeout: budget(this) });
-  }
-});
 
 /**
  * Assert an operation link or text is present in the administration listing row whose text matches.

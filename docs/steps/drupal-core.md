@@ -1,6 +1,6 @@
 # Drupal core steps
 
-34 steps, defined in `tests/step-definitions/drupal-core.steps.js`.
+27 steps, defined in `tests/step-definitions/drupal-core.steps.js`.
 
 Cucumber-js loads every `*.steps.js` in that directory automatically — you never `require()` a step file from a feature.
 
@@ -14,32 +14,25 @@ Cucumber-js loads every `*.steps.js` in that directory automatically — you nev
 | 6 | `When I logout` |
 | 7 | `Given I am not logged in` |
 | 8 | `When I go to "https://www.drupal.org" website` |
-| 9 | `When I check the box "Editor"` |
-| 10 | `When I uncheck the box "Editor"` |
-| 11 | `When I select the "Male" radio button` |
-| 12 | `Then I should see the "Edit" operation for the "Homepage" entity` |
-| 13 | `Then I should see the "copyright" element in the "footer"` |
-| 14 | `Then I should see "Home" in the "ol" element with the "class" attribute set to "breadcrumb"` |
-| 15 | `When I click "Next" in the "button" element with the "class" attribute set to "shepherd-button"` |
-| 16 | `Then I should see "Location property" value in the "edit-name" input element` |
-| 17 | `When I click "Homepage" value in the "edit-items-2-target-id" input element` |
-| 18 | `When I keypress "enter" in "#body" field` |
-| 19 | `And I expand the field "edit-menu"` |
-| 20 | `Then "Home" should be in the breadcrumb` |
-| 21 | `When I open the top bar page actions menu` |
-| 22 | `When I press the confirm button in modal` |
-| 23 | `When I click the delete button` |
-| 24 | `When I wait` |
-| 25 | `When I wait for 5s` |
-| 26 | `When I wait for ajax to finish` |
-| 27 | `When I wait max of 30s for the page to be ready and loaded` |
-| 28 | `When I select the radio button "Published"` |
-| 29 | `Then I should see the "Edit" in the "Sample title" row` |
-| 30 | `Then the checkbox labeled "Editor" should be checked` |
-| 31 | `Then the Drupal checkbox "edit-enable" is checked` |
-| 32 | `Then I should see image with the "Flag Earth all earth in space" title text` |
-| 33 | `And I should see image with the "Embed Flag Earth in space" alt text` |
-| 34 | `When I check the first "Test hero slider #1"` |
+| 9 | `Then I should see the "Edit" operation for the "Homepage" entity` |
+| 10 | `Then I should see the "copyright" element in the "footer"` |
+| 11 | `Then I should see "Home" in the "ol" element with the "class" attribute set to "breadcrumb"` |
+| 12 | `When I click "Next" in the "button" element with the "class" attribute set to "shepherd-button"` |
+| 13 | `Then I should see "Location property" value in the "edit-name" input element` |
+| 14 | `When I click "Homepage" value in the "edit-items-2-target-id" input element` |
+| 15 | `When I keypress "enter" in "#body" field` |
+| 16 | `Then "Home" should be in the breadcrumb` |
+| 17 | `When I open the top bar page actions menu` |
+| 18 | `When I wait` |
+| 19 | `When I wait for 5s` |
+| 20 | `When I wait for ajax to finish` |
+| 21 | `When I wait max of 30s for the page to be ready and loaded` |
+| 22 | `Then I should see the "Edit" in the "Sample title" row` |
+| 23 | `Then the checkbox labeled "Editor" should be checked` |
+| 24 | `Then the Drupal checkbox "edit-enable" is checked` |
+| 25 | `Then I should see image with the "Flag Earth all earth in space" title text` |
+| 26 | `And I should see image with the "Embed Flag Earth in space" alt text` |
+| 27 | `When I check the first "Test hero slider #1"` |
 
 ---
 
@@ -254,84 +247,7 @@ Given I go to "https://www.facebook.com" website
 And I go to "https://x.com" website
 ```
 
-## 9. When I check the box "Editor"
-
-Check a checkbox by its visible label (or id / name / css selector).
-
-Ports the Varbase suite's `I check the box "..."`. Varbase E2E core only
-offers `I check "..."`; the profile features use "check the box", so this
-matches that phrasing. Resolves the control by label text first (Drupal
-renders role permission / field labels), then falls back to id / name / css.
-
-**Keyword**: `When`
-
-**Pattern**
-
-```js
-/^(?:I |we )*check the box "([^"]*)"$/
-```
-
-**Examples**
-
-```gherkin
-When I check the box "Editor"
-And I check the box "Site Admin"
-When we check the box "Content Admin"
-And I check the box "Super Admin"
-Given I check the box "SEO Admin"
-```
-
-## 10. When I uncheck the box "Editor"
-
-Uncheck a checkbox by its visible label (or id / name / css selector).
-
-Ports the Varbase suite's `I uncheck the box "..."`.
-
-**Keyword**: `When`
-
-**Pattern**
-
-```js
-/^(?:I |we )*uncheck the box "([^"]*)"$/
-```
-
-**Examples**
-
-```gherkin
-When I uncheck the box "Editor"
-And I uncheck the box "Subscribe"
-When we uncheck the box "Site Admin"
-And I uncheck the box "Enable"
-Given I uncheck the box "Published"
-```
-
-## 11. When I select the "Male" radio button
-
-Select a radio button by its visible label text.
-
-Ports VarbaseContext::iSelectTheRadioButton (`@When /^I select the "..."
-radio button$/`): finds the <label> whose text matches, follows its `for`
-attribute to the input, and selects it.
-
-**Keyword**: `When`
-
-**Pattern**
-
-```js
-/^(?:I |we )*select the "([^"]*)" radio button$/
-```
-
-**Examples**
-
-```gherkin
-When I select the "Male" radio button
-And I select the "Female" radio button
-When we select the "Yes" radio button
-And I select the "Unpublished" radio button
-Given I select the "Published" radio button
-```
-
-## 12. Then I should see the "Edit" operation for the "Homepage" entity
+## 9. Then I should see the "Edit" operation for the "Homepage" entity
 
 Assert an entity row exposes (or does not expose) an operation link.
 
@@ -358,7 +274,7 @@ And I should not see the "View API" operation for the "About" media
 Then I should see the "Translate" operation for the "News" term
 ```
 
-## 13. Then I should see the "copyright" element in the "footer"
+## 10. Then I should see the "copyright" element in the "footer"
 
 Assert a named (or css) element exists / does not exist within another named
 (or css) container.
@@ -386,7 +302,7 @@ And I should see the "search input" element in the "main nav"
 Then I should not see the "banner" element in the "main content"
 ```
 
-## 14. Then I should see "Home" in the "ol" element with the "class" attribute set to "breadcrumb"
+## 11. Then I should see "Home" in the "ol" element with the "class" attribute set to "breadcrumb"
 
 Assert text is (or is not) present in an element matched by tag + attribute.
 
@@ -411,7 +327,7 @@ And I should see "Published" in the "td" element with the "class" attribute set 
 Then I should not see "Trash" in the "ul" element with the "class" attribute set to "menu"
 ```
 
-## 15. When I click "Next" in the "button" element with the "class" attribute set to "shepherd-button"
+## 12. When I click "Next" in the "button" element with the "class" attribute set to "shepherd-button"
 
 Click the element of a given HTML tag whose <attr> attribute contains <value>
 and whose visible text matches <text>. Covers the Shepherd tour "Next"
@@ -434,7 +350,7 @@ When I click "Next" in the "button" element with the "class" attribute set to "s
 When I click "Translate" in the "a" element with the "class" attribute set to "moderation-sidebar-link button use-ajax"
 ```
 
-## 16. Then I should see "Location property" value in the "edit-name" input element
+## 13. Then I should see "Location property" value in the "edit-name" input element
 
 Assert an input element (matched by data-drupal-selector) has a value.
 
@@ -458,7 +374,7 @@ And I should see "en" value in the "edit-langcode-0-value" input element
 Then I should see "Draft" value in the "edit-moderation-state-0-state" input element
 ```
 
-## 17. When I click "Homepage" value in the "edit-items-2-target-id" input element
+## 14. When I click "Homepage" value in the "edit-items-2-target-id" input element
 
 Click an input element (matched by data-drupal-selector) whose value matches.
 
@@ -482,7 +398,7 @@ And I click "Blog" value in the "edit-target-id" input element
 When I click "About" value in the "edit-name" input element
 ```
 
-## 18. When I keypress "enter" in "#body" field
+## 15. When I keypress "enter" in "#body" field
 
 Press a keyboard key while focused in a field (label / name / id / css).
 
@@ -507,28 +423,7 @@ And I keypress "escape" in "Title" field
 When we keypress "down" in "#country" field
 ```
 
-## 19. And I expand the field "edit-menu"
-
-Open a collapsed <details>/fieldset by its element id so its inner fields
-become interactable (e.g. the node form "Menu settings", the entityqueue
-form widget).
-
-**Keyword**: `When`
-
-**Pattern**
-
-```js
-/^(?:I |we )*expand the field "([^"]*)"$/
-```
-
-**Examples**
-
-```gherkin
-And I expand the field "edit-menu"
-And I expand the field "edit-entityqueue-form-widget"
-```
-
-## 20. Then "Home" should be in the breadcrumb
+## 16. Then "Home" should be in the breadcrumb
 
 Assert text appears in the breadcrumb trail.
 
@@ -553,7 +448,7 @@ And "News" should be in the breadcrumb
 Then "Contact Us" should be in the breadcrumb
 ```
 
-## 21. When I open the top bar page actions menu
+## 17. When I open the top bar page actions menu
 
 Open the top-bar page actions (the "more actions" dots) in the Gin/Navigation
 top bar.
@@ -578,55 +473,7 @@ And I hit the more actions button
 When I hit more actions
 ```
 
-## 22. When I press the confirm button in modal
-
-Press the confirm (Restore / OK / primary) button in a jQuery UI modal.
-
-Ports VarbaseContext::iPressTheConfirmButton (used by trash restore).
-
-**Keyword**: `When`
-
-**Pattern**
-
-```js
-/^(?:I |we )*press the confirm button in modal$/
-```
-
-**Examples**
-
-```gherkin
-When I press the confirm button in modal
-And I press the confirm button in modal
-When we press the confirm button in modal
-Given I press the confirm button in modal
-And we press the confirm button in modal
-```
-
-## 23. When I click the delete button
-
-Click the first "Delete" button on the page (action link or submit).
-
-Ports VarbaseContext::iClickTheDeleteButton.
-
-**Keyword**: `When`
-
-**Pattern**
-
-```js
-/^(?:I |we )*click the delete button$/
-```
-
-**Examples**
-
-```gherkin
-When I click the delete button
-And I click the delete button
-When we click the delete button
-Given I click the delete button
-And we click the delete button
-```
-
-## 24. When I wait
+## 18. When I wait
 
 Settle the page with the configured wait budget — DOM ready, network idle, no pending AJAX or timers.
 
@@ -648,7 +495,7 @@ And we wait
 Given I wait
 ```
 
-## 25. When I wait for 5s
+## 19. When I wait for 5s
 
 Settle the page with an explicit budget in seconds instead of the configured default.
 
@@ -670,7 +517,7 @@ And wait for 1s
 Given I wait for 3s
 ```
 
-## 26. When I wait for ajax to finish
+## 20. When I wait for ajax to finish
 
 Wait until every in-flight AJAX request has settled and the DOM has stopped mutating.
 
@@ -692,7 +539,7 @@ And wait for ajax to finish
 Given I wait for ajax to finish
 ```
 
-## 27. When I wait max of 30s for the page to be ready and loaded
+## 21. When I wait max of 30s for the page to be ready and loaded
 
 Wait up to the given number of seconds for the page to be ready and fully loaded.
 
@@ -714,29 +561,7 @@ And wait max of 15s for the page to be ready and loaded
 Given I wait max of 45s for the page to be ready and loaded
 ```
 
-## 28. When I select the radio button "Published"
-
-Select a radio button by its visible label text (alternate phrasing).
-
-**Keyword**: `When`
-
-**Pattern**
-
-```js
-/^(?:I |we )*select the radio button "([^"]*)"$/
-```
-
-**Examples**
-
-```gherkin
-When I select the radio button "Published"
-And I select the radio button "Draft"
-When we select the radio button "Needs Review"
-And I select the radio button "Archived"
-Given I select the radio button "Yes"
-```
-
-## 29. Then I should see the "Edit" in the "Sample title" row
+## 22. Then I should see the "Edit" in the "Sample title" row
 
 Assert an operation link or text is present in the administration listing row whose text matches.
 
@@ -758,7 +583,7 @@ And we should see the "Published" in the "Sample title" row
 Then I should not see the "Translate" in "Sample title" row
 ```
 
-## 30. Then the checkbox labeled "Editor" should be checked
+## 23. Then the checkbox labeled "Editor" should be checked
 
 Assert a checkbox is checked / unchecked, found by its visible label text
 (alternate phrasing).
@@ -781,7 +606,7 @@ And the checkbox labeled "Promoted to front page" should be unchecked
 Then the checkbox labeled "Sticky at top of lists" should be unchecked
 ```
 
-## 31. Then the Drupal checkbox "edit-enable" is checked
+## 24. Then the Drupal checkbox "edit-enable" is checked
 
 Assert a checkbox is checked / unchecked, resolved by a machine handle
 (DOM id, data-drupal-selector, or name attribute).
@@ -804,7 +629,7 @@ And the Drupal checkbox "edit-promote-value" is unchecked
 Then the Drupal checkbox "edit-sticky-value" is unchecked
 ```
 
-## 32. Then I should see image with the "Flag Earth all earth in space" title text
+## 25. Then I should see image with the "Flag Earth all earth in space" title text
 
 Assert an <img> whose title attribute contains the given text exists.
 
@@ -822,7 +647,7 @@ Assert an <img> whose title attribute contains the given text exists.
 Then I should see image with the "Flag Earth all earth in space" title text
 ```
 
-## 33. And I should see image with the "Embed Flag Earth in space" alt text
+## 26. And I should see image with the "Embed Flag Earth in space" alt text
 
 Assert an <img> whose alt attribute contains the given text exists.
 
@@ -840,7 +665,7 @@ Assert an <img> whose alt attribute contains the given text exists.
 And I should see image with the "Embed Flag Earth in space" alt text
 ```
 
-## 34. When I check the first "Test hero slider #1"
+## 27. When I check the first "Test hero slider #1"
 
 Check the first checkbox matching a label, tolerating duplicates. A retried
 scenario (cucumber `retry: 1`) can leave two identically titled nodes, so

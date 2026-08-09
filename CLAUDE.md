@@ -296,8 +296,8 @@ tests/step-definitions/
 ├── xml.steps.js            (20)  # XPath equals / contains / count / attr
 ├── drupal-canvas.steps.js  (12)  # Drupal Canvas editor + authoring API (pages, library, patterns, publish)
 ├── drupal-ckeditor.steps.js (4)  # CKEditor 5 body writing, toolbar commands, Linkit dialog
-├── drupal-core.steps.js    (34)  # Drupal core: session, form controls, rows, operations, toolbar, waits
-├── drupal-layout-builder.steps.js (10) # Layout Builder sections: add / configure / save
+├── drupal-core.steps.js    (27)  # Drupal core: session, rows, operations, breadcrumbs, toolbar, waits
+├── drupal-layout-builder.steps.js (17) # Layout Builder sections + the form controls that configure them
 ├── drupal-media.steps.js    (4)  # media library open / select / insert / submit dialog
 ├── drupal-moderation.steps.js (3)# moderation sidebar open + shows / does not show
 ├── drupal-paragraphs.steps.js (1)# choose a paragraph component in the add-widget dialog

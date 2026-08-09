@@ -31,11 +31,11 @@ Steps for the Drupal and Varbase surfaces the team tests every day — the node 
 
 | Category | Steps | Page |
 | --- | --- | --- |
-| Drupal core | 34 | [`drupal-core.md`](drupal-core.md) |
+| Drupal core | 27 | [`drupal-core.md`](drupal-core.md) |
 | CKEditor 5 | 4 | [`drupal-ckeditor.md`](drupal-ckeditor.md) |
 | Media library | 4 | [`drupal-media.md`](drupal-media.md) |
 | Content moderation | 3 | [`drupal-moderation.md`](drupal-moderation.md) |
-| Layout Builder | 10 | [`drupal-layout-builder.md`](drupal-layout-builder.md) |
+| Layout Builder | 17 | [`drupal-layout-builder.md`](drupal-layout-builder.md) |
 | Paragraphs | 1 | [`drupal-paragraphs.md`](drupal-paragraphs.md) |
 | Drupal Canvas | 12 | [`drupal-canvas.md`](drupal-canvas.md) |
 | Varbase | 14 | [`varbase.md`](varbase.md) |

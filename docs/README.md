@@ -112,6 +112,7 @@ varbase-e2e/
 │       ├── drupal-ckeditor.steps.js     (4)   # CKEditor 5 write / append / command button / Linkit
 │       ├── drupal-media.steps.js        (5)   # media library open / select / insert
 │       ├── drupal-moderation.steps.js   (3)   # moderation sidebar open + assertions
+│       ├── drupal-layout-builder.steps.js (9)  # Layout Builder sections: add / configure / save
 │       ├── xml.steps.js                (20)   # XPath equals / contains / count / attr
 │       └── yaml.steps.js               (38)   # multi-doc + types + numerics + JSON Schema + diff
 ├── examples/                   <— Static HTML fixtures

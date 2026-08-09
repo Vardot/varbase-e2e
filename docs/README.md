@@ -113,6 +113,9 @@ varbase-e2e/
 │       ├── drupal-media.steps.js        (5)   # media library open / select / insert
 │       ├── drupal-moderation.steps.js   (3)   # moderation sidebar open + assertions
 │       ├── drupal-layout-builder.steps.js (9)  # Layout Builder sections: add / configure / save
+│       ├── drupal-paragraphs.steps.js   (1)   # choose a paragraph component
+│       ├── drupal-canvas.steps.js      (12)   # Canvas editor + authoring API
+│       ├── varbase.steps.js            (11)   # Varbase users, tour, theme settings, a11y checker
 │       ├── xml.steps.js                (20)   # XPath equals / contains / count / attr
 │       └── yaml.steps.js               (38)   # multi-doc + types + numerics + JSON Schema + diff
 ├── examples/                   <— Static HTML fixtures

@@ -8,6 +8,19 @@
 // Ported from the Varbase Project BDD suites (11.0.x, 10.1.x, 9.2.x) so every
 // Varbase site gets them from @vardot/varbase-e2e instead of copying them into
 // each project's own tests/step-definitions/.
+//
+// Only the steps that know something about Layout Builder live here. A section
+// scenario also leans on generic Drupal form controls, which stay in
+// drupal-core.steps.js because they are used far more widely than by layouts:
+//
+//   I check the box "With Gutters"          -> drupal-core
+//   I uncheck the box "Edge to Edge"        -> drupal-core
+//   I select the "Boxed" radio button       -> drupal-core
+//   I expand the field "edit-..."           -> drupal-core
+//   I press the confirm button in modal     -> drupal-core
+//   I click the delete button               -> drupal-core
+//
+// Every *.steps.js is auto-loaded, so a feature can mix the two freely.
 // -----------------------------------------------------------------------------
 
 const { When } = require('@cucumber/cucumber');
@@ -224,7 +237,7 @@ When(/^(?:I |we )*uncheck the Edge to Edge Background$/, async function () {
  * Select an option (by its visible option text, falling back to value) from a
  * <select> resolved by its visible label, or a partial name / id when the label
  * is ambiguous. Needed for paragraph subform selects whose label is a single
- * word (e.g. "Block", "Webform") — the webship core "select from" step treats a
+ * word (e.g. "Block", "Webform") — the Varbase E2E core "select from" step treats a
  * single-word target as a name/id, never a label, and the subform select's DOM
  * id carries a random "--XXXX" suffix so it cannot be addressed by a fixed #id.
  *

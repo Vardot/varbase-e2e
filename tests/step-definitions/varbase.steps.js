@@ -306,6 +306,12 @@ When(/^(?:I |we )*close (?:the )?(?:accessibility |a11y )?checker$/, async funct
  * are present. Alter the links below to match your own site's main menu.
  *
  * Example: Then the page should have a working header
+ *
+ * Example #1: Then the page should have a working header
+ * Example #2: And I should have a working header
+ * Example #3: Then I should have a working header
+ * Example #4: And we should have a working header
+ * Example #5: Then the page should have a working header
  */
 Then(/^(?:the page should have|(?:I |we )*should have) a working header$/, async function () {
   // Smart-wait for the page to reach a quiet edge before reading the header.
@@ -331,6 +337,12 @@ Then(/^(?:the page should have|(?:I |we )*should have) a working header$/, async
  * and logos show. Alter the lines below to match your own site.
  *
  * Example: Then the page should have a working footer
+ *
+ * Example #1: Then the page should have a working footer
+ * Example #2: And I should have a working footer
+ * Example #3: Then I should have a working footer
+ * Example #4: And we should have a working footer
+ * Example #5: Then the page should have a working footer
  */
 Then(/^(?:the page should have|(?:I |we )*should have) a working footer$/, async function () {
   // Smart-wait for the page to reach a quiet edge before reading the footer.

@@ -44,9 +44,9 @@ The full step catalogue — one page per category, generated from the step defin
 | [Advanced screenshots](advanced-screenshots.md) | Per-size, full-page, named (3 sub-pages under `advanced-screenshots/`) |
 | [Advanced selectors](advanced-selectors.md) | Named selector registry, position assertions |
 
-> **Visual regression moved out.** The Diffy step-pack now ships as its own
-> plugin, [`diffy-steps`](https://github.com/webship/diffy-steps) — install it
-> alongside varbase-e2e and add its step-definition path to `cucumber.js`.
+> **Visual regression moved out.** It ships as a separate step-pack plugin —
+> install it alongside varbase-e2e and add its step-definition path to
+> `cucumber.js`.
 
 ## At a glance
 

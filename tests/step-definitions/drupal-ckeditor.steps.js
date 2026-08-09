@@ -18,7 +18,7 @@ const { budget, setCkeditorData } = require('./drupal-helpers');
  *
  * Ports VarbaseContext::iFillInTheRichTextEditorField. Resolves the form field
  * (label, name, or id), reads its CKEditor 5 instance id from the data
- * attribute, and calls setData(). No webship-js equivalent (webship's
+ * attribute, and calls setData(). No Varbase E2E equivalent (Varbase E2E's
  * "WYSIWYG field" step is CKEditor-version agnostic and may not target CK5).
  *
  * Example #1: When I fill in the rich text editor field "Body" with "Test Body text"

@@ -51,6 +51,12 @@ async function resolveCanvasPageId(page, title) {
  * Example:
  *   Given I am a logged in user with the "webmaster" user
  *    When I add the "Newsletter Subscribe (newsletter_subscribe)" webform to the bottom of the "Home" Canvas page and publish it
+ *
+ * Example #1: When I add the "Contact Us" webform to the bottom of the "Contact" Canvas page
+ * Example #2: And I add the "Newsletter" webform to the bottom of the "Home" page and publish it
+ * Example #3: When we add the "Business Contact" webform to the bottom of the "About Us" Canvas page and publish
+ * Example #4: And I add the "Feedback" webform to the bottom of the "Support" page
+ * Example #5: When I add the "Careers" webform to the bottom of the "Jobs" Canvas page and publish it
  */
 When(/^(?:I |we )*add the "([^"]*)" webform to the bottom of the "([^"]*)" (?:Canvas )?page(?: and publish(?: it)?)?$/, async function (webformId, pageTitle) {
   const result = await this.page.evaluate(async ({ webformId, pageTitle }) => {
@@ -134,6 +140,12 @@ When(/^(?:I |we )*add the "([^"]*)" webform to the bottom of the "([^"]*)" (?:Ca
  *
  * Example:
  *   Then the Drupal Canvas component library should list the "block.system_menu_block.main" component
+ *
+ * Example #1: Then the Drupal Canvas component library should list the "Hero" component
+ * Example #2: And the Drupal Canvas component library should list the "Card" component
+ * Example #3: Then the Drupal Canvas component library should not list the "Legacy Slider" component
+ * Example #4: And the Drupal Canvas component library should list the "Accordion" component
+ * Example #5: Then the Drupal Canvas component library should not list the "Deprecated Banner" component
  */
 Then(/^the Drupal Canvas component library should( not)? list the "([^"]*)" component$/, async function (negate, componentId) {
   const present = await this.page.evaluate(async (cid) => {
@@ -179,6 +191,12 @@ Then(/^the Drupal Canvas component library should( not)? list the "([^"]*)" comp
  *     | title            | Primary hero |
  *     | background_color | bg-primary   |
  *     | card_border      | true         |
+ *
+ * Example #1: When I create a Canvas page "Landing" at "/landing" with the "Hero" component:
+ * Example #2: And I create a Canvas page "Pricing" at "/pricing" with the "Card" component:
+ * Example #3: When we create a Canvas page "Team" at "/about/team" with the "Grid" component:
+ * Example #4: And I create a Canvas page "Events" at "/events" with the "Listing" component:
+ * Example #5: When I create a Canvas page "Support" at "/support" with the "Accordion" component:
  */
 When(/^(?:I |we )*create a Canvas page "([^"]*)" at "([^"]*)" with the "([^"]*)" component:$/, async function (title, path, componentId, table) {
   const inputs = {};
@@ -249,6 +267,12 @@ When(/^(?:I |we )*create a Canvas page "([^"]*)" at "([^"]*)" with the "([^"]*)"
  *
  * Example:
  *   When I add the "Hero Card" component to the "Test Hero Editor" Canvas page using the editor
+ *
+ * Example #1: When I add the "Hero" component to the "Landing" Canvas page using the editor
+ * Example #2: And I add the "Card" component to the "Pricing" Canvas page using the editor
+ * Example #3: When we add the "Accordion" component to the "Support" Canvas page using the editor
+ * Example #4: And I add the "Grid" component to the "Team" Canvas page using the editor
+ * Example #5: When I add the "Listing" component to the "Events" Canvas page using the editor
  */
 When(/^(?:I |we )*add the "([^"]*)" component to the "([^"]*)" Canvas page using the editor$/, { timeout: 120000 }, async function (componentName, pageTitle) {
   const id = await resolveCanvasPageId(this.page, pageTitle);
@@ -358,6 +382,12 @@ When(/^(?:I |we )*add the "([^"]*)" component to the "([^"]*)" Canvas page using
  * endpoint. Deterministic and fast, with no editor-UI timing.
  *
  * Example: When I publish the Canvas page changes
+ *
+ * Example #1: When I publish the Canvas page changes
+ * Example #2: And I publish the Canvas page changes
+ * Example #3: When we publish the Canvas page changes
+ * Example #4: Given I publish the Canvas page changes
+ * Example #5: And we publish the Canvas page changes
  */
 When(/^(?:I |we )*publish the Canvas page changes$/, { timeout: 120000 }, async function () {
   const pageId = (this.page.url().match(/canvas_page\/(\d+)/) || [])[1];
@@ -411,6 +441,12 @@ When(/^(?:I |we )*publish the Canvas page changes$/, { timeout: 120000 }, async 
  * container; it does not add components. Idempotent by path.
  *
  * Example: Given a new Canvas page "Test Hero Editor" at "/test-hero-editor"
+ *
+ * Example #1: Given there is a new Canvas page "Landing" at "/landing"
+ * Example #2: And I have a new Canvas page "Pricing" at "/pricing"
+ * Example #3: Given a new Canvas page "Team" at "/about/team"
+ * Example #4: And there is a new Canvas page "Events" at "/events"
+ * Example #5: Given I have a new Canvas page "Support" at "/support"
  */
 When(/^(?:there is |I have )?a new Canvas page "([^"]*)" at "([^"]*)"$/, async function (title, path) {
   const result = await this.page.evaluate(async ({ title, path }) => {
@@ -470,6 +506,12 @@ When(/^(?:there is |I have )?a new Canvas page "([^"]*)" at "([^"]*)"$/, async f
  * Example:
  *   When I set the Canvas component option "Background color" to "Primary"
  *   And  I set the Canvas component option "Title" to "Configured hero"
+ *
+ * Example #1: When I set the Canvas component option "Heading" to "Welcome"
+ * Example #2: And I set the Canvas component option "Style" to "Primary"
+ * Example #3: When we set the Canvas component option "Alignment" to "Center"
+ * Example #4: And I set the Canvas component option "Background" to "Light"
+ * Example #5: When I set the Canvas component option "Link text" to "Read more"
  */
 When(/^(?:I |we )*set the Canvas component option "([^"]*)" to "([^"]*)"$/, { timeout: 30000 }, async function (label, value) {
   // The Settings panel populates asynchronously after a component is selected;

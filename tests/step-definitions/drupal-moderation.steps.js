@@ -36,6 +36,15 @@ When(/^(?:I |we )*(?:open (?:the )?moderation sidebar|click on tasks in the tool
   await smartSettle(this.page, budget(this));
 });
 
+/**
+ * Assert the moderation sidebar shows the given text for the current revision.
+ *
+ * Example #1: Then the moderation sidebar should show "Draft"
+ * Example #2: And moderation sidebar should show "Published"
+ * Example #3: Then the moderation sidebar should show "Needs Review"
+ * Example #4: And the moderation sidebar should show "Archived"
+ * Example #5: Then moderation sidebar should show "Latest version"
+ */
 Then(/^(?:the )?moderation sidebar should show "([^"]*)"$/, async function (text) {
   const body = await moderationSidebarText(this.page);
   assert.ok(
@@ -44,6 +53,15 @@ Then(/^(?:the )?moderation sidebar should show "([^"]*)"$/, async function (text
   );
 });
 
+/**
+ * Assert the moderation sidebar does not show the given text for the current revision.
+ *
+ * Example #1: Then the moderation sidebar should not show "Archived"
+ * Example #2: And moderation sidebar should not show "Delete"
+ * Example #3: Then the moderation sidebar should not show "Published"
+ * Example #4: And the moderation sidebar should not show "Unpublish"
+ * Example #5: Then moderation sidebar should not show "Needs Review"
+ */
 Then(/^(?:the )?moderation sidebar should not show "([^"]*)"$/, async function (text) {
   const body = await moderationSidebarText(this.page);
   assert.ok(

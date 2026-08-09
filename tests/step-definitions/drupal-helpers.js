@@ -15,31 +15,31 @@ const fs = require('fs');
 const { Before } = require('@cucumber/cucumber');
 const { smartSettle, friendly, gotoUrl, waitForPageLoad } = require('./varbase-e2e');
 
-// Resolve the assets folder to the repo's own tests/assets/ (webship-js
+// Resolve the assets folder to the repo's own tests/assets/ (Varbase E2E
 // defaults `this.assetsFolder` to its own package dir, so `I attach the file
-// "flag-earth.jpg"` looked for node_modules/webship-js/tests/assets/…).
+// "flag-earth.jpg"` looked for node_modules/Varbase E2E/tests/assets/…).
 Before({ order: 1 }, function () {
   this.assetsFolder = path.resolve(process.cwd(), 'tests/assets') + path.sep;
 });
 
 // Populate the named-selector registry (`this.__selectorsCss`) that the custom
-// steps resolve container / child names against. webship-js loads
+// steps resolve container / child names against. Varbase E2E loads
 // worldParameters.selectors.files into its OWN registry, but the custom steps
 // here read `this.__selectorsCss`, which nothing ever filled — so a named
 // container like "field body" fell back to the literal string "field body"
 // (an invalid CSS descendant combinator that matches nothing), making
 // `I should see the ".ck.ck-editor__main" element in the "field body"` fail
 // with "found none" even though CKEditor had booted correctly. Load the same
-// JSON selector files webship-js uses and flatten their `css` maps here so the
+// JSON selector files Varbase E2E uses and flatten their `css` maps here so the
 // registry the custom steps consult is actually populated.
 Before({ order: 2 }, function () {
-  // webship-js's OWN Before hook (selectors.steps.js) already populated
+  // Varbase E2E's OWN Before hook (selectors.steps.js) already populated
   // this.__selectorsCss from the JSON preset files. We must NOT early-return on
   // that being non-empty — the previous guard did, so the "field body" default
   // below was never merged, `field body` resolved to the literal (invalid) CSS
   // string, and every `... in the "field body"` assertion false-failed with
   // "found none" AFTER a 30s wait even though CKEditor had booted correctly.
-  // Start from whatever webship populated (fall back to loading the same files
+  // Start from whatever Varbase E2E populated (fall back to loading the same files
   // ourselves only if it is somehow empty), then always merge our defaults.
   let map = this.__selectorsCss;
   if (!map || !Object.keys(map).length) {
@@ -80,7 +80,7 @@ Before({ order: 2 }, function () {
 });
 
 // When I fill in "value" for "field".
-// Delegates to webship's fillField, then adds Drupal-friendly fallbacks:
+// Delegates to Varbase E2E's fillField, then adds Drupal-friendly fallbacks:
 //  • a bare id ("edit-name")            -> #edit-name
 //  • a known label alias ("Email")      -> "Email address"
 //  • a unique partial <label> match.
@@ -91,7 +91,7 @@ const FIELD_LABEL_ALIASES = {
 const budget = (world) => (world.minWaitTime && world.minWaitTime.page) || 8000;
 
 // Join launchUrl + path with exactly one slash so a path with OR without a
-// leading slash resolves correctly (webship uses a bare `launchUrl + url`).
+// leading slash resolves correctly (Varbase E2E uses a bare `launchUrl + url`).
 function joinUrl(launchUrl, url) {
   if (!url) return launchUrl;
   if (/^https?:\/\//i.test(url)) return url; // absolute URL, use as-is.

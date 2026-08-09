@@ -2,7 +2,9 @@
 
 Varbase E2E is a BDD-first browser-automation harness built on Playwright + Cucumber-js. Feature files in plain Gherkin; selectors that survive redesigns; smart waits that never sleep.
 
-**411 built-in steps** across **36 step files**. **288 example scenarios / 1,406 step executions** in the bundled suite, all green on chromium, firefox, and webkit.
+**495 built-in steps** across **44 step files**, including the Drupal and Varbase packs. **282 example scenarios / 1,372 step executions** in the bundled suite, all green on chromium.
+
+The full step catalogue — one page per category, generated from the step definitions themselves — is in **[`steps/`](steps/README.md)**.
 
 ## Reading order
 
@@ -14,7 +16,7 @@ Varbase E2E is a BDD-first browser-automation harness built on Playwright + Cucu
 | [01 Getting started](01-getting-started.md) | Install, project layout, run modes |
 | [02 BBR smart waits](02-bbr-smart-waits.md) | Why we never `sleep N seconds` |
 | [03 Selector registry](03-selector-registry.md) | Named selectors + CMS / framework presets |
-| [04 Step reference](04-step-reference.md) | Every built-in step, by topic |
+| [04 Step reference](04-step-reference.md) | Every built-in step, by topic (full catalogue: [`steps/`](steps/README.md)) |
 | [05 Web-first assertions](05-web-first-assertions.md) | Auto-retrying matchers |
 | [06 Networking & dialogs](06-network-and-dialogs.md) | Request mocking, alerts, prompts |
 | [07 Auth state](07-auth-state.md) | Save / restore login |
@@ -38,7 +40,8 @@ Varbase E2E is a BDD-first browser-automation harness built on Playwright + Cucu
 | [Global settings](global-settings.md) | `cucumber.js` `worldParameters` reference |
 | [Commands](commands.md) | CLI commands |
 | [Assertions](assertions.md) | Built-in assertions |
-| [Step definitions](step-definitions.md) | Step-definition catalogue (28 sub-pages under `step-definitions/`) |
+| [Step definitions](step-definitions.md) | Step-definition hub — what a step is, the rules, where the catalogue lives |
+| [Step catalogue](steps/README.md) | All 495 steps, 44 category pages under `steps/`, generated from the source |
 | [API step definitions](api-step-definitions.md) | REST step definitions |
 | [Advanced screenshots](advanced-screenshots.md) | Per-size, full-page, named (3 sub-pages under `advanced-screenshots/`) |
 | [Advanced selectors](advanced-selectors.md) | Named selector registry, position assertions |

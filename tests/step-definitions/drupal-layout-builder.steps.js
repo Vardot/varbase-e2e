@@ -224,7 +224,7 @@ When(/^(?:I |we )*uncheck the Edge to Edge Background$/, async function () {
  * Select an option (by its visible option text, falling back to value) from a
  * <select> resolved by its visible label, or a partial name / id when the label
  * is ambiguous. Needed for paragraph subform selects whose label is a single
- * word (e.g. "Block", "Webform") — the webship core "select from" step treats a
+ * word (e.g. "Block", "Webform") — the Varbase E2E core "select from" step treats a
  * single-word target as a name/id, never a label, and the subform select's DOM
  * id carries a random "--XXXX" suffix so it cannot be addressed by a fixed #id.
  *

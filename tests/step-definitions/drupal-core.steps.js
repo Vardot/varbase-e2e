@@ -15,7 +15,7 @@ const { navigate, resolveFieldId, budget, setCheckbox, setCkeditorData, checkbox
 
 /**
  * Smart wait for the current page to reach a quiet edge — the same
- * `smartSettle` used by webship-js navigation steps (DOM ready + network
+ * `smartSettle` used by Varbase E2E navigation steps (DOM ready + network
  * idle + no pending AJAX/timers). Replaces the bare "And wait" used
  * throughout the suite after a navigation or action.
  *
@@ -32,7 +32,7 @@ When(/^wait$/, async function () {
 /**
  * Performance budget — assert the current page's full load time (Navigation
  * Timing `duration` = navigationStart → loadEventEnd) is under a budget.
- * No equivalent ships in webship-js.
+ * No equivalent ships in Varbase E2E.
  *
  * Example #1: Then the page should load in less than 3 seconds
  * Example #2: And the page should load in less than 5 seconds
@@ -160,7 +160,7 @@ When(/^(?:I |we )*flush all caches$/, async function () {
 /**
  * Log out of the current session.
  *
- * Ports VarbaseContext::iLogout (`@When /^I logout$/`). webship-js has no
+ * Ports VarbaseContext::iLogout (`@When /^I logout$/`). Varbase E2E has no
  * logout step. Visits Drupal's /user/logout confirm route; on Drupal 11 the
  * logout form needs a confirm submit, so it submits the form if present.
  *
@@ -183,7 +183,7 @@ When(/^(?:I |we )*logout$/, async function () {
 /**
  * Assert the current visitor is not authenticated (anonymous).
  *
- * Ports the Behat/DrupalExtension `Given I am not logged in`. webship-js ships
+ * Ports the Behat/DrupalExtension `Given I am not logged in`. Varbase E2E ships
  * `Given I am an anonymous user` (clears storage + reloads); "not logged in"
  * additionally verifies there is no active Drupal session by visiting /user
  * and confirming it is the login form, not the user profile.
@@ -209,7 +209,7 @@ Given(/^(?:I am |we are )?not logged in$/, async function () {
  * Navigate directly to an external website (absolute URL).
  *
  * Ports VarbaseContext::iGoToWebsite (`@When /^I go to "..." website$/`). The
- * webship-js `I go to "..."` step joins the path onto launchUrl; this variant
+ * Varbase E2E `I go to "..."` step joins the path onto launchUrl; this variant
  * visits the given absolute URL verbatim (used for external OAuth / social
  * providers, e.g. LinkedIn, Facebook).
  *
@@ -227,7 +227,7 @@ When(/^(?:I |we )*go to "([^"]*)" website$/, async function (url) {
 /**
  * Check a checkbox by its visible label (or id / name / css selector).
  *
- * Ports the Varbase suite's `I check the box "..."`. webship-js core only
+ * Ports the Varbase suite's `I check the box "..."`. Varbase E2E core only
  * offers `I check "..."`; the profile features use "check the box", so this
  * matches that phrasing. Resolves the control by label text first (Drupal
  * renders role permission / field labels), then falls back to id / name / css.
@@ -662,22 +662,67 @@ When(/^(?:I |we )*click the delete button$/, async function () {
 });
 
 
+/**
+ * Settle the page with the configured wait budget — DOM ready, network idle, no pending AJAX or timers.
+ *
+ * Example #1: When I wait
+ * Example #2: And I wait
+ * Example #3: When we wait
+ * Example #4: And we wait
+ * Example #5: Given I wait
+ */
 When(/^(?:I |we )+wait$/, async function () {
   await smartSettle(this.page, budget(this));
 });
 
+/**
+ * Settle the page with an explicit budget in seconds instead of the configured default.
+ *
+ * Example #1: When I wait for 5s
+ * Example #2: And I wait for 2s
+ * Example #3: When we wait for 10s
+ * Example #4: And wait for 1s
+ * Example #5: Given I wait for 3s
+ */
 When(/^(?:I |we )*wait for (\d+)s$/, async function (seconds) {
   await this.page.waitForTimeout(parseInt(seconds, 10) * 1000);
 });
 
+/**
+ * Wait until every in-flight AJAX request has settled and the DOM has stopped mutating.
+ *
+ * Example #1: When I wait for ajax to finish
+ * Example #2: And I wait for ajax to finish
+ * Example #3: When we wait for ajax to finish
+ * Example #4: And wait for ajax to finish
+ * Example #5: Given I wait for ajax to finish
+ */
 When(/^(?:I |we )*wait for ajax to finish$/, async function () {
   await smartSettle(this.page, budget(this));
 });
 
+/**
+ * Wait up to the given number of seconds for the page to be ready and fully loaded.
+ *
+ * Example #1: When I wait max of 30s for the page to be ready and loaded
+ * Example #2: And I wait max of 10s for the page to be ready and loaded
+ * Example #3: When we wait max of 60s for the page to be ready and loaded
+ * Example #4: And wait max of 15s for the page to be ready and loaded
+ * Example #5: Given I wait max of 45s for the page to be ready and loaded
+ */
 When(/^(?:I |we )*wait max of (\d+)s for the page to be ready and loaded$/, async function (seconds) {
   await smartSettle(this.page, parseInt(seconds, 10) * 1000);
 });
 
+/**
+ * Select a radio button by its visible label text (alternate phrasing).
+ *
+ * Example #1: When I select the radio button "Published"
+ * Example #2: And I select the radio button "Draft"
+ * Example #3: When we select the radio button "Boxed"
+ * Example #4: And I select the radio button "Edge to Edge"
+ * Example #5: Given I select the radio button "Yes"
+ */
 When(/^(?:I |we )*select the radio button "([^"]*)"$/, async function (label) {
   const radio = this.page.getByRole('radio', { name: label, exact: false }).first();
   try {
@@ -689,6 +734,15 @@ When(/^(?:I |we )*select the radio button "([^"]*)"$/, async function (label) {
   }
 });
 
+/**
+ * Assert an operation link or text is present in the administration listing row whose text matches.
+ *
+ * Example #1: Then I should see the "Edit" in the "Sample title" row
+ * Example #2: And I should see the "Delete" in "Sample title" row
+ * Example #3: Then I should not see the "Delete" in the "Locked page" row
+ * Example #4: And we should see the "Published" in the "Sample title" row
+ * Example #5: Then I should not see the "Translate" in "Sample title" row
+ */
 Then(/^(?:I |we )*should( not)? see the "([^"]*)" in(?: the)? "([^"]*)" row$/, async function (negate, text, rowText) {
   const row = this.page.locator('tr', { hasText: rowText }).first();
   await row.waitFor({ state: 'attached', timeout: budget(this) }).catch(() => {});

@@ -62,7 +62,7 @@ When(/^(?:I |we )*open the "([^"]*)" media library$/, async function (field) {
 /**
  * Select a Media Library grid item by its "Select <name>" checkbox, tolerating
  * duplicate items. A retried upload scenario (cucumber `retry: 1`) can leave two
- * media with the same name, so webship's built-in "I check" would strict-fail on
+ * media with the same name, so Varbase E2E's built-in "I check" would strict-fail on
  * two identically labelled checkboxes — pick the first.
  *
  * Example #1: And I select the media "Embed Flag Earth"

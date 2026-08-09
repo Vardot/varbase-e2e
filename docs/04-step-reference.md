@@ -2,7 +2,9 @@
 
 All step definitions ship in `tests/step-definitions/*.steps.js`. Cucumber-js loads every file in that directory automatically — you never `require()` a step file from your features.
 
-This is a topical reference. For per-step examples, see the JSDoc comment above each definition in the source files.
+This is a topical reference — the fast lookup when you know roughly what you want.
+
+For the **full catalogue**, with every step's pattern and at least five valid Gherkin examples each, see [`steps/`](steps/README.md): 495 steps across 44 category pages, generated from the step definitions themselves. The Drupal and Varbase packs are documented there and not repeated below.
 
 ## Navigation
 

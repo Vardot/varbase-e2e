@@ -269,7 +269,7 @@ When(/^(?:I |we )*uncheck the box "([^"]*)"$/, async function (label) {
  * Example #1: When I select the "Male" radio button
  * Example #2: And I select the "Female" radio button
  * Example #3: When we select the "Yes" radio button
- * Example #4: And I select the "Boxed" radio button
+ * Example #4: And I select the "Unpublished" radio button
  * Example #5: Given I select the "Published" radio button
  */
 When(/^(?:I |we )*select the "([^"]*)" radio button$/, async function (label) {
@@ -719,8 +719,8 @@ When(/^(?:I |we )*wait max of (\d+)s for the page to be ready and loaded$/, asyn
  *
  * Example #1: When I select the radio button "Published"
  * Example #2: And I select the radio button "Draft"
- * Example #3: When we select the radio button "Boxed"
- * Example #4: And I select the radio button "Edge to Edge"
+ * Example #3: When we select the radio button "Needs Review"
+ * Example #4: And I select the radio button "Archived"
  * Example #5: Given I select the radio button "Yes"
  */
 When(/^(?:I |we )*select the radio button "([^"]*)"$/, async function (label) {

@@ -327,7 +327,7 @@ attribute to the input, and selects it.
 When I select the "Male" radio button
 And I select the "Female" radio button
 When we select the "Yes" radio button
-And I select the "Boxed" radio button
+And I select the "Unpublished" radio button
 Given I select the "Published" radio button
 ```
 
@@ -731,8 +731,8 @@ Select a radio button by its visible label text (alternate phrasing).
 ```gherkin
 When I select the radio button "Published"
 And I select the radio button "Draft"
-When we select the radio button "Boxed"
-And I select the radio button "Edge to Edge"
+When we select the radio button "Needs Review"
+And I select the radio button "Archived"
 Given I select the radio button "Yes"
 ```
 

@@ -252,7 +252,7 @@ Some pairs look similar but cover different domains. NEVER merge:
 
 ## 5. File organisation
 
-472 built-in steps across 42 step files. Cucumber auto-loads every
+484 built-in steps across 43 step files. Cucumber auto-loads every
 `*.steps.js` in `tests/step-definitions/`.
 
 ```
@@ -300,6 +300,7 @@ tests/step-definitions/
 ├── drupal-moderation.steps.js (3)# moderation sidebar open + shows / does not show
 ├── drupal-layout-builder.steps.js (9) # Layout Builder sections: add / configure / save
 ├── drupal-paragraphs.steps.js (1)# choose a paragraph component in the add-widget dialog
+├── drupal-canvas.steps.js  (12)  # Drupal Canvas editor + authoring API (pages, library, patterns, publish)
 └── yaml.steps.js           (38)  # multi-doc, types, numerics, JSON Schema, diff
 
 tests/features/                 # 71 .feature files

@@ -44,17 +44,24 @@ When(/^(I |we )*press( the)* "([^"]*)?"( button)*$/, async function (pronounCase
   const esc = element.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
   const page = this.page;
   await actOrExplain('press button', element, async () => {
-    const btn = page.locator('button, input[type="button"], input[type="submit"], [role="button"], a')
-      .filter({ hasText: new RegExp('^' + esc + '$') })
-      .first();
+    const all = page.locator('button, input[type="button"], input[type="submit"], [role="button"], a')
+      .filter({ hasText: new RegExp('^' + esc + '$') });
+    // Sticky action bars (Gin) clone buttons: the original stays hidden while
+    // the visible clone carries the same text. Prefer the visible candidate —
+    // clicking the hidden original starves actionability for the full timeout.
+    let btn = all.first();
+    const count = await all.count();
+    for (let i = 0; i < count; i++) {
+      if (await all.nth(i).isVisible()) { btn = all.nth(i); break; }
+    }
     try {
-      await btn.click({ timeout: 15000 });
+      await btn.click({ timeout: 10000 });
     } catch (e) {
       // A fixed-position overlay (chat widgets, sticky action bars) can sit on
       // top of a correctly-resolved button and starve the pointer click's
       // actionability checks. The button itself is right — dispatch the click
       // in-page so its handlers (including form submit) still fire.
-      await btn.evaluate((el) => el.click());
+      await btn.evaluate((el) => el.click(), { timeout: 5000 });
     }
   });
 });

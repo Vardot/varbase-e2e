@@ -51,6 +51,28 @@ When(/^(?:I |we )*add a basic(?: "([^"]*)")? section at the end of layout$/, asy
   if (!(await layoutLink.count())) throw friendly(`The "${layout}" layout option was not found in the Add section list.`);
   await layoutLink.click();
   await smartSettle(this.page, budget(this));
+  // On newer Bootstrap Layout Builder the layout option adds the section
+  // directly instead of opening its settings in the off-canvas. When the
+  // section settings form (container type, breakpoints, background) did not
+  // open, click the newly added (highest-delta) section's "Configure" link -
+  // a use-ajax link that opens the settings in the #drupal-off-canvas dialog,
+  // where the following section-settings steps run.
+  const hasSettingsForm = await this.page.locator('[id*="layout-container-type"]').count();
+  if (!hasSettingsForm) {
+    const links = this.page.locator('a.layout-builder__link--configure[href*="/layout_builder/configure-form/section/"]');
+    const count = await links.count();
+    let bestLink = null;
+    let bestDelta = -1;
+    for (let i = 0; i < count; i++) {
+      const href = await links.nth(i).getAttribute('href');
+      const delta = parseInt(href.split('/').pop(), 10);
+      if (delta > bestDelta) { bestDelta = delta; bestLink = links.nth(i); }
+    }
+    if (bestLink) {
+      await bestLink.click();
+      await smartSettle(this.page, budget(this));
+    }
+  }
 });
 
 /**
@@ -69,8 +91,20 @@ When(/^(?:I |we )*save the section$/, async function () {
   // Drupal's jQuery-bound AJAX submit handler for this button - it can leave
   // the section silently un-added. Use a real Playwright mouse click instead,
   // which dispatches the full native event sequence.
-  const btn = this.page.locator('input[type="submit"], button').filter({ hasText: /Add section/i }).first();
-  if (!(await btn.count())) throw friendly('The "Add section" button was not found.');
+  // The submit reads "Add section" on a fresh section and "Update" when the
+  // settings were opened through the section's Configure link. Match the
+  // value attribute exactly (the control is usually an <input>) or a
+  // button's exact text, preferring the off-canvas dialog - a loose /Update/
+  // match grabs invisible widget buttons ("Update widget") elsewhere.
+  const label = /^(Add section|Update)$/;
+  const pick = (scope) => this.page
+    .locator(`${scope} input[type="submit"][value="Add section"], ${scope} input[type="submit"][value="Update"]`)
+    .or(this.page.locator(`${scope} button`).filter({ hasText: label }));
+  let btn = pick('#drupal-off-canvas').first();
+  if (!(await btn.count())) {
+    btn = pick('body').first();
+  }
+  if (!(await btn.count())) throw friendly('The "Add section" / "Update" button was not found.');
   await btn.click();
   await smartSettle(this.page, budget(this));
 });

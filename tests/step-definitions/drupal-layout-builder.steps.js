@@ -51,6 +51,28 @@ When(/^(?:I |we )*add a basic(?: "([^"]*)")? section at the end of layout$/, asy
   if (!(await layoutLink.count())) throw friendly(`The "${layout}" layout option was not found in the Add section list.`);
   await layoutLink.click();
   await smartSettle(this.page, budget(this));
+  // On newer Bootstrap Layout Builder the layout option adds the section
+  // directly instead of opening its settings in the off-canvas. When the
+  // section settings form (container type, breakpoints, background) did not
+  // open, click the newly added (highest-delta) section's "Configure" link -
+  // a use-ajax link that opens the settings in the #drupal-off-canvas dialog,
+  // where the following section-settings steps run.
+  const hasSettingsForm = await this.page.locator('[id*="layout-container-type"]').count();
+  if (!hasSettingsForm) {
+    const links = this.page.locator('a.layout-builder__link--configure[href*="/layout_builder/configure-form/section/"]');
+    const count = await links.count();
+    let bestLink = null;
+    let bestDelta = -1;
+    for (let i = 0; i < count; i++) {
+      const href = await links.nth(i).getAttribute('href');
+      const delta = parseInt(href.split('/').pop(), 10);
+      if (delta > bestDelta) { bestDelta = delta; bestLink = links.nth(i); }
+    }
+    if (bestLink) {
+      await bestLink.click();
+      await smartSettle(this.page, budget(this));
+    }
+  }
 });
 
 /**

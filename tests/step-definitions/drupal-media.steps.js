@@ -55,15 +55,32 @@ When(/^(?:I |we )*open the "([^"]*)" media library$/, async function (field) {
   if (!(await btn.count())) {
     throw friendly(`No media library open button for the "${field}" field was found.`);
   }
+  const dialog = this.page.locator('.ui-dialog .media-library-view, .media-library-widget-modal').first();
+  const open = async () => {
+    try {
+      await btn.click({ timeout: 8000 });
+    } catch (e) {
+      // A stale jQuery UI overlay (ui-widget-overlay) from a previous dialog can
+      // intercept pointer events over a correctly-resolved button. The button is
+      // right - dispatch the click in-page so Drupal's AJAX handler still fires.
+      await btn.evaluate((el) => el.click());
+    }
+    await smartSettle(this.page, budget(this));
+  };
+  await open();
+  // The dialog can be torn down by a previous dialog's late close animation
+  // (two stacked jQuery UI dialogs) - verify it is really there, and re-open
+  // once when it is not, before letting the next step run against nothing.
   try {
-    await btn.click({ timeout: 8000 });
+    await dialog.waitFor({ state: 'visible', timeout: 10000 });
   } catch (e) {
-    // A stale jQuery UI overlay (ui-widget-overlay) from a previous dialog can
-    // intercept pointer events over a correctly-resolved button. The button is
-    // right - dispatch the click in-page so Drupal's AJAX handler still fires.
-    await btn.evaluate((el) => el.click());
+    await open();
+    try {
+      await dialog.waitFor({ state: 'visible', timeout: 10000 });
+    } catch (e2) {
+      throw friendly(`The media library dialog for "${field}" did not open.`);
+    }
   }
-  await smartSettle(this.page, budget(this));
 });
 
 /**

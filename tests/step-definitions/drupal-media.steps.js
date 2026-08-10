@@ -55,7 +55,14 @@ When(/^(?:I |we )*open the "([^"]*)" media library$/, async function (field) {
   if (!(await btn.count())) {
     throw friendly(`No media library open button for the "${field}" field was found.`);
   }
-  await btn.click({ timeout: 8000 });
+  try {
+    await btn.click({ timeout: 8000 });
+  } catch (e) {
+    // A stale jQuery UI overlay (ui-widget-overlay) from a previous dialog can
+    // intercept pointer events over a correctly-resolved button. The button is
+    // right - dispatch the click in-page so Drupal's AJAX handler still fires.
+    await btn.evaluate((el) => el.click());
+  }
   await smartSettle(this.page, budget(this));
 });
 

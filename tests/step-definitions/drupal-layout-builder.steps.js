@@ -105,14 +105,21 @@ When(/^(?:I |we )*add section gutters$/, async function () {
  * Example #5: When we select the "Edge to Edge" container type
  */
 When(/^(?:I |we )*select the "([^"]*)" container type(?: with a "([^"]*)" width)?$/, async function (type, width) {
-  // Real Playwright clicks, not a raw DOM click inside page.evaluate(): the
-  // LB config sidebar's radio labels are wired through Drupal AJAX behaviors,
-  // which a synthetic click can silently fail to trigger (see the identical
-  // issue fixed for "save the section").
+  // A real Playwright click first: the LB config sidebar's radio labels are
+  // wired through Drupal AJAX behaviors, which a synthetic click can silently
+  // fail to trigger (see the identical issue fixed for "save the section").
+  // But on some Bootstrap Styles versions these labels are visually-hidden
+  // colour/type swatches, so the actionability checks time out even though the
+  // label is the right target — fall back to an in-page native click then
+  // (the label's own click handler still fires Drupal's behaviors).
   const clickLabel = async (text, forPrefix) => {
     const lbl = this.page.locator('label').filter({ hasText: text }).and(this.page.locator(`label[for*="${forPrefix}"]`)).first();
     if (!(await lbl.count())) return false;
-    await lbl.click();
+    try {
+      await lbl.click({ timeout: 10000 });
+    } catch (e) {
+      await lbl.evaluate((el) => el.click());
+    }
     return true;
   };
   if (!(await clickLabel(type, 'edit-layout-settings-ui-tab-content-layout-container-type'))) {

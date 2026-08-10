@@ -92,8 +92,18 @@ When(/^(?:I |we )*save the section$/, async function () {
   // the section silently un-added. Use a real Playwright mouse click instead,
   // which dispatches the full native event sequence.
   // The submit reads "Add section" on a fresh section and "Update" when the
-  // settings were opened through the section's Configure link.
-  const btn = this.page.locator('input[type="submit"], button').filter({ hasText: /Add section|Update/i }).first();
+  // settings were opened through the section's Configure link. Match the
+  // value attribute exactly (the control is usually an <input>) or a
+  // button's exact text, preferring the off-canvas dialog - a loose /Update/
+  // match grabs invisible widget buttons ("Update widget") elsewhere.
+  const label = /^(Add section|Update)$/;
+  const pick = (scope) => this.page
+    .locator(`${scope} input[type="submit"][value="Add section"], ${scope} input[type="submit"][value="Update"]`)
+    .or(this.page.locator(`${scope} button`).filter({ hasText: label }));
+  let btn = pick('#drupal-off-canvas').first();
+  if (!(await btn.count())) {
+    btn = pick('body').first();
+  }
   if (!(await btn.count())) throw friendly('The "Add section" / "Update" button was not found.');
   await btn.click();
   await smartSettle(this.page, budget(this));

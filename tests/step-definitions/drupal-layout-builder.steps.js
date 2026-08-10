@@ -91,8 +91,10 @@ When(/^(?:I |we )*save the section$/, async function () {
   // Drupal's jQuery-bound AJAX submit handler for this button - it can leave
   // the section silently un-added. Use a real Playwright mouse click instead,
   // which dispatches the full native event sequence.
-  const btn = this.page.locator('input[type="submit"], button').filter({ hasText: /Add section/i }).first();
-  if (!(await btn.count())) throw friendly('The "Add section" button was not found.');
+  // The submit reads "Add section" on a fresh section and "Update" when the
+  // settings were opened through the section's Configure link.
+  const btn = this.page.locator('input[type="submit"], button').filter({ hasText: /Add section|Update/i }).first();
+  if (!(await btn.count())) throw friendly('The "Add section" / "Update" button was not found.');
   await btn.click();
   await smartSettle(this.page, budget(this));
 });

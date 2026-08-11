@@ -1,6 +1,6 @@
 {
   "name": "@vardot/varbase-e2e",
-  "version": "2.0.2",
+  "version": "2.0.3",
   "description": "Varbase E2E automated functional testing.",
   "main": "index.js",
   "bin": {

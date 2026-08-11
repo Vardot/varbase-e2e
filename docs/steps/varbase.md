@@ -15,11 +15,9 @@ Cucumber-js loads every `*.steps.js` in that directory automatically — you nev
 | 7 | `When I close the tour` |
 | 8 | `Then I should see the accessibility checker` |
 | 9 | `When I close the accessibility checker` |
-| 10 | `Then the page should have a working header` |
-| 11 | `Then the page should have a working footer` |
-| 12 | `When I press the "desktop" responsive preview device button` |
-| 13 | `Then the "site header" should be sticky` |
-| 14 | `Then the "site header" should have the "scrolled" class within 5 seconds` |
+| 10 | `When I press the "desktop" responsive preview device button` |
+| 11 | `Then the "site header" should be sticky` |
+| 12 | `Then the "site header" should have the "scrolled" class within 5 seconds` |
 
 ---
 
@@ -256,64 +254,7 @@ Given I close the a11y checker
 And we close the accessibility checker
 ```
 
-## 10. Then the page should have a working header
-
-Verify the page header is "working".
-
-On a Varbase site the Main navigation menu is rendered through the Drupal
-Canvas global Header region, so a working header means those primary links
-are present. Alter the links below to match your own site's main menu.
-
-Example: Then the page should have a working header
-
-**Keyword**: `Then`
-
-**Pattern**
-
-```js
-/^(?:the page should have|(?:I |we )*should have) a working header$/
-```
-
-**Examples**
-
-```gherkin
-Then the page should have a working header
-And I should have a working header
-Then I should have a working header
-And we should have a working header
-Then the page should have a working header
-```
-
-## 11. Then the page should have a working footer
-
-Verify the page footer is "working".
-
-On a Varbase site the Secondary, Footer and Social media menus are rendered
-through the Drupal Canvas global Footer region. A working footer means the
-footer link text is present, the social profiles are linked, and the credits
-and logos show. Alter the lines below to match your own site.
-
-Example: Then the page should have a working footer
-
-**Keyword**: `Then`
-
-**Pattern**
-
-```js
-/^(?:the page should have|(?:I |we )*should have) a working footer$/
-```
-
-**Examples**
-
-```gherkin
-Then the page should have a working footer
-And I should have a working footer
-Then I should have a working footer
-And we should have a working footer
-Then the page should have a working footer
-```
-
-## 12. When I press the "desktop" responsive preview device button
+## 10. When I press the "desktop" responsive preview device button
 
 Press a responsive-preview device button (Drupal core Responsive preview).
 
@@ -338,7 +279,7 @@ And I press the "widescreen" responsive preview device button
 When I press the "mobile" responsive preview device button
 ```
 
-## 13. Then the "site header" should be sticky
+## 11. Then the "site header" should be sticky
 
 Assert an element renders as a sticky element (CSS position: sticky).
 
@@ -364,7 +305,7 @@ And the "footer" should not be sticky
 Then the "main content" should be sticky
 ```
 
-## 14. Then the "site header" should have the "scrolled" class within 5 seconds
+## 12. Then the "site header" should have the "scrolled" class within 5 seconds
 
 Assert a named element gains (or loses) a CSS class, with auto-retry.
 

@@ -4,7 +4,7 @@ Every step Varbase E2E ships, one page per category, generated from the step
 definitions themselves — so the phrasing, the pattern and the examples on these
 pages are exactly what the runner matches.
 
-**495 steps across 44 categories.**
+**493 steps across 44 categories.**
 
 Cucumber-js loads every `*.steps.js` under `tests/step-definitions/`
 automatically. You never `require()` a step file from a feature: write the
@@ -38,7 +38,7 @@ Steps for the Drupal and Varbase surfaces the team tests every day — the node 
 | Layout Builder | 17 | [`drupal-layout-builder.md`](drupal-layout-builder.md) |
 | Paragraphs | 1 | [`drupal-paragraphs.md`](drupal-paragraphs.md) |
 | Drupal Canvas | 12 | [`drupal-canvas.md`](drupal-canvas.md) |
-| Varbase | 14 | [`varbase.md`](varbase.md) |
+| Varbase | 12 | [`varbase.md`](varbase.md) |
 
 **82 steps.**
 

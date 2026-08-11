@@ -2,7 +2,7 @@
 
 Varbase E2E is a BDD-first browser-automation harness built on Playwright + Cucumber-js. Feature files in plain Gherkin; selectors that survive redesigns; smart waits that never sleep.
 
-**495 built-in steps** across **44 step files**, including the Drupal and Varbase packs. **282 example scenarios / 1,372 step executions** in the bundled suite, all green on chromium.
+**493 built-in steps** across **44 step files**, including the Drupal and Varbase packs. **282 example scenarios / 1,372 step executions** in the bundled suite, all green on chromium.
 
 The full step catalogue — one page per category, generated from the step definitions themselves — is in **[`steps/`](steps/README.md)**.
 
@@ -39,7 +39,7 @@ The full step catalogue — one page per category, generated from the step defin
 | [Install — DDEV](install-varbase-e2e/ddev-varbase-e2e.md) | DDEV-Varbase-E2E variant |
 | [Global settings](global-settings.md) | `cucumber.js` `worldParameters` reference |
 | [Step definitions](step-definitions.md) | Step-definition hub — what a step is, the rules, where the catalogue lives |
-| [Step catalogue](steps/README.md) | All 495 steps, 44 category pages under `steps/`, generated from the source |
+| [Step catalogue](steps/README.md) | All 493 steps, 44 category pages under `steps/`, generated from the source |
 | [API step definitions](api-step-definitions.md) | REST step definitions |
 | [Advanced screenshots](advanced-screenshots.md) | Per-size, full-page, named (3 sub-pages under `advanced-screenshots/`) |
 | [Advanced selectors](advanced-selectors.md) | Named selector registry, position assertions |
@@ -117,7 +117,7 @@ varbase-e2e/
 │       ├── drupal-media.steps.js        (4)   # media library open / select / insert
 │       ├── drupal-moderation.steps.js   (3)   # moderation sidebar open + assertions
 │       ├── drupal-paragraphs.steps.js   (1)   # choose a paragraph component
-│       ├── varbase.steps.js            (14)   # Varbase users, tour, theme settings, a11y checker
+│       ├── varbase.steps.js            (12)   # Varbase users, tour, theme settings, a11y checker
 │       ├── xml.steps.js                (20)   # XPath equals / contains / count / attr
 │       └── yaml.steps.js               (38)   # multi-doc + types + numerics + JSON Schema + diff
 ├── examples/                   <— Static HTML fixtures

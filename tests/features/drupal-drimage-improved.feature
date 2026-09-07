@@ -14,6 +14,12 @@ Feature: Drimage Improved responsive image loading
   Scenario: The shorter phrasing the module already uses
     Then the image "#ready" should be loaded
 
+  Scenario: Every qualifier reaches the same assertion
+    Then the drimage improved image "#ready" should be loaded
+    And the dynamic image "#ready" should be loaded
+    And the dynamic responsive image "#ready" should be loaded
+    And the responsive image "#ready" should be loaded
+
   Scenario: An image whose placeholder swaps after the page settles
     Then the drimage image "#deferred" should be loaded within 10 seconds
 

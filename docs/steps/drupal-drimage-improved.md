@@ -26,24 +26,27 @@ natural width, so the derivatives failing to generate fails the scenario red.
 inactive slide, lazy loading has not reached them and never will while the slide
 is hidden. Scope the selector when you need one specific image.
 
-The word `drimage` is optional, so the phrasing the `drimage_improved` module
-already uses in its own suites keeps matching unchanged. Default budget is 5
-seconds; override it with the trailing `within N seconds` clause.
+The qualifier is optional and interchangeable — `drimage`, `drimage improved`,
+`dynamic`, `dynamic responsive`, `responsive`, or none at all. The bare
+phrasing the `drimage_improved` module already uses in its own suites keeps
+matching, and a team that calls these dynamic responsive images can write it
+that way. Default budget is 5 seconds; override it with the trailing
+`within N seconds` clause.
 
 **Keyword**: `Then`
 
 **Pattern**
 
 ```js
-/^the (?:drimage )?image "([^"]*)" should be loaded(?: within (\d+) seconds?)?$/
+/^the (?:drimage improved |drimage |dynamic responsive |dynamic |responsive )?image "([^"]*)" should be loaded(?: within (\d+) seconds?)?$/
 ```
 
 **Examples**
 
 ```gherkin
 Then the drimage image "img.drimage-image" should be loaded
-Then the drimage image ".drimage img.drimage-image" should be loaded within 20 seconds
+Then the drimage improved image ".drimage img.drimage-image" should be loaded within 20 seconds
+Then the dynamic responsive image ".field--name-field-media-image img" should be loaded within 15 seconds
+Then the responsive image "picture img.drimage-image" should be loaded
 Then the image "img.drimage-image" should be loaded
-Then the image ".field--name-field-media-image img" should be loaded within 15 seconds
-And the drimage image "picture img.drimage-image" should be loaded
 ```

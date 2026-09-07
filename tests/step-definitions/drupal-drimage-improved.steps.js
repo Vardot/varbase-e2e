@@ -44,17 +44,20 @@ async function poll(fn, predicate, timeout, message) {
  * one" keeps it stable on pages where some matches sit in an inactive carousel
  * slide lazy loading has not reached. Default budget 5 seconds.
  *
- * The word "drimage" is optional, so the phrasing the drimage_improved module
- * already uses in its own suites keeps matching unchanged.
+ * The qualifier is optional and interchangeable — "drimage", "drimage
+ * improved", "dynamic", "dynamic responsive", "responsive", or none at all, so
+ * the bare phrasing the drimage_improved module already uses in its own suites
+ * keeps matching while a team that calls these dynamic responsive images can
+ * write it their way.
  *
  * Example #1: Then the drimage image "img.drimage-image" should be loaded
- * Example #2: Then the drimage image ".drimage img.drimage-image" should be loaded within 20 seconds
- * Example #3: Then the image "img.drimage-image" should be loaded
- * Example #4: Then the image ".field--name-field-media-image img" should be loaded within 15 seconds
- * Example #5: And the drimage image "picture img.drimage-image" should be loaded
+ * Example #2: Then the drimage improved image ".drimage img.drimage-image" should be loaded within 20 seconds
+ * Example #3: Then the dynamic responsive image ".field--name-field-media-image img" should be loaded within 15 seconds
+ * Example #4: Then the responsive image "picture img.drimage-image" should be loaded
+ * Example #5: Then the image "img.drimage-image" should be loaded
  *
  */
-Then(/^the (?:drimage )?image "([^"]*)" should be loaded(?: within (\d+) seconds?)?$/, async function (selector, sec) {
+Then(/^the (?:drimage improved |drimage |dynamic responsive |dynamic |responsive )?image "([^"]*)" should be loaded(?: within (\d+) seconds?)?$/, async function (selector, sec) {
   const timeout = parseTimeout(sec);
   await this.page.locator(selector).first().waitFor({ state: 'attached', timeout }).catch(() => {
     throw friendly(`No element matching "${selector}" ever attached to the page`);

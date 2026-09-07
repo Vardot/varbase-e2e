@@ -1,6 +1,4 @@
-<p align="center">
-  <img src="images/varbase-e2e-logo.svg" alt="Varbase E2E" width="420">
-</p>
+![Varbase E2E](images/varbase-e2e-logo.svg)
 
 # Varbase E2E
 

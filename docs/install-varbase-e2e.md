@@ -30,5 +30,3 @@ The page is part of the Varbase E2E 2.0.x documentation section, which includes:
 - Advanced Selectors
 - Assertions
 - Commands
-
-There is also a subsection on "[DDEV Varbase E2E](/docs/varbase-e2e/2.0.x/install-varbase-e2e/ddev-varbase-e2e)" available under the installation guide.

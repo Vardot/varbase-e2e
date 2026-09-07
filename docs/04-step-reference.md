@@ -18,6 +18,14 @@ For the **full catalogue**, with every step's pattern and at least five valid Gh
 | `When I move forward one page` | `varbase-e2e.js` |
 | `When I reload the page` | `varbase-e2e.js` |
 
+## Access
+
+| Step | Notes |
+| --- | --- |
+| `Then I am denied access to "/path"` | Refused: 403, 404, an access-denied page, or a log-in redirect. `should be refused` is the same step. |
+| `Then I should be allowed "/path"` | 2xx and no refusal marker. `am granted access to` is the same step. |
+| `Then I should be denied access` | The page already open. `the page should be access restricted` is the same step. |
+
 ## Click & press
 
 | Step | Notes |
@@ -573,6 +581,9 @@ This index lists every public step grouped by source file, with one Gherkin exam
 - *^(I |we )*should( not)* be on( the)* (homepage|frontpage)$*  ·  Example: `Then I should be on homepage`
 - *^(I |we )*should( not)* be on( the)* "([^"]*)?"( page)*$*  ·  Example: `Then I should be on "/"`
 - *^(the )*url should( not)* match "([^"]*)?"$*  ·  Example: `Then the url should match "/contact-us.html"`
+- *^(I |we )*(?:am|should be) (?:denied access to|refused) "([^"]*)?"$*  ·  Example: `Then I am denied access to "/admin/config"`
+- *^(I |we )*(?:am|should be) (?:allowed|granted access to) "([^"]*)?"$*  ·  Example: `Then I should be allowed "/admin/content"`
+- *^(?:(?:I |we )*should be denied access|(?:the )*page should be access restricted)$*  ·  Example: `Then I should be denied access`
 
 ### network.steps.js
 

@@ -4,7 +4,7 @@
 
 Varbase E2E is a BDD-first browser-automation harness built on Playwright + Cucumber-js. Feature files in plain Gherkin; selectors that survive redesigns; smart waits that never sleep.
 
-**509 built-in steps** across **45 step files**, including the Drupal and Varbase packs. **282 example scenarios / 1,372 step executions** in the bundled suite, all green on chromium.
+**512 built-in steps** across **45 step files**, including the Drupal and Varbase packs. **282 example scenarios / 1,372 step executions** in the bundled suite, all green on chromium.
 
 The full step catalogue — one page per category, generated from the step definitions themselves — is in **[`steps/`](steps/README.md)**.
 
@@ -41,7 +41,7 @@ The full step catalogue — one page per category, generated from the step defin
 | [Install — DDEV](install-varbase-e2e/ddev-varbase-e2e.md) | DDEV-Varbase-E2E variant |
 | [Global settings](global-settings.md) | `cucumber.js` `worldParameters` reference |
 | [Step definitions](step-definitions.md) | Step-definition hub — what a step is, the rules, where the catalogue lives |
-| [Step catalogue](steps/README.md) | All 509 steps, 45 category pages under `steps/`, generated from the source |
+| [Step catalogue](steps/README.md) | All 512 steps, 45 category pages under `steps/`, generated from the source |
 | [API step definitions](api-step-definitions.md) | REST step definitions |
 | [Advanced screenshots](advanced-screenshots.md) | Per-size, full-page, named (3 sub-pages under `advanced-screenshots/`) |
 | [Advanced selectors](advanced-selectors.md) | Named selector registry, position assertions |
@@ -98,7 +98,7 @@ varbase-e2e/
 │       ├── link.steps.js                (9)   # href / title / target / rel
 │       ├── metatag.steps.js             (3)   # description / keywords / OG / Twitter
 │       ├── modal.steps.js               (9)   # HTML modal visibility / content / interactions
-│       ├── navigation.steps.js         (11)   # homepage / paths / history / URL assertions
+│       ├── navigation.steps.js         (14)   # homepage / paths / history / URL assertions
 │       ├── network.steps.js            (10)   # route stubs / mocks / delays / offline
 │       ├── path.steps.js                (8)   # URL path / query / fragment
 │       ├── response.steps.js            (4)   # response header inspection

@@ -2,7 +2,8 @@
 
 // All navigation step definitions live in this file: anonymous user, going
 // to the homepage / a specific path, browser history (back/forward), reload,
-// and URL/path assertions.
+// URL/path assertions, and the access-control assertions (is this path
+// refused or allowed for the current user).
 
 const { Given, When, Then } = require('@cucumber/cucumber');
 const assert = require('assert');
@@ -215,4 +216,103 @@ Then(/^(the )*url should( not)* match "([^"]*)?"$/, async function (theCase, not
   } else {
     assert.ok(regex.test(currentUrl), `URL "${currentUrl}" should match "${pattern}" but it does not.`);
   }
+});
+
+// ---------------------------------------------------------------------------
+// Access control — is this path refused or allowed for the current user
+// ---------------------------------------------------------------------------
+
+// A refusal is not one signal. A site can answer 403, answer 404 to keep a
+// route unguessable, answer 200 with an access-denied page, or redirect to the
+// login form — all four are "you may not see this". This reads the response
+// status and, when the status alone is inconclusive, the rendered page.
+const DENIED_MARKERS = 'h1:has-text("Access denied"), #user-login-form, form.user-login-form, form.user-login, input[name="pass"]';
+
+async function accessReport(page, response) {
+  const status = response ? response.status() : 0;
+  const url = page.url();
+  const markers = await page.locator(DENIED_MARKERS).count().catch(() => 0);
+  const body = (await page.locator('body').innerText().catch(() => '') || '').toLowerCase();
+  const text = body.includes('access denied') || body.includes('you are not authorized');
+  return {
+    status,
+    url,
+    denied: status === 403 || status === 404 || markers > 0 || /\/user\/login/.test(url) || text,
+    why: status === 403 || status === 404 ? `HTTP ${status}`
+      : markers > 0 ? 'an access-denied page or a log-in form'
+        : /\/user\/login/.test(url) ? 'a redirect to the log-in form'
+          : text ? 'access-denied text in the page' : `HTTP ${status} and a rendered page`,
+  };
+}
+
+/**
+ * Assert the current user may NOT open a path: the site refuses it.
+ *
+ * Four refusals count, because a site picks its own: HTTP 403, HTTP 404 (used
+ * to keep a route unguessable), HTTP 200 with an access-denied page, and a
+ * redirect to the log-in form. Asserting only on 403 makes a scenario pass or
+ * fail on how the site is configured rather than on who the user is.
+ *
+ * Example #1: Then I am denied access to "/admin/config"
+ * Example #2: Then I should be refused "/node/add/article"
+ * Example #3: And we should be denied access to "/admin/people"
+ * Example #4: Given I am an anonymous user
+ *               Then I am denied access to "/admin/modules"
+ * Example #5: Then we am denied access to "/admin/reports/status"
+ *
+ */
+Then(/^(I |we )*(?:am|should be) (?:denied access to|refused) "([^"]*)?"$/, async function (pronounCase, path) {
+  const response = await this.page.goto(this.launchUrl + path, { waitUntil: 'domcontentloaded' }).catch(() => null);
+  const report = await accessReport(this.page, response);
+  assert.ok(report.denied, `Expected "${path}" to be refused, but the site answered ${report.why}.`);
+  await smartSettle(this.page, 2000);
+});
+
+/**
+ * Assert the current user MAY open a path: the site answers it and renders it.
+ *
+ * The positive half of a permission scenario, and it earns its place — a role
+ * that can reach nothing at all passes every refusal assertion in the suite,
+ * so the refusals only mean something next to this.
+ *
+ * Example #1: Then I should be allowed "/admin/content"
+ * Example #2: Then I am granted access to "/node/add/article"
+ * Example #3: And we should be allowed "/admin/content/media"
+ * Example #4: Given I am a logged in user with the username "webmaster" user
+ *               Then I should be allowed "/admin/content"
+ * Example #5: Then we should be allowed "/user"
+ *
+ */
+Then(/^(I |we )*(?:am|should be) (?:allowed|granted access to) "([^"]*)?"$/, async function (pronounCase, path) {
+  const response = await this.page.goto(this.launchUrl + path, { waitUntil: 'domcontentloaded' }).catch(() => null);
+  const report = await accessReport(this.page, response);
+  assert.ok(report.status >= 200 && report.status < 300, `Expected "${path}" to be allowed, but the site answered HTTP ${report.status}.`);
+  assert.ok(!report.denied, `Expected "${path}" to be allowed, but the site answered ${report.why}.`);
+  await smartSettle(this.page, 2000);
+});
+
+/**
+ * Assert the page already open is a refusal — an access-denied page, or the
+ * log-in form the site redirected to.
+ *
+ * Use it when the refusal is the result of an action rather than of a visit:
+ * submit a form, click an operation, follow a link, then assert the wall. It
+ * navigates nothing, so nothing about the failed attempt is lost.
+ *
+ * Example #1: Then I should be denied access
+ * Example #2: Then the page should be access restricted
+ * Example #3: When I click "Edit"
+ *               Then I should be denied access
+ * Example #4: And we should be denied access
+ * Example #5: Then the page should be access restricted
+ *
+ */
+Then(/^(?:(?:I |we )*should be denied access|(?:the )*page should be access restricted)$/, async function () {
+  await waitForPageLoad(this.page, (this.minWaitTime && this.minWaitTime.page) || 8000);
+  const report = await accessReport(this.page, null);
+  const markers = await this.page.locator(DENIED_MARKERS).count().catch(() => 0);
+  const body = (await this.page.locator('body').innerText().catch(() => '') || '').toLowerCase();
+  const denied = markers > 0 || /\/user\/login/.test(report.url)
+    || body.includes('access denied') || body.includes('you are not authorized');
+  assert.ok(denied, `Expected an access-denied page or a log-in form, but "${report.url}" rendered normally.`);
 });

@@ -35,14 +35,69 @@ function budgetOf(secondsStr) {
   return n > 0 ? n * 1000 : 2000;
 }
 
+// How a tester points at ONE Drimage image without a selector:
+//   the drimage image "Hero"                       alt text or title, whichever matches
+//   the drimage image titled "Hero"                title attribute
+//   the drimage image captioned "Our team in 2026"  the <figcaption> of its <figure>
+//   the drimage image with the alt text "Hero"     alt only
+//   the first drimage image / the 3rd / the last   order in the page
+//   the drimage image number 3                     same, as a number
+// Captured as: ordinal, mode, mode value, plain quoted value, number.
+const ORDINAL = '(first|second|third|fourth|fifth|sixth|seventh|eighth|ninth|tenth|last|\\d+(?:st|nd|rd|th))';
+const TARGET = `the (?:${ORDINAL} )?${Q}image(?: (titled|captioned|with the alt text|with the title|with the caption) "([^"]*)"| "([^"]*)"| number (\\d+))?`;
+const WORDS = { first: 1, second: 2, third: 3, fourth: 4, fifth: 5, sixth: 6, seventh: 7, eighth: 8, ninth: 9, tenth: 10 };
+
+function targetOf(ordinal, mode, modeValue, plain, number) {
+  const t = { ordinal: null, field: null, value: null };
+  if (ordinal) t.ordinal = ordinal === 'last' ? 'last' : (WORDS[ordinal] || parseInt(ordinal, 10));
+  if (number) t.ordinal = parseInt(number, 10);
+  if (mode) {
+    t.field = mode === 'titled' || mode === 'with the title' ? 'title'
+      : mode === 'captioned' || mode === 'with the caption' ? 'caption' : 'alt';
+    t.value = modeValue;
+  } else if (plain !== undefined && plain !== null) {
+    t.field = 'any';
+    t.value = plain;
+  }
+  return t;
+}
+
+function describeTarget(t) {
+  const lead = t.ordinal === 'last' ? 'the last Drimage image' : t.ordinal ? `Drimage image number ${t.ordinal}` : 'the Drimage image';
+  if (t.field === 'any') return `${lead} "${t.value}"`;
+  if (t.field) return `${lead} with the ${t.field === 'alt' ? 'alt text' : t.field} "${t.value}"`;
+  return lead;
+}
+
+// Which of the snapshot's images the target names, as 0-based indices. Text
+// matches are exact after trimming, then a contains match as a fallback so a
+// long caption can be named by a distinctive part of it.
+function select(images, t) {
+  let pool = images.map((img, i) => ({ ...img, i }));
+  if (t.field) {
+    const v = t.value.trim();
+    const fields = t.field === 'any' ? ['alt', 'title', 'caption'] : [t.field];
+    const exact = pool.filter((x) => fields.some((f) => (x[f] || '').trim() === v));
+    pool = exact.length ? exact : pool.filter((x) => fields.some((f) => (x[f] || '').includes(v)));
+  }
+  if (t.ordinal === 'last') pool = pool.slice(-1);
+  else if (t.ordinal) pool = pool.slice(t.ordinal - 1, t.ordinal);
+  return pool.map((x) => x.i);
+}
+
 // One snapshot of every Drimage image on the page, taken in the browser.
 function snapshot(page) {
   return page.evaluate(({ image, derivative }) =>
     Array.from(document.querySelectorAll(image)).map((img) => {
       const src = img.currentSrc || img.src || '';
       const m = src.match(/\/styles\/drimage_improved_(?:focal_)?(\d+)_(\d+)/);
+      const figure = img.closest('figure');
+      const caption = figure && figure.querySelector('figcaption');
       return {
         alt: img.getAttribute('alt') || '',
+        title: img.getAttribute('title') || '',
+        caption: caption ? caption.textContent.trim() : '',
+        inFigure: figure !== null,
         src,
         derivative: src.includes(derivative),
         derivativeWidth: m ? Number(m[1]) : 0,
@@ -75,8 +130,8 @@ function describe(images) {
 // A Drimage image counts as loaded once its src is a real derivative (the
 // placeholder has been swapped) AND the bitmap decoded. The SVG placeholder
 // also decodes, so naturalWidth alone cannot tell the two apart.
-const LOADED = ({ image, derivative, alt }) => {
-  const imgs = Array.from(document.querySelectorAll(image)).filter((img) => alt === null || (img.getAttribute('alt') || '') === alt);
+const LOADED = ({ image, derivative, indices }) => {
+  const imgs = Array.from(document.querySelectorAll(image)).filter((img, i) => indices === null || indices.includes(i));
   if (!imgs.length) return false;
   const swapped = imgs.filter((img) => (img.currentSrc || img.src || '').includes(derivative));
   if (!swapped.length) return false;
@@ -106,35 +161,42 @@ const LOADED = ({ image, derivative, alt }) => {
  * Example #5: Then the images should be loaded
  */
 Then(new RegExp(`^the ${Q}images should be loaded(?: within (\\d+) seconds?)?$`), async function (sec) {
-  const failed = await settleThenWait(this.page, budgetOf(sec), LOADED, { image: IMAGE, derivative: DERIVATIVE, alt: null });
+  const failed = await settleThenWait(this.page, budgetOf(sec), LOADED, { image: IMAGE, derivative: DERIVATIVE, indices: null });
   if (failed) {
     throw friendly(`Expected the Drimage images to load, but saw ${describe(failed.images)}`, failed.cause);
   }
 });
 
+// Settle, snapshot, and resolve a single-image target. Throws the friendly
+// "no such image" when nothing matches, listing what is on the page.
+async function resolveTarget(page, t) {
+  await smartSettle(page, 2000);
+  const images = await snapshot(page);
+  const indices = select(images, t);
+  if (!indices.length) {
+    throw friendly(`${describeTarget(t)} is not on the page; the Drimage images present are ${describe(images)}`);
+  }
+  return { images, indices, picked: indices.map((i) => images[i]) };
+}
+
 /**
- * Assert one Drimage image, named by its alt text, swapped its placeholder for
- * a real derivative and decoded the bitmap.
- *
- * The alt text is what an editor typed and what a screen reader says, so it
- * is the human name of the image; no class or id needed.
+ * Assert one Drimage image swapped its placeholder for a real derivative and
+ * decoded the bitmap. Name it by alt text or title in quotes, by `titled`,
+ * `captioned` or `with the alt text`, by its order in the page, or by number —
+ * the human ways of pointing at a picture, never a class or an id.
  *
  * Example #1: Then the drimage image "Team collaborating in a modern glass-walled office" should be loaded
- * Example #2: Then the drimage improved image "Team meeting around a table" should be loaded within 2 seconds
- * Example #3: Then the dynamic image "Campus at dusk" should be loaded
- * Example #4: And the responsive image "Annual report cover" should be loaded within 1 second
- * Example #5: Then the image "Team collaborating in a modern glass-walled office" should be loaded
+ * Example #2: Then the first drimage image should be loaded
+ * Example #3: Then the drimage image captioned "Our team in the new office" should be loaded within 2 seconds
+ * Example #4: Then the dynamic responsive image titled "Vardot team" should be loaded
+ * Example #5: Then the drimage image number 2 should be loaded within 1 second
  */
-Then(new RegExp(`^the ${Q}image "([^"]*)" should be loaded(?: within (\\d+) seconds?)?$`), async function (alt, sec) {
-  const failed = await settleThenWait(this.page, budgetOf(sec), LOADED, { image: IMAGE, derivative: DERIVATIVE, alt });
+Then(new RegExp(`^${TARGET} should be loaded(?: within (\\d+) seconds?)?$`), async function (ordinal, mode, modeValue, plain, number, sec) {
+  const t = targetOf(ordinal, mode, modeValue, plain, number);
+  const { indices } = await resolveTarget(this.page, t);
+  const failed = await settleThenWait(this.page, budgetOf(sec), LOADED, { image: IMAGE, derivative: DERIVATIVE, indices });
   if (failed) {
-    const match = failed.images.filter((i) => i.alt === alt);
-    throw friendly(
-      match.length
-        ? `Expected the Drimage image "${alt}" to load, but saw ${describe(match)}`
-        : `No Drimage image with the alt text "${alt}" is on the page; the images present are ${describe(failed.images)}`,
-      failed.cause
-    );
+    throw friendly(`Expected ${describeTarget(t)} to load, but saw ${describe(indices.map((i) => failed.images[i]).filter(Boolean))}`, failed.cause);
   }
 });
 
@@ -324,27 +386,101 @@ Then(new RegExp(`^the ${Q}images should use lazy loading(?: within (\\d+) second
 });
 
 /**
- * Assert a Drimage image, named by its alt text, has NOT loaded yet: it is
- * still on the module's SVG placeholder because it sits outside the viewport
- * and lazy loading has not reached it.
+ * Assert a Drimage image has NOT loaded yet: it is still on the module's SVG
+ * placeholder because it sits outside the viewport and lazy loading has not
+ * reached it. Name it any of the ways the loaded step accepts.
  *
  * This is the intersection check. Settle the page, look once — no waiting for
  * something not to happen — then scroll it into view and assert it loads.
  *
  * Example #1: Then the drimage image "Team meeting around a table" should still be a placeholder
- * Example #2: Then the drimage improved image "Footer map" should not be loaded yet
- * Example #3: Then the dynamic responsive image "Campus at dusk" should still be a placeholder
- * Example #4: And the responsive image "Annual report cover" should not be loaded yet
- * Example #5: Then the image "Team meeting around a table" should still be a placeholder
+ * Example #2: Then the last drimage image should not be loaded yet
+ * Example #3: Then the drimage image captioned "Our team in the new office" should still be a placeholder
+ * Example #4: And the responsive image number 2 should not be loaded yet
+ * Example #5: Then the second image should still be a placeholder
  */
-Then(new RegExp(`^the ${Q}image "([^"]*)" should (?:still be a placeholder|not be loaded yet)$`), async function (alt) {
-  await smartSettle(this.page, 2000);
-  const images = await snapshot(this.page);
-  const match = images.filter((i) => i.alt === alt);
-  if (!match.length) {
-    throw friendly(`No Drimage image with the alt text "${alt}" is on the page; the images present are ${describe(images)}`);
+Then(new RegExp(`^${TARGET} should (?:still be a placeholder|not be loaded yet)$`), async function (ordinal, mode, modeValue, plain, number) {
+  const t = targetOf(ordinal, mode, modeValue, plain, number);
+  const { picked } = await resolveTarget(this.page, t);
+  if (picked.some((i) => i.derivative)) {
+    throw friendly(`Expected ${describeTarget(t)} to still be a placeholder, but it already loaded a derivative: ${describe(picked)}`);
   }
-  if (match.some((i) => i.derivative)) {
-    throw friendly(`Expected the Drimage image "${alt}" to still be a placeholder, but it already loaded a derivative: ${describe(match)}`);
+});
+
+/**
+ * Assert a Drimage image has a caption: its <figure> carries a <figcaption>,
+ * and when a text is given, that is the caption (exact after trimming).
+ *
+ * Example #1: Then the first drimage image should have the caption "Our team in the new office"
+ * Example #2: Then the drimage image "Team meeting around a table" should have a caption
+ * Example #3: Then the drimage image titled "Vardot team" should have the caption "Our team in the new office"
+ * Example #4: Then the last dynamic responsive image should have a caption
+ * Example #5: Then the drimage image number 2 should have the caption "Our team in the new office"
+ */
+Then(new RegExp(`^${TARGET} should have (?:a caption|the caption "([^"]*)")$`), async function (ordinal, mode, modeValue, plain, number, text) {
+  const t = targetOf(ordinal, mode, modeValue, plain, number);
+  const { picked } = await resolveTarget(this.page, t);
+  const bad = picked.filter((i) => !i.caption || (text != null && i.caption !== text.trim()));
+  if (bad.length) {
+    const seen = bad.map((i) => (i.caption ? `"${i.caption}"` : (i.inFigure ? 'a figure with no figcaption' : 'no figure at all'))).join(', ');
+    throw friendly(text != null
+      ? `Expected ${describeTarget(t)} to have the caption "${text}", but saw ${seen}`
+      : `Expected ${describeTarget(t)} to have a caption, but saw ${seen}`);
+  }
+});
+
+/**
+ * Assert a Drimage image's alt text — what a screen reader says and what
+ * search engines index. Name the image by order, title or caption, then check
+ * the alt an editor typed reached the front end.
+ *
+ * Example #1: Then the first drimage image should have the alt text "Team collaborating in a modern glass-walled office"
+ * Example #2: Then the drimage image captioned "Our team in the new office" should have the alt text "Team meeting around a table"
+ * Example #3: Then the last dynamic responsive image should have the alt text "Team meeting around a table"
+ * Example #4: Then the drimage image number 1 should have the alt text "Team collaborating in a modern glass-walled office"
+ * Example #5: Then the drimage image titled "Vardot team" should have the alt text "Team meeting around a table"
+ */
+Then(new RegExp(`^${TARGET} should have the alt text "([^"]*)"$`), async function (ordinal, mode, modeValue, plain, number, text) {
+  const t = targetOf(ordinal, mode, modeValue, plain, number);
+  const { picked } = await resolveTarget(this.page, t);
+  const bad = picked.filter((i) => i.alt !== text.trim());
+  if (bad.length) {
+    throw friendly(`Expected ${describeTarget(t)} to have the alt text "${text}", but saw ${bad.map((i) => (i.alt ? `"${i.alt}"` : 'an empty alt')).join(', ')}`);
+  }
+});
+
+/**
+ * Assert a Drimage image's title attribute, the tooltip text.
+ *
+ * Example #1: Then the drimage image "Team meeting around a table" should have the title "Vardot team"
+ * Example #2: Then the second drimage image should have the title "Vardot team"
+ * Example #3: Then the drimage image captioned "Our team in the new office" should have the title "Vardot team"
+ * Example #4: Then the last dynamic responsive image should have the title "Vardot team"
+ * Example #5: Then the drimage image number 2 should have the title "Vardot team"
+ */
+Then(new RegExp(`^${TARGET} should have the title "([^"]*)"$`), async function (ordinal, mode, modeValue, plain, number, text) {
+  const t = targetOf(ordinal, mode, modeValue, plain, number);
+  const { picked } = await resolveTarget(this.page, t);
+  const bad = picked.filter((i) => i.title !== text.trim());
+  if (bad.length) {
+    throw friendly(`Expected ${describeTarget(t)} to have the title "${text}", but saw ${bad.map((i) => (i.title ? `"${i.title}"` : 'no title')).join(', ')}`);
+  }
+});
+
+/**
+ * Assert a Drimage image is wrapped in a <figure>, the semantic element the
+ * theme's image component renders so a caption has somewhere to live.
+ *
+ * Example #1: Then the drimage image "Team collaborating in a modern glass-walled office" should be in a figure
+ * Example #2: Then the first drimage image should be in a figure
+ * Example #3: Then the drimage image captioned "Our team in the new office" should be in a figure
+ * Example #4: Then the last dynamic responsive image should be in a figure
+ * Example #5: Then the drimage image number 2 should be in a figure
+ */
+Then(new RegExp(`^${TARGET} should be in a figure$`), async function (ordinal, mode, modeValue, plain, number) {
+  const t = targetOf(ordinal, mode, modeValue, plain, number);
+  const { picked } = await resolveTarget(this.page, t);
+  if (picked.some((i) => !i.inFigure)) {
+    throw friendly(`Expected ${describeTarget(t)} to be inside a <figure>, but it is not`);
   }
 });

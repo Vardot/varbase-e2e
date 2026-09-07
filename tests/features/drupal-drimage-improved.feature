@@ -33,6 +33,24 @@ Feature: Drimage Improved dynamic responsive images
     When I set the viewport to the "xs" breakpoint
     Then the drimage images should be sized for the viewport within 2 seconds
 
+  Scenario: One image can be named the way a person would, never by a selector
+    Then the first drimage image should be loaded
+    And the drimage image number 1 should be loaded
+    And the drimage image captioned "Our team in the new office" should be loaded
+    And the drimage image with the alt text "Team collaborating in a modern glass-walled office" should be loaded
+    And the last drimage image should still be a placeholder
+    And the drimage image titled "Vardot team" should not be loaded yet
+    And the drimage image "Vardot team" should not be loaded yet
+
+  Scenario: The figure, its caption, the alt text and the title reached the front end
+    Then the first drimage image should be in a figure
+    And the first drimage image should have a caption
+    And the first drimage image should have the caption "Our team in the new office"
+    And the drimage image captioned "Our team in the new office" should have the alt text "Team collaborating in a modern glass-walled office"
+    And the second drimage image should have the title "Vardot team"
+    And the drimage image "Team meeting around a table" should have the title "Vardot team"
+    And the last drimage image should be in a figure
+
   Scenario: Every qualifier names the same images
     Then the drimage improved images should be loaded
     And the dynamic images should be loaded

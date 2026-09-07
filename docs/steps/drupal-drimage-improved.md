@@ -1,6 +1,6 @@
 # Drimage Improved steps
 
-9 steps, defined in `tests/step-definitions/drupal-drimage-improved.steps.js`.
+13 steps, defined in `tests/step-definitions/drupal-drimage-improved.steps.js`.
 
 Cucumber-js loads every `*.steps.js` in that directory automatically — you never `require()` a step file from a feature.
 
@@ -9,6 +9,19 @@ These steps test the **dynamic responsive images** the [Drimage Improved](https:
 **The default budget is 2 seconds.** The module exists to make images fast; a step that waits 15 or 20 seconds is hiding a problem, not tolerating one. Every step settles the page first with the harness BBR wait (`smartSettle`: `networkidle` plus the AJAX, pending-timer and DOM-quiet counters), so the module's `setTimeout` swap has fired before the assertion looks — no static sleeps anywhere.
 
 **The qualifier is optional and interchangeable**: `drimage`, `drimage improved`, `dynamic`, `dynamic responsive`, `responsive`, or none at all name the same images.
+
+**Naming one image.** The single-image steps take a target instead of a selector, any of these ways:
+
+| Say | Matches |
+| --- | --- |
+| `the drimage image "Hero banner"` | alt text **or** title, whichever equals it (a contains match as fallback) |
+| `the drimage image with the alt text "Hero banner"` | alt only |
+| `the drimage image titled "Vardot team"` / `with the title "…"` | the `title` attribute |
+| `the drimage image captioned "Our team in 2026"` / `with the caption "…"` | the `<figcaption>` of its `<figure>` |
+| `the first drimage image`, `the 3rd …`, `the last …` | order in the page |
+| `the drimage image number 3` | the same, as a number |
+
+Prefer alt text or caption on real pages: on a page with tabs or a carousel, "the last image" may sit in a hidden pane the module never renders (Horizon Aid's home does exactly that).
 
 **Why the derivative URL matters**: the SVG placeholder itself decodes (`naturalWidth > 0`), so a bitmap check alone cannot tell a placeholder from a loaded image. An image counts as loaded only once its `src` is a real derivative *and* the bitmap decoded. Images still on their placeholder because lazy loading has not reached them are never counted against the page.
 
@@ -23,6 +36,10 @@ These steps test the **dynamic responsive images** the [Drimage Improved](https:
 | 7 | `Then the drimage images should be sized for the viewport` |
 | 8 | `Then the drimage images should use lazy loading` |
 | 9 | `Then the drimage image "Team meeting around a table" should still be a placeholder` |
+| 10 | `Then the first drimage image should have the caption "Our team in the new office"` |
+| 11 | `Then the first drimage image should have the alt text "Team collaborating in a modern glass-walled office"` |
+| 12 | `Then the drimage image "Team meeting around a table" should have the title "Vardot team"` |
+| 13 | `Then the first drimage image should be in a figure` |
 
 A typical page check, as the Vardot QA team runs it against a Varbase site:
 
@@ -68,24 +85,24 @@ Then the images should be loaded
 
 ## 2. Then the drimage image "Team collaborating in a modern glass-walled office" should be loaded
 
-Assert one Drimage image, named by its **alt text**, swapped its placeholder for a real derivative and decoded the bitmap. The alt text is what an editor typed and what a screen reader says — the human name of the image, no class or id needed.
+Assert one Drimage image swapped its placeholder for a real derivative and decoded the bitmap. Name it any of the ways in the table above — alt or title in quotes, `titled`, `captioned`, `with the alt text`, an ordinal, or a number — never a class or an id.
 
 **Keyword**: `Then`
 
-**Pattern**
+**Pattern** (the target, then the assertion)
 
 ```js
-/^the (?:drimage improved |drimage |dynamic responsive |dynamic |responsive )?image "([^"]*)" should be loaded(?: within (\d+) seconds?)?$/
+/^the (?:(first|second|…|tenth|last|\d+(?:st|nd|rd|th)) )?(?:drimage improved |drimage |dynamic responsive |dynamic |responsive )?image(?: (titled|captioned|with the alt text|with the title|with the caption) "([^"]*)"| "([^"]*)"| number (\d+))? should be loaded(?: within (\d+) seconds?)?$/
 ```
 
 **Examples**
 
 ```gherkin
 Then the drimage image "Team collaborating in a modern glass-walled office" should be loaded
-Then the drimage improved image "Team meeting around a table" should be loaded within 2 seconds
-Then the dynamic image "Campus at dusk" should be loaded
-And the responsive image "Annual report cover" should be loaded within 1 second
-Then the image "Team collaborating in a modern glass-walled office" should be loaded
+Then the first drimage image should be loaded
+Then the drimage image captioned "Our team in the new office" should be loaded within 2 seconds
+Then the dynamic responsive image titled "Vardot team" should be loaded
+Then the drimage image number 2 should be loaded within 1 second
 ```
 
 ## 3. Then the drimage images should be rendered
@@ -226,7 +243,7 @@ Then the images should use lazy loading
 
 ## 9. Then the drimage image "Team meeting around a table" should still be a placeholder
 
-Assert a Drimage image, named by its alt text, has **not** loaded yet: it is still on the module's SVG placeholder because it sits outside the viewport and lazy loading has not reached it. This is the **intersection check** — settle the page, look once (no waiting for something not to happen), then scroll it into view and assert it loads:
+Assert a Drimage image (named any of the ways above) has **not** loaded yet: it is still on the module's SVG placeholder because it sits outside the viewport and lazy loading has not reached it. This is the **intersection check** — settle the page, look once (no waiting for something not to happen), then scroll it into view and assert it loads:
 
 ```gherkin
 Then the drimage image "Team meeting around a table" should still be a placeholder
@@ -239,15 +256,117 @@ Then the drimage image "Team meeting around a table" should be loaded within 2 s
 **Pattern**
 
 ```js
-/^the (?:drimage improved |drimage |dynamic responsive |dynamic |responsive )?image "([^"]*)" should (?:still be a placeholder|not be loaded yet)$/
+/^<target> should (?:still be a placeholder|not be loaded yet)$/
 ```
 
 **Examples**
 
 ```gherkin
 Then the drimage image "Team meeting around a table" should still be a placeholder
-Then the drimage improved image "Footer map" should not be loaded yet
-Then the dynamic responsive image "Campus at dusk" should still be a placeholder
-And the responsive image "Annual report cover" should not be loaded yet
-Then the image "Team meeting around a table" should still be a placeholder
+Then the last drimage image should not be loaded yet
+Then the drimage image captioned "Our team in the new office" should still be a placeholder
+And the responsive image number 2 should not be loaded yet
+Then the second image should still be a placeholder
 ```
+
+## 10. Then the first drimage image should have the caption "Our team in the new office"
+
+Assert a Drimage image has a caption: its `<figure>` carries a `<figcaption>`, and when a text is given, that is the caption (exact after trimming). `should have a caption` checks only that one exists.
+
+**Keyword**: `Then`
+
+**Pattern**
+
+```js
+/^<target> should have (?:a caption|the caption "([^"]*)")$/
+```
+
+**Examples**
+
+```gherkin
+Then the first drimage image should have the caption "Our team in the new office"
+Then the drimage image "Team meeting around a table" should have a caption
+Then the drimage image titled "Vardot team" should have the caption "Our team in the new office"
+Then the last dynamic responsive image should have a caption
+Then the drimage image number 2 should have the caption "Our team in the new office"
+```
+
+## 11. Then the first drimage image should have the alt text "Team collaborating in a modern glass-walled office"
+
+Assert a Drimage image's alt text — what a screen reader says and what search engines index. Name the image by order, title or caption, then check the alt an editor typed reached the front end.
+
+**Keyword**: `Then`
+
+**Pattern**
+
+```js
+/^<target> should have the alt text "([^"]*)"$/
+```
+
+**Examples**
+
+```gherkin
+Then the first drimage image should have the alt text "Team collaborating in a modern glass-walled office"
+Then the drimage image captioned "Our team in the new office" should have the alt text "Team meeting around a table"
+Then the last dynamic responsive image should have the alt text "Team meeting around a table"
+Then the drimage image number 1 should have the alt text "Team collaborating in a modern glass-walled office"
+Then the drimage image titled "Vardot team" should have the alt text "Team meeting around a table"
+```
+
+## 12. Then the drimage image "Team meeting around a table" should have the title "Vardot team"
+
+Assert a Drimage image's `title` attribute, the tooltip text.
+
+**Keyword**: `Then`
+
+**Pattern**
+
+```js
+/^<target> should have the title "([^"]*)"$/
+```
+
+**Examples**
+
+```gherkin
+Then the drimage image "Team meeting around a table" should have the title "Vardot team"
+Then the second drimage image should have the title "Vardot team"
+Then the drimage image captioned "Our team in the new office" should have the title "Vardot team"
+Then the last dynamic responsive image should have the title "Vardot team"
+Then the drimage image number 2 should have the title "Vardot team"
+```
+
+## 13. Then the first drimage image should be in a figure
+
+Assert a Drimage image is wrapped in a `<figure>`, the semantic element the theme's image component renders so a caption has somewhere to live.
+
+**Keyword**: `Then`
+
+**Pattern**
+
+```js
+/^<target> should be in a figure$/
+```
+
+**Examples**
+
+```gherkin
+Then the drimage image "Team collaborating in a modern glass-walled office" should be in a figure
+Then the first drimage image should be in a figure
+Then the drimage image captioned "Our team in the new office" should be in a figure
+Then the last dynamic responsive image should be in a figure
+Then the drimage image number 2 should be in a figure
+```
+
+`<target>` in the patterns above is the single-image grammar shown in full under step 2.
+
+## Verified on the live demos
+
+Run anonymously on 7 September 2026 with the recipe at the top of this page plus the single-image steps:
+
+| Site | Result |
+| --- | --- |
+| demo.varbase.vardot.com (Home) | 14 steps green, 5.0 s |
+| Educare Sandbox 1 (Home) | 18 steps green, 8.3 s, including `the last drimage image` after a scroll |
+| Horizon Aid Client Demo 1 (Home) | 14 of 18 green; `the last drimage image should be loaded` correctly fails because the last two images are carousel slides and four more sit in hidden tab panes — name those by alt text instead |
+
+Draft feature files in each project's own conventions (`15-quality/15-04-drimage-images.feature` in `varbase_project`, `07-quality/07-04-…` in `educare`, `07-quality/07-03-…` in `horizonaid`) came out of that session.

@@ -59,24 +59,6 @@ Then "<sel>" should have attribute "data-state" with value "open"
 Then "<sel>" should have class "is-active"
 ```
 
-## Images that actually decoded
-
-An `<img>` can carry every expected class and attribute while its bitmap never
-decodes — a responsive-image placeholder that never swaps its `src`, or a
-derivative the server failed to generate. Attribute assertions pass on both.
-This one polls until at least one match reports `complete` with a non-zero
-`naturalWidth`, so a broken image fails red:
-
-```gherkin
-Then the image "img.responsive-image" should be loaded
-Then the image ".hero img" should be loaded within 20 seconds
-Then the image ".field--name-field-media-image img" should be loaded within 15 seconds
-```
-
-"At least one" is deliberate: on a page whose carousel keeps some matches in an
-inactive slide, lazy loading has not reached them and never will while the slide
-is hidden. Scope the selector when you need a specific image.
-
 ## Role-based interactions
 
 When you want accessibility-aligned tests, use the role family. These resolve via `page.getByRole(role, { name })` — the same rules screen readers use:

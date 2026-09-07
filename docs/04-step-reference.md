@@ -4,7 +4,7 @@ All step definitions ship in `tests/step-definitions/*.steps.js`. Cucumber-js lo
 
 This is a topical reference — the fast lookup when you know roughly what you want.
 
-For the **full catalogue**, with every step's pattern and at least five valid Gherkin examples each, see [`steps/`](steps/README.md): 495 steps across 44 category pages, generated from the step definitions themselves. The Drupal and Varbase packs are documented there and not repeated below.
+For the **full catalogue**, with every step's pattern and at least five valid Gherkin examples each, see [`steps/`](steps/README.md): 496 steps across 45 category pages, generated from the step definitions themselves. The Drupal and Varbase packs are documented there and not repeated below.
 
 ## Navigation
 
@@ -89,7 +89,6 @@ eventually I should see "..."                     # Polling text assertion
 "selector" should have value "..."
 "selector" should have attribute "name" with value "..."
 "selector" should have class "..."
-the image "selector" should be loaded [within N seconds]
 I click the "Text" button|link|tab|menuitem|checkbox|radio|option
 the "Text" button should be visible
 ```
@@ -734,7 +733,6 @@ This index lists every public step grouped by source file, with one Gherkin exam
 - *^"([^"]*)" should have value "([^"]*)"(?: within (\d+) seconds?)?$*  ·  Example: `Then "#email" should have value "alice@example.com"`
 - *^"([^"]*)" should have attribute "([^"]*)" with value "([^"]*)"(?: within (\d+) seconds?)?$*  ·  Example: `Then "#tab-1" should have attribute "aria-selected" with value "true"`
 - *^"([^"]*)" should have class "([^"]*)"(?: within (\d+) seconds?)?$*  ·  Example: `Then "#tab-1" should have class "is-active"`
-- *^the image "([^"]*)" should be loaded(?: within (\d+) seconds?)?$*  ·  Example: `Then the image "img.responsive-image" should be loaded within 10 seconds`
 - *^(I |we )*click the "([^"]*)" (button|link|tab|menuitem|checkbox|radio|option)$*  ·  Example: `When I click the "Sign in" button`
 - *^the "([^"]*)" (button|link|tab|menuitem|checkbox|radio|option) should be visible(?: within (\d+) seconds?)?$*  ·  Example: `Then the "Save changes" button should be visible`
 

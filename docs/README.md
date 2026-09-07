@@ -1,3 +1,5 @@
+![Varbase E2E](../images/varbase-e2e-logo.svg)
+
 # Varbase E2E Documentation
 
 Varbase E2E is a BDD-first browser-automation harness built on Playwright + Cucumber-js. Feature files in plain Gherkin; selectors that survive redesigns; smart waits that never sleep.

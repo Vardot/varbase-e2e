@@ -1,3 +1,5 @@
+![Varbase E2E](images/varbase-e2e-logo.svg)
+
 # Varbase E2E
 
 [![Github Actions](https://github.com/Vardot/varbase-e2e/actions/workflows/github-actions.yml/badge.svg?branch=2.0.x)](https://github.com/Vardot/varbase-e2e/actions)

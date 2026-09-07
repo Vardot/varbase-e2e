@@ -19,8 +19,12 @@ placeholder that never swaps its `src`, or a derivative the server failed to
 generate (a 4xx or 5xx on the `/styles/drimage_improved_*` request), still
 carries every expected class and attribute while `naturalWidth` stays 0 — so
 `should be visible` and `should have attribute` both pass on a broken image.
-This step polls until at least one match reports `complete` with a non-zero
-natural width, so the derivatives failing to generate fails the scenario red.
+This step smart-settles the page first — the harness's BBR wait, so networkidle
+plus the AJAX, pending-timer and DOM-quiet counters all have to go quiet before
+it looks, which covers a loader that swaps the placeholder inside a
+`setTimeout` — then polls until at least one match reports `complete` with a
+non-zero natural width. Derivatives that never generate fail the scenario red.
+There is no static sleep anywhere in it.
 
 "At least one" is deliberate: on a page whose carousel keeps some matches in an
 inactive slide, lazy loading has not reached them and never will while the slide

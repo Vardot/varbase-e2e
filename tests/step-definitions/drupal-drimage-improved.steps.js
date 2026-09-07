@@ -10,27 +10,11 @@
 // -----------------------------------------------------------------------------
 
 const { Then } = require('@cucumber/cucumber');
-const { friendly } = require('./varbase-e2e');
+const { smartSettle, friendly } = require('./varbase-e2e');
 
 function parseTimeout(secondsStr) {
   const n = secondsStr ? parseInt(secondsStr, 10) : 0;
   return n > 0 ? n * 1000 : 5000;
-}
-
-// Poll fn() until predicate(value) holds, or the budget elapses.
-async function poll(fn, predicate, timeout, message) {
-  const deadline = Date.now() + timeout;
-  let last;
-  while (Date.now() < deadline) {
-    try {
-      last = await fn();
-      if (predicate(last)) return last;
-    } catch (e) {
-      last = e;
-    }
-    await new Promise((r) => setTimeout(r, 100));
-  }
-  throw friendly(`${message} (last seen: ${typeof last === 'object' ? JSON.stringify(last) : String(last)})`);
 }
 
 /**
@@ -38,11 +22,17 @@ async function poll(fn, predicate, timeout, message) {
  *
  * Attribute assertions cannot tell a rendered image from a broken one: a
  * responsive-image placeholder that never swaps its `src`, or a derivative the
- * server failed to generate (a 4xx or 5xx on the /styles/ request), still carries every expected class and attribute
- * while `naturalWidth` stays 0. This polls until a match reports `complete`
+ * server failed to generate (a 4xx or 5xx on the /styles/ request), still
+ * carries every expected class and attribute while `naturalWidth` stays 0.
+ *
+ * It smart-settles the page first — the harness's BBR wait: networkidle plus
+ * the AJAX, pending-timer and DOM-quiet counters the init script maintains —
+ * so a loader that swaps the placeholder inside a setTimeout has fired before
+ * the assertion looks at all. Then it polls until a match reports `complete`
  * with a non-zero natural width, so a broken derivative fails red. "At least
  * one" keeps it stable on pages where some matches sit in an inactive carousel
- * slide lazy loading has not reached. Default budget 5 seconds.
+ * slide lazy loading has not reached. Default budget 5 seconds; no static
+ * sleeps anywhere.
  *
  * The qualifier is optional and interchangeable — "drimage", "drimage
  * improved", "dynamic", "dynamic responsive", "responsive", or none at all, so
@@ -58,14 +48,33 @@ async function poll(fn, predicate, timeout, message) {
  *
  */
 Then(/^the (?:drimage improved |drimage |dynamic responsive |dynamic |responsive )?image "([^"]*)" should be loaded(?: within (\d+) seconds?)?$/, async function (selector, sec) {
-  const timeout = parseTimeout(sec);
-  await this.page.locator(selector).first().waitFor({ state: 'attached', timeout }).catch(() => {
-    throw friendly(`No element matching "${selector}" ever attached to the page`);
-  });
-  await poll(
-    () => this.page.locator(selector).evaluateAll((imgs) => imgs.map((img) => (img.complete ? img.naturalWidth : 0))),
-    (widths) => Array.isArray(widths) && widths.some((w) => w > 0),
-    timeout,
-    `Expected at least one image matching "${selector}" to decode a bitmap, but every match reported a natural width of 0 — the image is broken or its derivative was never generated`
-  );
+  const budget = parseTimeout(sec);
+
+  // BBR: let the page settle first — networkidle plus the AJAX, pending-timer
+  // and DOM-quiet counters the init script maintains — so a lazy loader that
+  // swaps the placeholder in a setTimeout has fired before we look at all.
+  await smartSettle(this.page, budget);
+
+  try {
+    await this.page.locator(selector).first().waitFor({ state: 'attached', timeout: budget });
+  } catch (cause) {
+    throw friendly(`No element matching "${selector}" ever attached to the page`, cause);
+  }
+
+  try {
+    await this.page.waitForFunction(
+      (sel) => Array.from(document.querySelectorAll(sel)).some((img) => img.complete && img.naturalWidth > 0),
+      selector,
+      { timeout: budget, polling: 200 }
+    );
+  } catch (cause) {
+    const widths = await this.page
+      .locator(selector)
+      .evaluateAll((imgs) => imgs.map((img) => img.naturalWidth))
+      .catch(() => []);
+    throw friendly(
+      `Expected at least one image matching "${selector}" to decode a bitmap, but the natural widths were [${widths.join(', ')}] — the image is broken or its derivative was never generated`,
+      cause
+    );
+  }
 });

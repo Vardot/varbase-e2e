@@ -4,7 +4,7 @@
 
 Varbase E2E is a BDD-first browser-automation harness built on Playwright + Cucumber-js. Feature files in plain Gherkin; selectors that survive redesigns; smart waits that never sleep.
 
-**512 built-in steps** across **45 step files**, including the Drupal and Varbase packs. **282 example scenarios / 1,372 step executions** in the bundled suite, all green on chromium.
+**512 built-in steps** across **45 step files**, including the Drupal and Varbase packs. **299 example scenarios / 1,456 step executions** in the bundled suite, all green on chromium.
 
 The full step catalogue — one page per category, generated from the step definitions themselves — is in **[`steps/`](steps/README.md)**.
 

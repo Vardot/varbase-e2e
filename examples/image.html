@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html><head><title>Image Demo</title></head>
+<body>
+  <h1>Image loading demo</h1>
+
+  <!-- Decodes immediately: a 2x2 red PNG as a data URI. -->
+  <img id="ready" class="demo-image" alt="Ready" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAIAAAACCAYAAABytg0kAAAAFElEQVR4nGP8z8DAwMDAxAADCAYAJPgD/rG4qhEAAAAASUVORK5CYII=">
+
+  <!-- A placeholder that swaps to a real bitmap after 600ms, the way a
+       responsive-image loader replaces its low-quality placeholder. -->
+  <img id="deferred" class="demo-image lazy" alt="Deferred" data-src="swap">
+
+  <!-- Never resolves: naturalWidth stays 0, the broken-derivative case. -->
+  <img id="broken" class="broken-image" alt="Broken" src="/examples/does-not-exist.png">
+
+  <script>
+    setTimeout(function () {
+      document.getElementById('deferred').src =
+        'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAIAAAACCAYAAABytg0kAAAAFElEQVR4nGP8z8DAwMDAxAADCAYAJPgD/rG4qhEAAAAASUVORK5CYII=';
+    }, 600);
+  </script>
+</body></html>

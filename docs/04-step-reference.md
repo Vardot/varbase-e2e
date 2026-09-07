@@ -89,6 +89,7 @@ eventually I should see "..."                     # Polling text assertion
 "selector" should have value "..."
 "selector" should have attribute "name" with value "..."
 "selector" should have class "..."
+the image "selector" should be loaded [within N seconds]
 I click the "Text" button|link|tab|menuitem|checkbox|radio|option
 the "Text" button should be visible
 ```
@@ -733,6 +734,7 @@ This index lists every public step grouped by source file, with one Gherkin exam
 - *^"([^"]*)" should have value "([^"]*)"(?: within (\d+) seconds?)?$*  ·  Example: `Then "#email" should have value "alice@example.com"`
 - *^"([^"]*)" should have attribute "([^"]*)" with value "([^"]*)"(?: within (\d+) seconds?)?$*  ·  Example: `Then "#tab-1" should have attribute "aria-selected" with value "true"`
 - *^"([^"]*)" should have class "([^"]*)"(?: within (\d+) seconds?)?$*  ·  Example: `Then "#tab-1" should have class "is-active"`
+- *^the image "([^"]*)" should be loaded(?: within (\d+) seconds?)?$*  ·  Example: `Then the image "img.responsive-image" should be loaded within 10 seconds`
 - *^(I |we )*click the "([^"]*)" (button|link|tab|menuitem|checkbox|radio|option)$*  ·  Example: `When I click the "Sign in" button`
 - *^the "([^"]*)" (button|link|tab|menuitem|checkbox|radio|option) should be visible(?: within (\d+) seconds?)?$*  ·  Example: `Then the "Save changes" button should be visible`
 

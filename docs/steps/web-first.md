@@ -16,8 +16,9 @@ Cucumber-js loads every `*.steps.js` in that directory automatically — you nev
 | 8 | `Then "#email" should have value "alice@example.com"` |
 | 9 | `Then "#tab-1" should have attribute "aria-selected" with value "true"` |
 | 10 | `Then "#tab-1" should have class "is-active"` |
-| 11 | `When I click the "Sign in" button` |
-| 12 | `Then the "Save changes" button should be visible` |
+| 11 | `Then the image "img.responsive-image" should be loaded` |
+| 12 | `When I click the "Sign in" button` |
+| 13 | `Then the "Save changes" button should be visible` |
 
 ---
 
@@ -244,7 +245,29 @@ Then "tr.row-1" should have class "selected"
 Then "[data-testid=card]" should have class "highlighted"
 ```
 
-## 11. When I click the "Sign in" button
+## 11. Then the image "img.responsive-image" should be loaded
+
+Assert at least one `<img>` matching the selector decoded a real bitmap (auto-retry).
+
+**Keyword**: `Then`
+
+**Pattern**
+
+```js
+/^the image "([^"]*)" should be loaded(?: within (\d+) seconds?)?$/
+```
+
+**Examples**
+
+```gherkin
+Then the image "img.responsive-image" should be loaded
+Then the image ".hero img" should be loaded within 20 seconds
+And the image "picture img" should be loaded
+Then the image ".field--name-field-media-image img" should be loaded within 15 seconds
+Then the image "img[data-src]" should be loaded within 10 seconds
+```
+
+## 12. When I click the "Sign in" button
 
 Click an element by its accessible role + name (Playwright `getByRole`).
 
@@ -266,7 +289,7 @@ When I click the "Subscribe" checkbox
 When I click the "Premium" radio
 ```
 
-## 12. Then the "Save changes" button should be visible
+## 13. Then the "Save changes" button should be visible
 
 Assert a role-addressed element is visible (auto-retry).
 

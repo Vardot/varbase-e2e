@@ -296,3 +296,34 @@ Then(/^the "([^"]*)" (button|link|tab|menuitem|checkbox|radio|option) should be 
     `Expected ${role} "${name}" to be visible`
   );
 });
+
+/**
+ * Assert at least one <img> matching the selector decoded a real bitmap (auto-retry).
+ *
+ * Attribute assertions cannot tell a rendered image from a broken one: a
+ * responsive-image placeholder that never swaps its `src`, or a derivative the
+ * server failed to generate, still carries every expected class and attribute
+ * while `naturalWidth` stays 0. This polls until a match reports `complete`
+ * with a non-zero natural width, so a broken derivative fails red. "At least
+ * one" keeps it stable on pages where some matches sit in an inactive carousel
+ * slide lazy loading has not reached. Default budget 5 seconds.
+ *
+ * Example #1: Then the image "img.responsive-image" should be loaded
+ * Example #2: Then the image ".hero img" should be loaded within 20 seconds
+ * Example #3: And the image "picture img" should be loaded
+ * Example #4: Then the image ".field--name-field-media-image img" should be loaded within 15 seconds
+ * Example #5: Then the image "img[data-src]" should be loaded within 10 seconds
+ *
+ */
+Then(/^the image "([^"]*)" should be loaded(?: within (\d+) seconds?)?$/, async function (selector, sec) {
+  const timeout = parseTimeout(sec);
+  await this.page.locator(selector).first().waitFor({ state: 'attached', timeout }).catch(() => {
+    throw friendly(`No element matching "${selector}" ever attached to the page`);
+  });
+  await poll(
+    () => this.page.locator(selector).evaluateAll((imgs) => imgs.map((img) => (img.complete ? img.naturalWidth : 0))),
+    (widths) => Array.isArray(widths) && widths.some((w) => w > 0),
+    timeout,
+    `Expected at least one image matching "${selector}" to decode a bitmap, but every match reported a natural width of 0 — the image is broken or its derivative was never generated`
+  );
+});

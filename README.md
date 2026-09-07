@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="images/varbase-e2e-logo.svg" alt="Varbase E2E" width="420">
+</p>
+
 # Varbase E2E
 
 [![Github Actions](https://github.com/Vardot/varbase-e2e/actions/workflows/github-actions.yml/badge.svg?branch=2.0.x)](https://github.com/Vardot/varbase-e2e/actions)

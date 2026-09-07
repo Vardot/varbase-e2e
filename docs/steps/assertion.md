@@ -1,6 +1,6 @@
 # Assertions steps
 
-14 steps, defined in `tests/step-definitions/assertion.steps.js`.
+16 steps, defined in `tests/step-definitions/assertion.steps.js`.
 
 Cucumber-js loads every `*.steps.js` in that directory automatically — you never `require()` a step file from a feature.
 
@@ -18,8 +18,10 @@ Cucumber-js loads every `*.steps.js` in that directory automatically — you nev
 | 10 | `Then I should see 3 "li" elements` |
 | 11 | `Then the "Login" link should contain "/log-in"` |
 | 12 | `Then the "#about-us-id" link should contain "about" by attr` |
-| 13 | `Then the response should contain "Welcome visitor"` |
-| 14 | `Then the response status code should be 200` |
+| 13 | `Then the page title should be "About Us"` |
+| 14 | `Then the page title should contain "About"` |
+| 15 | `Then the response should contain "Welcome visitor"` |
+| 16 | `Then the response status code should be 200` |
 
 ---
 
@@ -280,7 +282,59 @@ And the "aboutUs" link should contain "about" by its "class" attribute
 And the ".contactUs" link should contain "/contact-" by attr
 ```
 
-## 13. Then the response should contain "Welcome visitor"
+## 13. Then the page title should be "About Us"
+
+Assert the page title is, or is not, exactly this text.
+
+The title is `document.title` — the `<title>` element, which is the browser tab text, the bookmark name, the search-result heading and what a screen reader announces first on a new page. On a Drupal site it is the head title pattern, so this is how a test proves the pattern and the token that fills it both work. Compared after trimming, because a title built from a template often carries stray whitespace around the separator.
+
+**Keyword**: `Then`
+
+**Pattern**
+
+```js
+/^(the )*page title should( not)* be "([^"]*)?"$/
+```
+
+**Examples**
+
+```gherkin
+Then the page title should be "About Us"
+Then the page title should not be "Access denied"
+And the page title should be "Contact Us | Example"
+When I go to "/blog"
+  Then the page title should be "Blog | Example"
+Then the page title should not be "Page not found | Example"
+```
+
+## 14. Then the page title should contain "About"
+
+Assert the page title contains, or does not contain, this text.
+
+The form to reach for on a real site: the head title carries the site name and a separator the test has no business hardcoding, so assert the part the page owns. Case-sensitive, compared after trimming.
+
+**Keyword**: `Then`
+
+**Pattern**
+
+```js
+/^(the )*page title should( not)* contain "([^"]*)?"$/
+```
+
+**Examples**
+
+```gherkin
+Then the page title should contain "About"
+Then the page title should not contain "Access denied"
+And the page title should contain "Getting Started"
+When I go to "/contact-us"
+  Then the page title should contain "Contact"
+Then the page title should not contain "Untitled"
+```
+
+Related: `I wait until the page title is/contains "..."` in [`wait.md`](wait.md) waits for a title to become something; these two assert what it is now.
+
+## 15. Then the response should contain "Welcome visitor"
 
 Assert that the rendered HTML response contains or does not contain text.
 
@@ -307,7 +361,7 @@ When I am on "/about"
   And the response should not contain "TODO"
 ```
 
-## 14. Then the response status code should be 200
+## 16. Then the response status code should be 200
 
 Assert that the current page's response status is or is not a given code.
 

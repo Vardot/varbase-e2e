@@ -4,7 +4,7 @@ Every step Varbase E2E ships, one page per category, generated from the step
 definitions themselves — so the phrasing, the pattern and the examples on these
 pages are exactly what the runner matches.
 
-**506 steps across 45 categories.**
+**508 steps across 45 categories.**
 
 Cucumber-js loads every `*.steps.js` under `tests/step-definitions/`
 automatically. You never `require()` a step file from a feature: write the
@@ -68,7 +68,7 @@ Asserting what the page ended up showing.
 
 | Category | Steps | Page |
 | --- | --- | --- |
-| Assertions | 14 | [`assertion.md`](assertion.md) |
+| Assertions | 16 | [`assertion.md`](assertion.md) |
 | Web-first matchers | 12 | [`web-first.md`](web-first.md) |
 | Element interactions | 19 | [`element.md`](element.md) |
 | Tables | 8 | [`table.md`](table.md) |

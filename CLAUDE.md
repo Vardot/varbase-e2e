@@ -266,7 +266,7 @@ Some pairs look similar but cover different domains. NEVER merge:
 
 ## 5. File organisation
 
-506 built-in steps across 45 step files. Cucumber auto-loads every
+508 built-in steps across 45 step files. Cucumber auto-loads every
 `*.steps.js` in `tests/step-definitions/`.
 
 ```
@@ -276,7 +276,7 @@ tests/step-definitions/
 ├── a11y.steps.js           (26)  # axe-core WCAG audits + POUR hygiene probes (axe loaded lazily)
 ├── action.steps.js          (7)  # press / click / follow / attach file (actOrExplain lives here)
 ├── api.steps.js            (22)  # REST long form — base URL, headers, query, body, JSON Pointer
-├── assertion.steps.js      (14)  # see / not see, in row, in element, response, count
+├── assertion.steps.js      (16)  # see / not see, in row, in element, page title, response, count
 ├── auth.steps.js            (3)  # storageState save / restore / clear
 ├── clock.steps.js           (7)  # page.clock — install / advance / pause / set
 ├── cookie.steps.js         (12)  # cookie exists / equals / contains

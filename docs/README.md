@@ -4,7 +4,7 @@
 
 Varbase E2E is a BDD-first browser-automation harness built on Playwright + Cucumber-js. Feature files in plain Gherkin; selectors that survive redesigns; smart waits that never sleep.
 
-**506 built-in steps** across **45 step files**, including the Drupal and Varbase packs. **282 example scenarios / 1,372 step executions** in the bundled suite, all green on chromium.
+**508 built-in steps** across **45 step files**, including the Drupal and Varbase packs. **282 example scenarios / 1,372 step executions** in the bundled suite, all green on chromium.
 
 The full step catalogue — one page per category, generated from the step definitions themselves — is in **[`steps/`](steps/README.md)**.
 
@@ -41,7 +41,7 @@ The full step catalogue — one page per category, generated from the step defin
 | [Install — DDEV](install-varbase-e2e/ddev-varbase-e2e.md) | DDEV-Varbase-E2E variant |
 | [Global settings](global-settings.md) | `cucumber.js` `worldParameters` reference |
 | [Step definitions](step-definitions.md) | Step-definition hub — what a step is, the rules, where the catalogue lives |
-| [Step catalogue](steps/README.md) | All 506 steps, 45 category pages under `steps/`, generated from the source |
+| [Step catalogue](steps/README.md) | All 508 steps, 45 category pages under `steps/`, generated from the source |
 | [API step definitions](api-step-definitions.md) | REST step definitions |
 | [Advanced screenshots](advanced-screenshots.md) | Per-size, full-page, named (3 sub-pages under `advanced-screenshots/`) |
 | [Advanced selectors](advanced-selectors.md) | Named selector registry, position assertions |
@@ -81,7 +81,7 @@ varbase-e2e/
 │       ├── a11y.steps.js               (26)   # axe-core audits + WCAG hygiene probes
 │       ├── action.steps.js              (7)   # press / click / follow / attach
 │       ├── api.steps.js                (22)   # REST long form (base URL, headers, query, body, JSON Pointer)
-│       ├── assertion.steps.js          (14)   # see / not see, in row, in element, response, count
+│       ├── assertion.steps.js          (16)   # see / not see, in row, in element, page title, response, count
 │       ├── auth.steps.js                (3)   # save / restore / clear storageState
 │       ├── clock.steps.js               (7)   # install / advance / pause / set system time
 │       ├── cookie.steps.js             (12)   # cookie exists / equals / contains

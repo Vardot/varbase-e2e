@@ -1,8 +1,9 @@
 'use strict';
 
 // All page-level assertion step definitions live here:
-// see / not see text, in element, in row, link href, response body, response
-// status code, element existence, CSS property, regex matching, count.
+// see / not see text, in element, in row, link href, page title, response
+// body, response status code, element existence, CSS property, regex
+// matching, count.
 //
 // Field-level (checkbox/radio/field-contains) assertions live in field.steps.js.
 // URL/path assertions live in navigation.steps.js.
@@ -293,6 +294,63 @@ Then(/^(the )*"([^"]*)?" link should contain "([^"]*)?" by( its)*(?: "([^"]*)?")
   await loc.waitFor({ timeout: 5000 });
   const href = await loc.evaluate(el => el.href || el.getAttribute('href') || '');
   assert.ok(href.includes(url), `Expected element href to contain "${url}" but got "${href}"`);
+});
+
+// ---------------------------------------------------------------------------
+// Page title (<title>, the browser tab text)
+// ---------------------------------------------------------------------------
+
+/**
+ * Assert the page title is, or is not, exactly this text.
+ *
+ * The title is `document.title` — the `<title>` element, which is the browser
+ * tab text, the bookmark name, the search-result heading and what a screen
+ * reader announces first on a new page. On a Drupal site it is the head title
+ * pattern, so this is how a test proves the pattern and the token that fills
+ * it both work. Compared after trimming, because a title built from a template
+ * often carries stray whitespace around the separator.
+ *
+ * Example #1: Then the page title should be "About Us"
+ * Example #2: Then the page title should not be "Access denied"
+ * Example #3: And the page title should be "Contact Us | Example"
+ * Example #4: When I go to "/blog"
+ *               Then the page title should be "Blog | Example"
+ * Example #5: Then the page title should not be "Page not found | Example"
+ *
+ */
+Then(/^(the )*page title should( not)* be "([^"]*)?"$/, async function (theCase, notCase, expected) {
+  const title = ((await this.page.title()) || '').trim();
+  const want = (expected || '').trim();
+  if (notCase) {
+    assert.ok(title !== want, `Page title should NOT be "${want}" but it is.`);
+  } else {
+    assert.strictEqual(title, want, `Expected the page title to be "${want}" but it is "${title}".`);
+  }
+});
+
+/**
+ * Assert the page title contains, or does not contain, this text.
+ *
+ * The form to reach for on a real site: the head title carries the site name
+ * and a separator the test has no business hardcoding, so assert the part the
+ * page owns. Case-sensitive, compared after trimming.
+ *
+ * Example #1: Then the page title should contain "About"
+ * Example #2: Then the page title should not contain "Access denied"
+ * Example #3: And the page title should contain "Getting Started"
+ * Example #4: When I go to "/contact-us"
+ *               Then the page title should contain "Contact"
+ * Example #5: Then the page title should not contain "Untitled"
+ *
+ */
+Then(/^(the )*page title should( not)* contain "([^"]*)?"$/, async function (theCase, notCase, expected) {
+  const title = ((await this.page.title()) || '').trim();
+  const want = (expected || '').trim();
+  if (notCase) {
+    assert.ok(!title.includes(want), `Page title should NOT contain "${want}" but it is "${title}".`);
+  } else {
+    assert.ok(title.includes(want), `Expected the page title to contain "${want}" but it is "${title}".`);
+  }
 });
 
 // ---------------------------------------------------------------------------

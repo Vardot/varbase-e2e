@@ -358,6 +358,8 @@ This index lists every public step grouped by source file, with one Gherkin exam
 - *^(the )*"([^"]*)?" element should( not)* contain "([^"]*)?"$*  ·  Example: `Then the "body" element should contain "color:white;"`
 - *^(I |we )*should see (\d+) "([^"]*)" elements?$*  ·  Example: `Then I should see 3 "li" elements`
 - *^(the )*"([^"]*)?" link should contain "([^"]*)?"$*  ·  Example: `Then the "Login" link should contain "/log-in"`
+- *^(the )*page title should( not)* be "([^"]*)?"$*  ·  Example: `Then the page title should be "About Us"`
+- *^(the )*page title should( not)* contain "([^"]*)?"$*  ·  Example: `Then the page title should contain "About"`
 - *^(the )*"([^"]*)?" link should contain "([^"]*)?" by( its)*(?: "([^"]*)?")* (attribute|attr)$*  ·  Example: `Then the "#about-us-id" link should contain "about" by attr`
 - *^(the )*response should( not)* contain "([^"]*)?"$*  ·  Example: `Then the response should contain "Welcome visitor"`
 - *^(the )*response status code should( not)* be (\d+)$*  ·  Example: `Then the response status code should be 200`

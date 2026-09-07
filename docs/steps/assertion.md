@@ -1,6 +1,6 @@
 # Assertions steps
 
-16 steps, defined in `tests/step-definitions/assertion.steps.js`.
+17 steps, defined in `tests/step-definitions/assertion.steps.js`.
 
 Cucumber-js loads every `*.steps.js` in that directory automatically — you never `require()` a step file from a feature.
 
@@ -22,6 +22,7 @@ Cucumber-js loads every `*.steps.js` in that directory automatically — you nev
 | 14 | `Then the page title should contain "About"` |
 | 15 | `Then the response should contain "Welcome visitor"` |
 | 16 | `Then the response status code should be 200` |
+| 17 | `Then the page should return HTTP status 200` |
 
 ---
 
@@ -365,6 +366,8 @@ When I am on "/about"
 
 Assert that the current page's response status is or is not a given code.
 
+Re-requests the current URL **through the browser's own context**, so the check sees what this user sees: the session cookies travel with the request, and redirects are not followed, so a 3xx can actually be asserted.
+
 **Keyword**: `Then`
 
 **Pattern**
@@ -379,4 +382,32 @@ Assert that the current page's response status is or is not a given code.
 Then the response status code should be 200
 And the response status code should not be 404
 Then the response status code should be 301
+When I go to "/no-such-page"
+  Then the response status code should be 404
+Then the response status code should not be 500
 ```
+
+## 17. Then the page should return HTTP status 200
+
+The same assertion as step 16, in the phrasing that reads as a sentence about the page rather than about a response object — one implementation, two phrasings. A test about a 404 page reads better as "the page should return HTTP status 404"; a test about an API call reads better as "the response status code should be 404".
+
+**Keyword**: `Then`
+
+**Pattern**
+
+```js
+/^(the )*page should( not)* return HTTP status (\d+)$/
+```
+
+**Examples**
+
+```gherkin
+Then the page should return HTTP status 200
+Then the page should not return HTTP status 404
+And the page should return HTTP status 403
+When I go to "/no-such-page"
+  Then the page should return HTTP status 404
+Then the page should return HTTP status 301
+```
+
+Note: the status a page returns is not always what it renders. A Drupal site can answer 200 with an access-denied page, or 404 to keep a route unguessable — see the access assertions in [`navigation.md`](navigation.md) for asserting the refusal itself rather than its status.

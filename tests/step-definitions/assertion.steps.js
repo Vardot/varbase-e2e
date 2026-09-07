@@ -2,8 +2,7 @@
 
 // All page-level assertion step definitions live here:
 // see / not see text, in element, in row, link href, page title, response
-// body, response status code, element existence, CSS property, regex
-// matching, count.
+// body, HTTP status, element existence, CSS property, regex matching, count.
 //
 // Field-level (checkbox/radio/field-contains) assertions live in field.steps.js.
 // URL/path assertions live in navigation.steps.js.
@@ -11,7 +10,6 @@
 
 const { Then } = require('@cucumber/cucumber');
 const assert = require('assert');
-const axios = require('axios');
 const { buildSelector, getLocatorText, friendly } = require('./varbase-e2e');
 
 // ---------------------------------------------------------------------------
@@ -381,30 +379,63 @@ Then(/^(the )*response should( not)* contain "([^"]*)?"$/, async function (theCa
   }
 });
 
+// Re-request the page's own URL through the BROWSER context, so the request
+// carries the session cookies the browser already has — an admin page checked
+// with a cookie-less client answers 403 while the browser renders it fine.
+// Redirects are not followed: a step asserting 301 means the redirect itself.
+async function statusOfCurrentPage(page) {
+  const url = page.url();
+  const response = await page.context().request.get(url, { maxRedirects: 0 });
+  return response.status();
+}
+
 /**
  * Assert that the current page's response status is or is not a given code.
+ *
+ * Re-requests the current URL through the browser's own context, so the check
+ * sees what this user sees: the session cookies travel with the request, and
+ * redirects are not followed, so a 3xx can actually be asserted.
  *
  * Example #1: Then the response status code should be 200
  * Example #2: And the response status code should not be 404
  * Example #3: Then the response status code should be 301
+ * Example #4: When I go to "/no-such-page"
+ *               Then the response status code should be 404
+ * Example #5: Then the response status code should not be 500
  *
  */
-Then(/^(the )*response status code should( not)* be (\d+)$/, async function (theCase, notCase, expectedStatusCode) {
-  const currentURL = this.page.url();
+Then(/^(the )*response status code should( not)* be (\d+)$/, assertStatus);
+
+/**
+ * Assert the page returns, or does not return, an HTTP status — the phrasing
+ * that reads as a sentence about the page rather than about a response object.
+ *
+ * The same assertion as `the response status code should be N`: one
+ * implementation, two phrasings, because a test about a 404 page reads better
+ * as "the page should return HTTP status 404" while a test about an API call
+ * reads better as "the response status code should be 404".
+ *
+ * Example #1: Then the page should return HTTP status 200
+ * Example #2: Then the page should not return HTTP status 404
+ * Example #3: And the page should return HTTP status 403
+ * Example #4: When I go to "/no-such-page"
+ *               Then the page should return HTTP status 404
+ * Example #5: Then the page should return HTTP status 301
+ *
+ */
+Then(/^(the )*page should( not)* return HTTP status (\d+)$/, assertStatus);
+
+async function assertStatus(theCase, notCase, expectedStatusCode) {
+  const want = parseInt(expectedStatusCode, 10);
+  let status;
   try {
-    const response = await axios.get(currentURL);
-    const status = response.status;
-    if (notCase) {
-      assert.notStrictEqual(status, parseInt(expectedStatusCode), `Status code should NOT be ${expectedStatusCode}`);
-    } else {
-      assert.strictEqual(status, parseInt(expectedStatusCode), `Expected status ${expectedStatusCode} but got ${status}`);
-    }
+    status = await statusOfCurrentPage(this.page);
   } catch (error) {
-    const status = error.response ? error.response.status : null;
-    if (notCase) {
-      if (status !== null) assert.notStrictEqual(status, parseInt(expectedStatusCode));
-    } else {
-      assert.strictEqual(status, parseInt(expectedStatusCode), `Expected status ${expectedStatusCode} but got ${status}`);
-    }
+    throw friendly(`Could not read the HTTP status of "${this.page.url()}"`, error);
   }
-});
+  if (notCase) {
+    assert.notStrictEqual(status, want, `The status should NOT be ${want} but it is.`);
+  } else {
+    assert.strictEqual(status, want, `Expected HTTP status ${want} from "${this.page.url()}" but got ${status}.`);
+  }
+}

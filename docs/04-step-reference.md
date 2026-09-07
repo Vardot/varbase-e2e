@@ -363,6 +363,7 @@ This index lists every public step grouped by source file, with one Gherkin exam
 - *^(the )*"([^"]*)?" link should contain "([^"]*)?" by( its)*(?: "([^"]*)?")* (attribute|attr)$*  ·  Example: `Then the "#about-us-id" link should contain "about" by attr`
 - *^(the )*response should( not)* contain "([^"]*)?"$*  ·  Example: `Then the response should contain "Welcome visitor"`
 - *^(the )*response status code should( not)* be (\d+)$*  ·  Example: `Then the response status code should be 200`
+- *^(the )*page should( not)* return HTTP status (\d+)$*  ·  Example: `Then the page should return HTTP status 404`
 
 ### auth.steps.js
 

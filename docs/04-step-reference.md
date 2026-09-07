@@ -4,7 +4,7 @@ All step definitions ship in `tests/step-definitions/*.steps.js`. Cucumber-js lo
 
 This is a topical reference — the fast lookup when you know roughly what you want.
 
-For the **full catalogue**, with every step's pattern and at least five valid Gherkin examples each, see [`steps/`](steps/README.md): 496 steps across 45 category pages, generated from the step definitions themselves. The Drupal and Varbase packs are documented there and not repeated below.
+For the **full catalogue**, with every step's pattern and at least five valid Gherkin examples each, see [`steps/`](steps/README.md): 504 steps across 45 category pages, generated from the step definitions themselves. The Drupal and Varbase packs are documented there and not repeated below.
 
 ## Navigation
 

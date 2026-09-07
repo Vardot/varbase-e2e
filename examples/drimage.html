@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html><head><title>Drimage Demo</title>
+<style>body{margin:0} figure{margin:0} .below-the-fold{margin-top:3000px}</style>
+</head>
+<body>
+  <h1>Drimage Improved demo</h1>
+
+  <!-- The markup Drimage Improved renders on a Varbase site, copied from the
+       vartheme_bs5 dynamic-responsive-image component on demo.varbase.vardot.com:
+       a wrapper carrying the data object, a picture with a webp source, the img on
+       an SVG placeholder with the theme's own classes (no drimage-image class),
+       and the noscript fallback as the wrapper's next sibling.
+
+       The script at the bottom stands in for the module's JS: it marks the img
+       loading="lazy", swaps the placeholder for a derivative under
+       /styles/drimage_improved_W_H/ only once the image intersects the viewport,
+       rounds W up to the module's 200px threshold from the rendered width times
+       the device pixel ratio, and re-renders on resize. -->
+  <figure>
+    <div class="w-100 img-fluid object-fit-cover drimage" data-drimage_improved='{"fid":12,"subdir":"sites/default/files","scheme":"public","original_source":"2026-05/varbase-hero-collaboration.jpg","original_width":"4096","original_height":"2731","core_webp":1,"threshold":200,"upscale":320,"downscale":3840,"multiplier":1,"lazyload":"lazy","image_handling":"scale","focal_point":true}'><picture><source data-format="webp" srcset="data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg'%20width='4096'%20height='2731'%20viewBox='0%200%204096%202731'%20%3E%3C/svg%3E" type="image/webp"><img class="w-100 img-fluid object-fit-cover" style="width:100%;height:auto" src="data:image/svg+xml;charset=utf8,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='4096'%20height='2731'%20viewBox='0%200%204096%202731'%20%3E%3C/svg%3E" width="4096" height="2731" alt="Team collaborating in a modern glass-walled office"></picture></div><noscript><img src="2026-05/varbase-hero-collaboration.jpg" alt="Team collaborating in a modern glass-walled office" width="4096" height="2731"></noscript>
+  </figure>
+
+  <figure class="below-the-fold">
+    <div class="w-100 img-fluid object-fit-cover drimage" data-drimage_improved='{"fid":37,"subdir":"sites/default/files","scheme":"public","original_source":"2026-01/meeting-2.webp","original_width":"4096","original_height":"2733","core_webp":1,"threshold":200,"upscale":320,"downscale":3840,"multiplier":1,"lazyload":"lazy","image_handling":"scale","focal_point":true}'><picture><source data-format="webp" srcset="data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg'%20width='4096'%20height='2733'%20viewBox='0%200%204096%202733'%20%3E%3C/svg%3E" type="image/webp"><img class="w-100 img-fluid object-fit-cover" style="width:100%;height:auto" src="data:image/svg+xml;charset=utf8,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='4096'%20height='2733'%20viewBox='0%200%204096%202733'%20%3E%3C/svg%3E" width="4096" height="2733" alt="Team meeting around a table"></picture></div><noscript><img src="2026-01/meeting-2.webp" alt="Team meeting around a table" width="4096" height="2733"></noscript>
+  </figure>
+
+  <script>
+    (function () {
+      function render(el) {
+        var data = JSON.parse(el.getAttribute('data-drimage_improved'));
+        var img = el.querySelector('img');
+        img.setAttribute('loading', data.lazyload);
+        var rendered = img.clientWidth * (window.devicePixelRatio || 1) * data.multiplier;
+        var w = Math.ceil(rendered / data.threshold) * data.threshold;
+        w = Math.max(data.upscale, Math.min(data.downscale, w));
+        w = Math.max(200, Math.min(4000, Math.round(w / 200) * 200));
+        var h = Math.round(w * 2731 / 4096);
+        el.classList.add('is-loading');
+        img.src = '/styles/drimage_improved_' + w + '_' + h + '/public/sample.png';
+      }
+      var els = document.querySelectorAll('.drimage');
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) { if (e.isIntersecting) { render(e.target); e.target.setAttribute('data-seen', '1'); } });
+      });
+      els.forEach(function (el) {
+        el.querySelector('img').setAttribute('loading', 'lazy');
+        io.observe(el);
+      });
+      window.addEventListener('resize', function () {
+        els.forEach(function (el) { if (el.getAttribute('data-seen')) render(el); });
+      });
+    })();
+  </script>
+</body></html>

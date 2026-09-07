@@ -109,7 +109,7 @@ step definitions. Critical takeaways:
 
 ## Source map
 
-Step definitions: `tests/step-definitions/` — 494 steps across 45
+Step definitions: `tests/step-definitions/` — 502 steps across 45
 `*.steps.js` files, all auto-loaded, including the Drupal and Varbase packs
 (`drupal-core`, `drupal-ckeditor`, `drupal-media`, `drupal-moderation`,
 `drupal-layout-builder`, `drupal-paragraphs`, `drupal-canvas`, `varbase`)

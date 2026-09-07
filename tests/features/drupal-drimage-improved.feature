@@ -1,27 +1,41 @@
-Feature: Drimage Improved responsive image loading
-  A responsive image can carry every expected class and attribute while its
-  bitmap never decodes — a placeholder that never swaps, or a derivative the
-  server failed to generate. This suite proves the assertion sees the
-  difference, on the image fixture in examples/.
+Feature: Drimage Improved dynamic responsive images
+  Drimage Improved renders an image on an SVG placeholder and swaps it for a
+  derivative sized to where it is rendered, deferring anything below the fold.
+  Every attribute is already in place before the swap, so only the decoded
+  derivative proves the image really loaded. These steps name no selectors:
+  the pack knows the module's markup, and the budget defaults to 2 seconds
+  because the module exists to make images fast. The fixture mirrors the
+  markup the vartheme_bs5 dynamic-responsive-image component renders on
+  demo.varbase.vardot.com.
 
   Background:
     Given I am an anonymous user
-    When I go to "/image.html"
+    When I go to "/drimage.html"
 
-  Scenario: An image that decoded on load
-    Then the drimage image "#ready" should be loaded
+  Scenario: The formatter rendered Drimage output with its fallbacks
+    Then the drimage images should be rendered
+    And the drimage images should offer webp
+    And the drimage images should have a noscript fallback
 
-  Scenario: The shorter phrasing the module already uses
-    Then the image "#ready" should be loaded
+  Scenario: The image in the viewport loaded its derivative
+    Then the drimage images should be loaded
+    And the drimage image "Team collaborating in a modern glass-walled office" should be loaded
+    And no drimage image should be broken
 
-  Scenario: Every qualifier reaches the same assertion
-    Then the drimage improved image "#ready" should be loaded
-    And the dynamic image "#ready" should be loaded
-    And the dynamic responsive image "#ready" should be loaded
-    And the responsive image "#ready" should be loaded
+  Scenario: Lazy loading defers the image below the fold until it is scrolled into view
+    Then the drimage images should use lazy loading
+    And the drimage image "Team meeting around a table" should still be a placeholder
+    When I scroll to the bottom of the page
+    Then the drimage image "Team meeting around a table" should be loaded within 2 seconds
 
-  Scenario: An image whose placeholder swaps after the page settles
-    Then the drimage image "#deferred" should be loaded within 10 seconds
+  Scenario: The derivative width follows the viewport
+    Then the drimage images should be sized for the viewport
+    When I set the viewport to the "xs" breakpoint
+    Then the drimage images should be sized for the viewport within 2 seconds
 
-  Scenario: At least one match decoding is enough
-    Then the drimage image ".demo-image" should be loaded within 10 seconds
+  Scenario: Every qualifier names the same images
+    Then the drimage improved images should be loaded
+    And the dynamic images should be loaded
+    And the dynamic responsive images should be loaded
+    And the responsive images should be loaded
+    And the images should be loaded

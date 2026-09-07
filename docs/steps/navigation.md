@@ -1,6 +1,6 @@
 # Navigation steps
 
-11 steps, defined in `tests/step-definitions/navigation.steps.js`.
+14 steps, defined in `tests/step-definitions/navigation.steps.js`.
 
 Cucumber-js loads every `*.steps.js` in that directory automatically — you never `require()` a step file from a feature.
 
@@ -17,6 +17,9 @@ Cucumber-js loads every `*.steps.js` in that directory automatically — you nev
 | 9 | `Then I should be on homepage` |
 | 10 | `Then I should be on "/"` |
 | 11 | `Then the url should match "/contact-us.html"` |
+| 12 | `Then I am denied access to "/admin/config"` |
+| 13 | `Then I should be allowed "/admin/content"` |
+| 14 | `Then I should be denied access` |
 
 ---
 
@@ -272,4 +275,81 @@ Assert that the current URL matches or does not match a regex pattern.
 Then the url should match "/contact-us.html"
 Then the url should not match "/contact-us.html"
 And the url should match "^https://"
+```
+
+## 12. Then I am denied access to "/admin/config"
+
+Assert the current user may **not** open a path: the site refuses it.
+
+Four refusals count, because a site picks its own: HTTP 403, HTTP 404 (used to keep a route unguessable), HTTP 200 with an access-denied page, and a redirect to the log-in form. Asserting only on 403 makes a scenario pass or fail on how the site is configured rather than on who the user is. The failure message says which of the four it saw instead.
+
+`should be refused` is the same step — five phrasings of this assertion had been invented independently across consuming projects, so both the `am denied access to` and the `should be refused` forms resolve here.
+
+**Keyword**: `Then`
+
+**Pattern**
+
+```js
+/^(I |we )*(?:am|should be) (?:denied access to|refused) "([^"]*)?"$/
+```
+
+**Examples**
+
+```gherkin
+Then I am denied access to "/admin/config"
+Then I should be refused "/node/add/article"
+And we should be denied access to "/admin/people"
+Given I am an anonymous user
+  Then I am denied access to "/admin/modules"
+Then we am denied access to "/admin/reports/status"
+```
+
+## 13. Then I should be allowed "/admin/content"
+
+Assert the current user **may** open a path: the site answers 2xx and renders it, with none of the refusal markers.
+
+The positive half of a permission scenario, and it earns its place — a role that can reach nothing at all passes every refusal assertion in the suite, so the refusals only mean something next to this.
+
+**Keyword**: `Then`
+
+**Pattern**
+
+```js
+/^(I |we )*(?:am|should be) (?:allowed|granted access to) "([^"]*)?"$/
+```
+
+**Examples**
+
+```gherkin
+Then I should be allowed "/admin/content"
+Then I am granted access to "/node/add/article"
+And we should be allowed "/admin/content/media"
+Given I am a logged in user with the username "webmaster" user
+  Then I should be allowed "/admin/content"
+Then we should be allowed "/user"
+```
+
+## 14. Then I should be denied access
+
+Assert the page **already open** is a refusal — an access-denied page, or the log-in form the site redirected to.
+
+Use it when the refusal is the result of an action rather than of a visit: submit a form, click an operation, follow a link, then assert the wall. It navigates nothing, so nothing about the failed attempt is lost. `the page should be access restricted` is the same step.
+
+**Keyword**: `Then`
+
+**Pattern**
+
+```js
+/^(?:(?:I |we )*should be denied access|(?:the )*page should be access restricted)$/
+```
+
+**Examples**
+
+```gherkin
+Then I should be denied access
+Then the page should be access restricted
+When I click "Edit"
+  Then I should be denied access
+And we should be denied access
+Then the page should be access restricted
 ```

@@ -266,7 +266,7 @@ Some pairs look similar but cover different domains. NEVER merge:
 
 ## 5. File organisation
 
-509 built-in steps across 45 step files. Cucumber auto-loads every
+512 built-in steps across 45 step files. Cucumber auto-loads every
 `*.steps.js` in `tests/step-definitions/`.
 
 ```
@@ -293,7 +293,7 @@ tests/step-definitions/
 ├── link.steps.js            (9)  # href / title / target / rel assertions
 ├── metatag.steps.js         (3)  # <meta> description / keywords / OG / Twitter
 ├── modal.steps.js           (9)  # HTML modal visibility / content / interactions
-├── navigation.steps.js     (11)  # anonymous user, homepage, paths, history, URL assertions
+├── navigation.steps.js     (14)  # anonymous user, homepage, paths, history, URL + access assertions
 ├── network.steps.js        (10)  # route stubs / blocks / delays / offline
 ├── path.steps.js            (8)  # URL path / query parameter / fragment
 ├── response.steps.js        (4)  # response header inspection

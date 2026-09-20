@@ -20,6 +20,15 @@
 const { When, Then } = require('@cucumber/cucumber');
 const { smartSettle, friendly } = require('./varbase-e2e');
 
+// Budget for opening a Canvas page in the editor. The step's cucumber timeout
+// is the whole budget; the reserve is left for the step to raise its own
+// error, and an attempt is skipped when what is left cannot hold a useful one.
+const CANVAS_EDITOR_OPEN_TIMEOUT = 240000;
+const CANVAS_EDITOR_OPEN_RESERVE = 10000;
+const CANVAS_EDITOR_ATTEMPT = 60000;
+const CANVAS_EDITOR_MIN_ATTEMPT = 20000;
+const CANVAS_EDITOR_MIN_GOTO = 15000;
+
 /**
  * Resolve a canvas_page id by its title via the Canvas content API.
  */
@@ -574,7 +583,8 @@ When(/^(?:I |we )*set the Canvas component option "([^"]*)" to "([^"]*)"$/, { ti
  * Example #4: And we open the "Test Pattern Header Footer" Canvas page in the editor
  * Example #5: Given I open the "Pattern Library Check" Canvas page in the editor
  */
-When(/^(?:I |we )*open the "([^"]*)" Canvas page in the editor$/, { timeout: 180000 }, async function (pageTitle) {
+When(/^(?:I |we )*open the "([^"]*)" Canvas page in the editor$/, { timeout: CANVAS_EDITOR_OPEN_TIMEOUT }, async function (pageTitle) {
+  const started = Date.now();
   const id = await resolveCanvasPageId(this.page, pageTitle);
   if (!id) throw friendly(`No Canvas page titled "${pageTitle}" was found.`, 'Create the page first with a "a new Canvas page ..." step.');
   const editorUrl = `${this.launchUrl.replace(/\/$/, '')}/canvas/editor/canvas_page/${id}`;
@@ -584,18 +594,37 @@ When(/^(?:I |we )*open the "([^"]*)" Canvas page in the editor$/, { timeout: 180
   // event-based wait for the "Library" button (Varbase E2E smart wait) instead of
   // one long blind wait, so the step self-heals rather than leaning on the
   // cucumber scenario retry.
+  //
+  // Every wait here is drawn from a single budget that stays inside the step's
+  // own cucumber timeout, and an attempt is only started when what is left can
+  // still hold one. An unbounded goto plus a flat per-attempt wait could
+  // outlast the step, and cucumber then killed it with "function timed out"
+  // before this loop could report which part never became ready - the failure
+  // that made the Canvas suites flaky under load.
+  const deadline = started + CANVAS_EDITOR_OPEN_TIMEOUT - CANVAS_EDITOR_OPEN_RESERVE;
+  const remaining = () => deadline - Date.now();
   let ready = false;
-  for (let attempt = 1; attempt <= 3 && !ready; attempt++) {
+  let attempts = 0;
+  let lastError = null;
+  while (!ready && remaining() >= CANVAS_EDITOR_MIN_ATTEMPT) {
+    attempts++;
+    const budget = Math.min(CANVAS_EDITOR_ATTEMPT, remaining());
+    const gotoBudget = Math.max(CANVAS_EDITOR_MIN_GOTO, Math.round(budget / 3));
     try {
-      await this.page.goto(editorUrl, { waitUntil: 'domcontentloaded' });
-      await libraryButton.waitFor({ state: 'visible', timeout: 45000 });
+      await this.page.goto(editorUrl, { waitUntil: 'domcontentloaded', timeout: gotoBudget });
+      await libraryButton.waitFor({ state: 'visible', timeout: Math.max(1000, Math.min(budget - gotoBudget, remaining())) });
       ready = true;
     } catch (e) {
-      await smartSettle(this.page, 2000);
+      lastError = e;
+      await smartSettle(this.page, Math.max(0, Math.min(2000, remaining())));
     }
   }
   if (!ready) {
-    throw friendly(`The Canvas editor for "${pageTitle}" did not become ready after 3 load attempts.`, 'The left toolbar "Library" button never appeared.');
+    const spent = Math.round((Date.now() - started) / 1000);
+    throw friendly(
+      `The Canvas editor for "${pageTitle}" did not become ready after ${attempts} load attempt(s) in ${spent}s.`,
+      `The left toolbar "Library" button never appeared${lastError && lastError.message ? `: ${lastError.message.split('\n')[0]}` : '.'}`
+    );
   }
   await smartSettle(this.page, (this.minWaitTime && this.minWaitTime.page) || 8000);
 });

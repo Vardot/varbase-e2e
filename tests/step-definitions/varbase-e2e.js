@@ -269,13 +269,21 @@ function buildSelector(attrValue, attr) {
  * (server down, DNS, empty response). All other errors rethrow with
  * preserved stack + extra context.
  *
+ * A caller working inside a step's own time budget passes `timeout`, so the
+ * navigation cannot outlast the step that owns it; with none, Playwright's
+ * default applies exactly as before.
+ *
  * @param {import('playwright').Page} page
  * @param {string} url
+ * @param {{timeout?: number, waitUntil?: string}} [options]
  * @returns {Promise<void>}
  */
-async function gotoUrl(page, url) {
+async function gotoUrl(page, url, options) {
+  const opts = { waitUntil: 'domcontentloaded' };
+  if (options && typeof options.waitUntil === 'string') opts.waitUntil = options.waitUntil;
+  if (options && typeof options.timeout === 'number' && options.timeout > 0) opts.timeout = options.timeout;
   try {
-    await page.goto(url, { waitUntil: 'domcontentloaded' });
+    await page.goto(url, opts);
   } catch (e) {
     const msg = e.message || '';
     // Empty response: harmless, swallow.

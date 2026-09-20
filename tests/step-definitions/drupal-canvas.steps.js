@@ -18,7 +18,7 @@
 // -----------------------------------------------------------------------------
 
 const { When, Then } = require('@cucumber/cucumber');
-const { smartSettle, friendly } = require('./varbase-e2e');
+const { smartSettle, gotoUrl, friendly } = require('./varbase-e2e');
 
 // Budget for opening a Canvas page in the editor. The step's cucumber timeout
 // is the whole budget; the reserve is left for the step to raise its own
@@ -28,6 +28,7 @@ const CANVAS_EDITOR_OPEN_RESERVE = 10000;
 const CANVAS_EDITOR_ATTEMPT = 60000;
 const CANVAS_EDITOR_MIN_ATTEMPT = 20000;
 const CANVAS_EDITOR_MIN_GOTO = 15000;
+const CANVAS_EDITOR_SETTLE = 2000;
 
 /**
  * Resolve a canvas_page id by its title via the Canvas content API.
@@ -611,12 +612,23 @@ When(/^(?:I |we )*open the "([^"]*)" Canvas page in the editor$/, { timeout: CAN
     const budget = Math.min(CANVAS_EDITOR_ATTEMPT, remaining());
     const gotoBudget = Math.max(CANVAS_EDITOR_MIN_GOTO, Math.round(budget / 3));
     try {
-      await this.page.goto(editorUrl, { waitUntil: 'domcontentloaded', timeout: gotoBudget });
+      // Navigate and wait through the shared Varbase E2E helpers rather than
+      // raw Playwright: gotoUrl gives the friendly "is the server up" errors
+      // and now honours this attempt's slice of the budget, and smartSettle
+      // is the smart wait - DOM ready, network idle, no pending AJAX or
+      // timers, no DOM mutation for 250ms - which is what the React editor
+      // needs before its toolbar can be probed. Waiting for the button alone
+      // polls a still-booting app; settling first is what makes the probe
+      // meaningful rather than a race.
+      await gotoUrl(this.page, editorUrl, { timeout: gotoBudget });
+      await smartSettle(this.page, Math.max(1000, Math.min(Math.round((budget - gotoBudget) / 2), remaining())));
       await libraryButton.waitFor({ state: 'visible', timeout: Math.max(1000, Math.min(budget - gotoBudget, remaining())) });
       ready = true;
     } catch (e) {
       lastError = e;
-      await smartSettle(this.page, Math.max(0, Math.min(2000, remaining())));
+      // Let whatever is still in flight quiet down before reloading, again
+      // with the smart wait rather than a blind sleep.
+      await smartSettle(this.page, Math.max(0, Math.min(CANVAS_EDITOR_SETTLE, remaining())));
     }
   }
   if (!ready) {

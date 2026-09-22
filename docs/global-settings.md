@@ -222,6 +222,7 @@ const config = {
 | Env var | Effect |
 | --- | --- |
 | `VARBASE_E2E_AUTO_SETTLE` | Set to `off` to disable the BBR auto-settle hook (`smartSettle(page, 1500)` after every state-changing step). |
+| `VARBASE_E2E_STEP_TIMEOUT` | Cucumber step timeout in milliseconds. Defaults to `45000`. varbase-e2e calls `setDefaultTimeout()` when its step definitions load, which overrides a `timeout` set in your own `cucumber.js`, so raise it here instead. |
 | `VARBASE_E2E_REPORT_DISABLE` | Set to `1` to skip auto-generating the HTML report on cucumber-js process exit. |
 | `VARBASE_E2E_REPORT_ARGS` | Extra CLI flags forwarded to `bin/generate-reports.js`. e.g. `--theme hierarchy --layout 2`. |
 

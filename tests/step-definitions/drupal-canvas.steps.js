@@ -627,8 +627,12 @@ When(/^(?:I |we )*open the "([^"]*)" Canvas page in the editor$/, { timeout: CAN
     } catch (e) {
       lastError = e;
       // Let whatever is still in flight quiet down before reloading, again
-      // with the smart wait rather than a blind sleep.
-      await smartSettle(this.page, Math.max(0, Math.min(CANVAS_EDITOR_SETTLE, remaining())));
+      // with the smart wait rather than a blind sleep. Only when the budget
+      // still holds one: smartSettle reads a non-positive timeout as "use the
+      // 10s default", so clamping a spent budget to 0 would have bought a ten
+      // second wait at the exact moment there was no time left to spend.
+      const settleBudget = Math.min(CANVAS_EDITOR_SETTLE, remaining());
+      if (settleBudget > 0) await smartSettle(this.page, settleBudget);
     }
   }
   if (!ready) {

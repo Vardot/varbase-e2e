@@ -4,8 +4,8 @@
   "description": "Varbase E2E automated functional testing.",
   "main": "index.js",
   "bin": {
-    "init-varbase-e2e": "./bin/init-varbase-e2e.js",
-    "generate-reports": "./bin/generate-reports.js"
+    "init-varbase-e2e": "bin/init-varbase-e2e.js",
+    "generate-reports": "bin/generate-reports.js"
   },
   "directories": {
     "test": "test"

@@ -4,7 +4,7 @@ All step definitions ship in `tests/step-definitions/*.steps.js`. Cucumber-js lo
 
 This is a topical reference — the fast lookup when you know roughly what you want.
 
-For the **full catalogue**, with every step's pattern and at least five valid Gherkin examples each, see [`steps/`](steps/README.md): 508 steps across 45 category pages, generated from the step definitions themselves. The Drupal and Varbase packs are documented there and not repeated below.
+For the **full catalogue**, with every step's pattern and at least five valid Gherkin examples each, see [`steps/`](steps/README.md): 516 steps across 45 category pages, generated from the step definitions themselves. The Drupal and Varbase packs are documented there and not repeated below.
 
 ## Navigation
 
@@ -312,11 +312,15 @@ This index lists every public step grouped by source file, with one Gherkin exam
 - *^user zoom should be allowed$*  ·  Example: `Then user zoom should be allowed`
 - *^the page should pass an accessibility audit(?: at level "(A|AA|AAA)")?$*  ·  Example: `Then the page should pass an accessibility audit`
 - *^the page should have no (critical|serious|moderate|minor) accessibility violations$*  ·  Example: `Then the page should have no critical accessibility violations`
+- *^the page should have no accessibility violations$*  ·  Example: `Then the page should have no accessibility violations`
+- *^the element "([^"]*)" should not violate the accessibility rule "([^"]*)"$*  ·  Example: `Then the element "main" should not violate the accessibility rule "color-contrast"`
 - *^the element "([^"]*)" should pass an accessibility audit$*  ·  Example: `Then the element "main" should pass an accessibility audit`
 - *^the page should pass an accessibility audit excluding "([^"]*)"$*  ·  Example: `Then the page should pass an accessibility audit excluding "iframe.payment"`
 - *^the page should not violate the accessibility rule "([^"]*)"$*  ·  Example: `Then the page should not violate the accessibility rule "color-contrast"`
 - *^(I |we )*print accessibility violations$*  ·  Example: `Then I print accessibility violations`
 - *^the page should pass the accessibility rules "([^"]*)"$*  ·  Example: `Then the page should pass the accessibility rules "image-alt, label"`
+- *^the page should pass the full accessibility check(?: at level "(A|AA|AAA)")?$*  ·  Example: `Then the page should pass the full accessibility check`
+- *^(?:I |we )*print the full accessibility check$*  ·  Example: `Then I print the full accessibility check`
 
 ### action.steps.js
 

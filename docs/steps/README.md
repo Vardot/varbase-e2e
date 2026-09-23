@@ -4,7 +4,7 @@ Every step Varbase E2E ships, one page per category, generated from the step
 definitions themselves — so the phrasing, the pattern and the examples on these
 pages are exactly what the runner matches.
 
-**512 steps across 45 categories.**
+**516 steps across 45 categories.**
 
 Cucumber-js loads every `*.steps.js` under `tests/step-definitions/`
 automatically. You never `require()` a step file from a feature: write the
@@ -104,7 +104,7 @@ Everything that keeps a suite honest and debuggable: waits, mocks, state, captur
 | Cookies | 12 | [`cookie.md`](cookie.md) |
 | Auth state | 3 | [`auth.md`](auth.md) |
 | JavaScript errors | 4 | [`javascript.md`](javascript.md) |
-| Accessibility | 26 | [`a11y.md`](a11y.md) |
+| Accessibility | 30 | [`a11y.md`](a11y.md) |
 | Iframes | 10 | [`iframe.md`](iframe.md) |
 | File downloads | 8 | [`file-download.md`](file-download.md) |
 | Selector registry | 24 | [`selectors.md`](selectors.md) |

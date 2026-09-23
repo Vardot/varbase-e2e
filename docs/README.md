@@ -4,7 +4,7 @@
 
 Varbase E2E is a BDD-first browser-automation harness built on Playwright + Cucumber-js. Feature files in plain Gherkin; selectors that survive redesigns; smart waits that never sleep.
 
-**512 built-in steps** across **45 step files**, including the Drupal and Varbase packs. **300 example scenarios / 1,460 step executions** in the bundled suite, all green on chromium.
+**516 built-in steps** across **45 step files**, including the Drupal and Varbase packs. **303 example scenarios / 1,476 step executions** in the bundled suite, all green on chromium.
 
 The full step catalogue — one page per category, generated from the step definitions themselves — is in **[`steps/`](steps/README.md)**.
 
@@ -41,7 +41,7 @@ The full step catalogue — one page per category, generated from the step defin
 | [Install — DDEV](install-varbase-e2e/ddev-varbase-e2e.md) | DDEV-Varbase-E2E variant |
 | [Global settings](global-settings.md) | `cucumber.js` `worldParameters` reference |
 | [Step definitions](step-definitions.md) | Step-definition hub — what a step is, the rules, where the catalogue lives |
-| [Step catalogue](steps/README.md) | All 512 steps, 45 category pages under `steps/`, generated from the source |
+| [Step catalogue](steps/README.md) | All 516 steps, 45 category pages under `steps/`, generated from the source |
 | [API step definitions](api-step-definitions.md) | REST step definitions |
 | [Advanced screenshots](advanced-screenshots.md) | Per-size, full-page, named (3 sub-pages under `advanced-screenshots/`) |
 | [Advanced selectors](advanced-selectors.md) | Named selector registry, position assertions |
@@ -78,7 +78,7 @@ varbase-e2e/
 │   ├── selectors/              <— CMS / framework JSON presets
 │   └── step-definitions/                  <— Built-in steps (auto-loaded)
 │       ├── varbase-e2e.js                          # World setup, hooks, shared helpers (smartSettle, modal, selectors, date tokens)
-│       ├── a11y.steps.js               (26)   # axe-core audits + WCAG hygiene probes
+│       ├── a11y.steps.js               (30)   # axe-core audits + WCAG hygiene probes
 │       ├── action.steps.js              (7)   # press / click / follow / attach
 │       ├── api.steps.js                (22)   # REST long form (base URL, headers, query, body, JSON Pointer)
 │       ├── assertion.steps.js          (17)   # see / not see, in row, in element, page title, response, HTTP status, count

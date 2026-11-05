@@ -1,7 +1,7 @@
 # CI / CD setup
 
 Varbase E2E ships one ready-to-use CI config: **GitHub Actions**. The pattern is
-install Node 20, install Playwright's chromium with its system deps, start the
+install Node 24, install Playwright's chromium with its system deps, start the
 fixture server on port 8080, run `npm test`. No build step — `tsx` transpiles
 `.ts` step files on the fly.
 
@@ -30,7 +30,7 @@ GitHub's native CI/CD. Free tier: 2,000 minutes per month for private repos,
 Single job `build` on `ubuntu-latest`:
 
 1. `actions/checkout@v4` — pulls the repo.
-2. `actions/setup-node@v4` — Node 20.x.
+2. `actions/setup-node@v4` — Node 24.x.
 3. `npm install`.
 4. `npx playwright install --with-deps chromium`.
 5. `npm start &` — backgrounds the fixture server.
@@ -86,5 +86,5 @@ npm start &
 npm test
 ```
 
-on Node 20+ will work — GitLab CI, CircleCI, Jenkins, Azure Pipelines and the
+on Node 24+ will work — GitLab CI, CircleCI, Jenkins, Azure Pipelines and the
 rest only need that four-line shape translated into their own YAML.

@@ -7,10 +7,15 @@ tests/reports/*.json
 tests/reports/*.html
 tests/reports/*.pdf
 !tests/reports/README.md
-package-lock.json
 .playwright-mcp
 .claude
 screenshots
 videos/*.webm
 videos/page@*
 !videos/README.md
+
+# JavaScript lockfiles are not committed: installs resolve from package.json
+# (engines).
+yarn.lock
+package-lock.json
+pnpm-lock.yaml

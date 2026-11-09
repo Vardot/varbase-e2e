@@ -11,7 +11,7 @@
     "test": "test"
   },
   "engines": {
-    "node": ">= 20.0"
+    "node": ">= 24.0"
   },
   "scripts": {
     "postinstall": "node ./bin/postinstall.js",
@@ -39,18 +39,18 @@
   "homepage": "https://github.com/Vardot/varbase-e2e",
   "dependencies": {
     "@axe-core/playwright": "^4.11.3",
-    "@cucumber/cucumber": "*",
-    "@cucumber/pretty-formatter": "~1",
-    "@types/node": "~20",
+    "@cucumber/cucumber": "^12.9.0",
+    "@cucumber/pretty-formatter": "^1.0.0",
+    "@types/node": "^20.0.0",
     "ajv": "^8.20.0",
     "ajv-formats": "^3.0.1",
     "axe-core": "^4.11.4",
-    "axios": "~1",
+    "axios": "^1.0.0",
     "cucumber-html-reporter": "^6.0.0",
     "http-server": "^14.1.1",
     "js-yaml": "^4.1.1",
     "playwright": "^1.58.2",
     "tsx": "^4.19.2",
-    "typescript": "~5"
+    "typescript": "^5.0.0"
   }
 }

@@ -1,0 +1,25 @@
+{
+  "cookies": [
+    {
+      "name": "varbase_session",
+      "value": "signed-in",
+      "domain": "localhost",
+      "path": "/",
+      "expires": -1,
+      "httpOnly": false,
+      "secure": false,
+      "sameSite": "Lax"
+    }
+  ],
+  "origins": [
+    {
+      "origin": "http://localhost:8081",
+      "localStorage": [
+        {
+          "name": "varbase_user",
+          "value": "Varbase Tester"
+        }
+      ]
+    }
+  ]
+}

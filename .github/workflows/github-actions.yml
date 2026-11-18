@@ -2,12 +2,22 @@ name: Github Actions
 
 on:
   push:
+    branches: [2.0.x]
   pull_request:
-  workflow_dispatch:
+    branches: [2.0.x]
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    timeout-minutes: 45
 
     env:
       TEST_BASE_URL: http://localhost:8080
@@ -15,12 +25,14 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Set up Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7
         with:
           node-version: '24.x'
+          cache: npm
+          cache-dependency-path: package.json
 
       - name: Install dependencies
         run: npm install
@@ -32,18 +44,25 @@ jobs:
         run: npm start &
 
       - name: Wait for server
-        run: sleep 3
+        run: |
+          for i in $(seq 1 30); do
+            curl -s -o /dev/null "$TEST_BASE_URL/" && exit 0
+            sleep 1
+          done
+          echo "The server did not answer on $TEST_BASE_URL in 30 seconds" >&2
+          exit 1
 
       - name: Run tests
         run: npm test
 
-      - name: Upload the report and screenshots
+      - name: Upload the report, screenshots and videos
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: cucumber-report
           path: |
-            tests/reports/cucumber_report.html
-            tests/reports/cucumber_report.json
+            tests/reports/
             screenshots/
+            videos/
+          retention-days: 14
           if-no-files-found: ignore

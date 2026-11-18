@@ -197,7 +197,8 @@ Then the response should be in YAML format
 
 ## 6. Then the response should not be in YAML format
 
-Assert the loaded response is NOT valid YAML.
+Assert the loaded response is NOT valid YAML. Fails when the content
+parses: a line of plain text or a JSON document is valid YAML too.
 
 **Keyword**: `Then`
 
@@ -213,7 +214,7 @@ Assert the loaded response is NOT valid YAML.
 Then the response should not be in YAML format
 Given the YAML response content is the following:
   """
-  <not> yaml </not>
+  items: [one, two
   """
   Then the response should not be in YAML format
 And the response should not be in YAML format

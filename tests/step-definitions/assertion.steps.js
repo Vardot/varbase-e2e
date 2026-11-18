@@ -11,6 +11,7 @@
 const { Then } = require('@cucumber/cucumber');
 const assert = require('assert');
 const { buildSelector, getLocatorText, friendly } = require('./varbase-e2e');
+const { getLastResponse } = require('./response.steps');
 
 // ---------------------------------------------------------------------------
 // Plain page-text
@@ -394,29 +395,21 @@ Then(/^(the )*response should( not)* contain "([^"]*)?"$/, async function (theCa
   }
 });
 
-// Re-request the page's own URL through the BROWSER context, so the request
-// carries the session cookies the browser already has — an admin page checked
-// with a cookie-less client answers 403 while the browser renders it fine.
-// Redirects are not followed: a step asserting 301 means the redirect itself.
-async function statusOfCurrentPage(page) {
-  const url = page.url();
-  const response = await page.context().request.get(url, { maxRedirects: 0 });
-  return response.status();
-}
-
 /**
  * Assert that the current page's response status is or is not a given code.
  *
- * Re-requests the current URL through the browser's own context, so the check
- * sees what this user sees: the session cookies travel with the request, and
- * redirects are not followed, so a 3xx can actually be asserted.
+ * The status is the one the browser received for the page it is showing
+ * (after any redirect), read from the browser session itself, so it follows
+ * the session cookies and the HTTPS settings of the page and sends no second
+ * request: a one-time login link or the page a form submission landed on
+ * reports what the visitor got.
  *
  * Example #1: Then the response status code should be 200
  * Example #2: And the response status code should not be 404
- * Example #3: Then the response status code should be 301
- * Example #4: When I go to "/no-such-page"
- *               Then the response status code should be 404
- * Example #5: Then the response status code should not be 500
+ * Example #3: Then the response status code should be 404
+ * Example #4: Then the response status code should not be 500
+ * Example #5: When I am on "/admin"
+ *               Then the response status code should be 403
  *
  */
 Then(/^(the )*response status code should( not)* be (\d+)$/, assertStatus);
@@ -435,19 +428,14 @@ Then(/^(the )*response status code should( not)* be (\d+)$/, assertStatus);
  * Example #3: And the page should return HTTP status 403
  * Example #4: When I go to "/no-such-page"
  *               Then the page should return HTTP status 404
- * Example #5: Then the page should return HTTP status 301
+ * Example #5: Then the page should not return HTTP status 500
  *
  */
 Then(/^(the )*page should( not)* return HTTP status (\d+)$/, assertStatus);
 
 async function assertStatus(theCase, notCase, expectedStatusCode) {
   const want = parseInt(expectedStatusCode, 10);
-  let status;
-  try {
-    status = await statusOfCurrentPage(this.page);
-  } catch (error) {
-    throw friendly(`Could not read the HTTP status of "${this.page.url()}"`, error);
-  }
+  const { status } = await getLastResponse(this);
   if (notCase) {
     assert.notStrictEqual(status, want, `The status should NOT be ${want} but it is.`);
   } else {

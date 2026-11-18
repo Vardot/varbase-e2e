@@ -158,7 +158,10 @@ Then ".alert" should have text "Saved"
 
 ## 7. Then "h1" should contain text "Welcome"
 
-Assert an element's textContent contains an expected substring.
+Assert an element's textContent contains an expected substring. Runs of
+whitespace are collapsed to one space and trimmed on both sides first, so
+markup that wraps a line still matches. Use `should have text` for the
+exact match.
 
 **Keyword**: `Then`
 

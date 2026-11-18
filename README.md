@@ -19,6 +19,10 @@ npm install @vardot/varbase-e2e
 
 ## Automated Functional Acceptance Testing
 
+The install scaffolds the test project (`cucumber.js`, `playwright.config.ts`, `tests/`) with a starter feature that opens the home page of your site:
+
 ```
-npm test
+LAUNCH_URL=https://your-site.example npm test
 ```
+
+Without `LAUNCH_URL` the suite opens `http://localhost:8080`.

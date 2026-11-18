@@ -10,13 +10,14 @@ const packagePath = path.join(__dirname, '..');
 
 const CUCUMBER_JS = `module.exports = {
   default: {
-    timeout: 30000,
-    requireModule: ['ts-node/register'],
+    timeout: 30000,                                                     // Overridden by varbase-e2e's setDefaultTimeout (45s); raise it with VARBASE_E2E_STEP_TIMEOUT.
+    requireModule: ['tsx/cjs'],
     require: [
       'node_modules/@vardot/varbase-e2e/tests/step-definitions/**/*.js',          // Varbase E2E core step definitions (auto HTML report on exit; disable: VARBASE_E2E_REPORT_DISABLE=1).
       'tests/step-definitions/**/*.js',                                  // Your custom step definitions.
     ],
-    paths: ['tests/features/**/*.feature'],
+    // FEATURES=tests/features/a.feature,tests/features/b.feature runs a subset.
+    paths: process.env.FEATURES ? process.env.FEATURES.split(',') : ['tests/features/**/*.feature'],
     format: [
       '@cucumber/pretty-formatter',
       'json:tests/reports/cucumber_report.json',
@@ -59,7 +60,7 @@ const CUCUMBER_JS = `module.exports = {
         },
       },
       screenshot: {
-        dir: './screenshots',
+        dir: './tests/screenshots',
         purge: false,
         onFailed: true,
         onEveryStep: false,
@@ -100,8 +101,9 @@ interface PlaywrightConfig {
 const config: PlaywrightConfig = {
   browser,
   launchOptions: {
-    headless: true,
-    slowMo: 300,
+    headless: process.env.HEADLESS !== 'false',
+    // SLOW_MO env var: 0 in CI for speed, 800ms when watching headed runs.
+    slowMo: parseInt(process.env.SLOW_MO || (process.env.HEADLESS === 'false' ? '800' : '300'), 10),
     args: browser === 'chromium' ? chromiumArgs : [],
   },
   contextOptions: {
@@ -120,9 +122,6 @@ const TSCONFIG_JSON = {
     strict: true,
     esModuleInterop: true,
     types: ['node'],
-  },
-  'ts-node': {
-    ignore: ['node_modules/(?!@vardot/varbase-e2e/)'],
   },
 };
 
@@ -304,7 +303,7 @@ function run(argv) {
   ensureDir(path.join(projectPath, 'tests', 'reports'));
   ensureDir(path.join(projectPath, 'tests', 'step-definitions'));
   ensureDir(path.join(projectPath, 'tests', 'selectors'));
-  ensureDir(path.join(projectPath, 'screenshots'));
+  ensureDir(path.join(projectPath, 'tests', 'screenshots'));
 
   const assetResults = writeTextAssets(projectPath, opts);
   const tsconfigWritten = writeTsconfig(projectPath, opts);

@@ -319,7 +319,7 @@ tests/step-definitions/
 ├── varbase.steps.js        (12)  # Varbase: users, tour, theme settings, sticky header, a11y checker, warm-up
 └── yaml.steps.js           (38)  # multi-doc, types, numerics, JSON Schema, diff
 
-tests/features/                 # 72 .feature files
+tests/features/                 # 77 .feature files
 tests/selectors/                # 26 JSON presets + _canonical-keys.json
 tests/assets/                   # upload fixtures (pdf, png)
 examples/                       # static HTML fixtures served by `npm start`

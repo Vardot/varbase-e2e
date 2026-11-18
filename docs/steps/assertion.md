@@ -93,7 +93,13 @@ And I should not see "Inactive" in the "john.smith@example.com" row
 
 ## 4. Then I should see a "Username" element
 
-Assert that an element with a given label exists (or does not) on the page.
+Assert that an element is, or is not, visible on the page. The element is
+named by its exact visible text; a `<label for="...">` stands for the
+control it labels. The text is not a CSS selector: for a selector use
+`"<selector>" should be visible` or `"<selector>" should not be visible`.
+
+"should not see" is the opposite of "should see": it passes when no element
+named that way is visible, so an element that is hidden does not fail it.
 
 **Keyword**: `Then`
 
@@ -109,6 +115,8 @@ Assert that an element with a given label exists (or does not) on the page.
 Then I should see a "Username" element
 Then I should not see a "Username" element
 And we should see an "Email" element
+Then I should not see an "Email" element
+And we should not see a "Promo banner" element
 ```
 
 ## 5. Then I should see a "uname" element by its "id" attr

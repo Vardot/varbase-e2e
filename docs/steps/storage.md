@@ -90,8 +90,8 @@ Given all cookies are cleared
 Given all cookies are cleared
   And I am an anonymous user
 Given all cookies are cleared
-  And localStorage is cleared
-  And sessionStorage is cleared
+  And local storage is cleared
+  And session storage is cleared
 Given all cookies are cleared
   When I follow "Login"
 ```
@@ -144,7 +144,7 @@ Remove a single local storage entry.
 Given the local storage "user" is removed
 Given local storage "theme" is removed
   When I reload the page
-  Then "<body>" should not have class "theme-dark"
+  Then the element "body" with the attribute "class" and the value containing "theme-dark" should not exist
 Given the local storage "onboarding_complete" is removed
 Given the local storage "cart" is removed
   And I am on "/cart"

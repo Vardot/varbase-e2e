@@ -142,7 +142,8 @@ And I should not see a "countryCss" element by attr
 
 ## 6. Then I should see "John Smith" in the "Username" element
 
-Assert that an element (found by its label) contains or does not contain text.
+Assert that an element contains or does not contain text. The element is
+named by the exact text of its label, or by a CSS selector.
 
 **Keyword**: `Then`
 
@@ -158,6 +159,8 @@ Assert that an element (found by its label) contains or does not contain text.
 Then I should see "John Smith" in the "Username" element
 Then I should not see "Joe Smith" in the "Username" element
 And we should see "1234" in the "Password" element
+Then I should see "About Us" in the "h1" element
+Then we should not see "Error" in the "#status" element
 ```
 
 ## 7. Then I should see "John Smith" in the "uname" element by its "id" attr

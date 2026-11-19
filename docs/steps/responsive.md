@@ -16,7 +16,9 @@ Cucumber-js loads every `*.steps.js` in that directory automatically — you nev
 
 ## 1. Given the following responsive breakpoints:
 
-Replace the breakpoint registry for the current scenario from a data table.
+Add named breakpoints for the current scenario from a data table: one row
+per name, `| name | width | height |`. The names replace the sizes of the
+same names; every other breakpoint (built in or configured) stays.
 
 **Keyword**: `Given`
 
@@ -49,10 +51,13 @@ Given the following responsive breakpoints:
 
 ## 2. When I set the viewport to the "mobile" breakpoint
 
-Resize the viewport to a registered named breakpoint.
+Resize the viewport to a named breakpoint.
 
 Built-in names: `xs`, `sm`, `md`, `lg`, `xl`, `xxl`, `xxxl`, `mobile`,
-`tablet`, `desktop`. Project-defined names override built-ins.
+`tablet`, `desktop`. A project's names (worldParameters.selectors.breakpoints,
+VARBASE_E2E_SELECTORS_BREAKPOINTS) and a scenario's own (the table step above)
+replace the built-in sizes of the same names. An unknown name fails with
+the list of the known ones.
 
 **Keyword**: `When`
 

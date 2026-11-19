@@ -342,16 +342,24 @@ Given I define xpath selectors:
 
 ## 8. Given I am viewing the site on a xl screen
 
-Resize viewport to a named breakpoint.
-Built-in names: xs, sm, md, lg, xl, xxl, xxxl.
+Resize viewport to a named breakpoint. The same registry as "I set the
+viewport to the "…" breakpoint" and the @mobile / @desktop tags: the
+built-in names below, replaced or extended by
+worldParameters.selectors.breakpoints, VARBASE_E2E_SELECTORS_BREAKPOINTS and
+"the following responsive breakpoints:". An unknown name fails with the
+list of the known ones.
 
-  xs   375 x 667    phone portrait
-  sm   576 x 800    large phone / phablet
-  md   768 x 1024   tablet portrait
-  lg   992 x 768    small laptop / tablet landscape
-  xl   1200 x 900   desktop (default)
-  xxl  1400 x 900   wide desktop / HD
-  xxxl 1920 x 1080  Full HD / large monitor
+  xs      375 x 667    phone portrait
+  sm      576 x 800    large phone / phablet
+  md      768 x 1024   tablet portrait
+  lg      992 x 768    small laptop / tablet landscape
+  xl      1200 x 900   desktop (marked default: true in the scaffold)
+  xxl     1400 x 900   wide desktop / HD
+  xxxl    1920 x 1080  Full HD / large monitor
+  mobile  375 x 667    the size of the @mobile tag
+  tablet  768 x 1024
+  desktop 1200 x 900   the size of the @desktop tag; without a desktop of
+                       the project's own, the breakpoint marked default: true
 
 **Keyword**: `Given`
 

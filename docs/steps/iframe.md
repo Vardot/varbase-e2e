@@ -161,7 +161,10 @@ When I click "Close" inside the iframe
 
 Click an attribute-addressed element inside the active iframe.
 
-Tries id, class, name, and data-testid in that order.
+Tries the same attributes as `I click "…" by attr` on the page: id, class,
+name, data-testid, data-test-id, data-test, data-cy, aria-label, value,
+placeholder and title (a text with a space: value, placeholder,
+aria-label and title); a text that starts with #, . or [ is a CSS selector.
 
 **Keyword**: `When`
 
@@ -183,7 +186,10 @@ When I click "primary-cta" by attr inside the iframe
 
 ## 8. When I fill in "card_number" with "4242 4242 4242 4242" inside the iframe
 
-Fill a field inside the active iframe by `[name]` or id.
+Fill a field inside the active iframe, found by the exact text of its
+label, by its placeholder, by its name or by its id, like the fill step of
+the page. A field that is not found within 30 seconds, or that is hidden,
+disabled or read-only, fails the step with what is wrong.
 
 **Keyword**: `When`
 
@@ -201,11 +207,15 @@ When I fill in "cvv" with "123" inside the iframe
 And we fill in "exp_date" with "12/30" inside the iframe
 When I fill in "email" with "alice@example.com" inside the iframe
 When I fill in "name" with "Alice" inside the iframe
+When I fill in "Coupon code" with "SAVE10" inside the iframe
 ```
 
 ## 9. Then I should see "Payment received" inside the iframe
 
-Assert visible text exists inside the active iframe.
+Assert a text is inside the active iframe. The iframe's text is read the
+way `I should see` reads the page: letter case ignored, white space
+collapsed, a text inside an element as well as its whole text, the text of
+hidden elements included. Waits up to 5 seconds for the text to come.
 
 **Keyword**: `Then`
 
@@ -227,7 +237,9 @@ Then I should see "Subscribed" inside the iframe
 
 ## 10. Then I should not see "Error" inside the iframe
 
-Assert visible text does NOT exist inside the active iframe.
+Assert a text is NOT inside the active iframe, read as `I should see
+"…" inside the iframe` reads it but with its letter case, as `I should not
+see` reads the page. Waits up to 5 seconds for the text to go.
 
 **Keyword**: `Then`
 

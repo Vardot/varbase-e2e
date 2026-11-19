@@ -4,7 +4,7 @@ Every step Varbase E2E ships, one page per category, generated from the step
 definitions themselves — so the phrasing, the pattern and the examples on these
 pages are exactly what the runner matches.
 
-**523 steps across 45 categories.**
+**524 steps across 45 categories.**
 
 Cucumber-js loads every `*.steps.js` under `tests/step-definitions/`
 automatically. You never `require()` a step file from a feature: write the
@@ -83,13 +83,13 @@ Talking to an endpoint and asserting on what comes back.
 
 | Category | Steps | Page |
 | --- | --- | --- |
-| API (long form) | 22 | [`api.md`](api.md) |
+| API (long form) | 23 | [`api.md`](api.md) |
 | REST (short form) | 5 | [`rest.md`](rest.md) |
 | XML responses | 20 | [`xml.md`](xml.md) |
 | YAML responses | 38 | [`yaml.md`](yaml.md) |
 | URL paths | 8 | [`path.md`](path.md) |
 
-**93 steps.**
+**94 steps.**
 
 ## Test resilience and instrumentation
 

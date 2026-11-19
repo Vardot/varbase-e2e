@@ -15,11 +15,14 @@ Cucumber-js loads every `*.steps.js` in that directory automatically — you nev
 
 ## 1. Then there should be no JavaScript errors
 
-Assert that no JavaScript errors have been collected so far.
+Assert that no JavaScript errors have been collected so far: uncaught
+errors and console.error. A console warning is not an error, even when
+warnings are captured.
 
 Always fails on error (ignoring the active mode) — this is the explicit
-"hard check" step. Calling it also prevents the auto-report at scenario
-end so a single error is not reported twice.
+"hard check" step. Calling it also leaves the errors out of the
+auto-report at scenario end, so a single error is not reported twice;
+captured warnings are still reported there.
 
 **Keyword**: `Then`
 
@@ -43,7 +46,8 @@ Then there should be no JavaScript errors
 
 Assert that no JavaScript console warnings were collected. Requires
 'warning' to be in the captured console levels (see worldParameters or
-VARBASE_E2E_JS_ERROR_LEVELS).
+VARBASE_E2E_JS_ERROR_LEVELS). The warnings are left out of the auto-report at
+scenario end; errors are still reported there.
 
 **Keyword**: `Then`
 

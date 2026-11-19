@@ -165,6 +165,10 @@ When I press "Refresh"
 
 Click a button or link inside a modal dialog by its visible text.
 
+Waits up to 10 seconds for a modal to be open; when none is, the step fails
+with "No modal is open". A button or link the open modal does not have
+fails within 30 seconds, listing the ones it has.
+
 **Keyword**: `When`
 
 **Pattern**
@@ -188,7 +192,9 @@ Click a CSS-selector-addressed element inside the active modal.
 
 Distinct from "click :text in the modal" which uses visible button text.
 Use this variant when the target lacks readable text (icon button) or
-when text is ambiguous across multiple buttons in the modal.
+when text is ambiguous across multiple buttons in the modal. The selector
+is looked for inside the open modal only; when no modal is open within 10
+seconds, the step fails with "No modal is open".
 
 **Keyword**: `When`
 
@@ -213,6 +219,8 @@ When I press "Open settings"
 ## 9. When I close the modal
 
 Close or dismiss a modal dialog (uses close button, or Escape fallback).
+When no modal is open within 10 seconds, the step fails with "No modal is
+open".
 
 **Keyword**: `When`
 

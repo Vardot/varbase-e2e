@@ -137,7 +137,13 @@ Then the table ".grid" should not be empty
 
 Assert a table is sorted ascending or descending by a header.
 
-Direction accepts `ascending` / `asc` / `descending` / `desc`.
+The cells of the column are compared the way a reader orders them: as
+numbers when every cell reads as a number (`$9.99`, `1,299`, `12 %`), else
+as dates when every cell reads as a date, else as text with letter case
+ignored and the numbers inside it in number order ("Item 2" before
+"Item 10"). Each row is compared with the next one, so equal cells may come
+in any order. "descending" or "desc" checks the reverse order; any other
+word checks the ascending order.
 
 **Keyword**: `Then`
 

@@ -1,6 +1,6 @@
 # Storage steps
 
-9 steps, defined in `tests/step-definitions/storage.steps.js`.
+15 steps, defined in `tests/step-definitions/storage.steps.js`.
 
 Cucumber-js loads every `*.steps.js` in that directory automatically — you never `require()` a step file from a feature.
 
@@ -15,6 +15,12 @@ Cucumber-js loads every `*.steps.js` in that directory automatically — you nev
 | 7 | `Given the session storage "checkout step" is set to "2"` |
 | 8 | `Given the session storage "checkout step" is removed` |
 | 9 | `Given session storage is cleared` |
+| 10 | `Given the cookie "consent" is set to "\"accepted\""` |
+| 11 | `Given the cookie "the \"last\" visit" is removed` |
+| 12 | `Given the local storage "prefs" is set to "{\"theme\":\"dark\"}"` |
+| 13 | `Given the local storage "the \"last\" note" is removed` |
+| 14 | `Given the session storage "the \"last\" note" is set to "say \"hi\""` |
+| 15 | `Given the session storage "the \"last\" note" is removed` |
 
 ---
 
@@ -251,4 +257,150 @@ Given session storage is cleared
   When I reload the page
 Given session storage is cleared
   And I am an anonymous user
+```
+
+## 10. Given the cookie "consent" is set to "\"accepted\""
+
+Set a cookie whose name or value holds a double quote, written \".
+
+**Keyword**: `Given`
+
+**Pattern**
+
+```js
+/^(?=.*\\")(?:the cookie|cookie) "((?:[^"\\]|\\.)*)" is set to "((?:[^"\\]|\\.)*)"$/
+```
+
+**Examples**
+
+```gherkin
+Given the cookie "consent" is set to "\"accepted\""
+Given the cookie "prefs" is set to "{\"theme\":\"dark\"}"
+Given cookie "greeting" is set to "say \"hi\""
+Given the cookie "banner" is set to "\"closed\""
+  And I am on the homepage
+Given the cookie "layout" is set to "{\"columns\":2}"
+  When I reload the page
+```
+
+## 11. Given the cookie "the \"last\" visit" is removed
+
+Remove a cookie whose name holds a double quote, written \".
+
+**Keyword**: `Given`
+
+**Pattern**
+
+```js
+/^(?=.*\\")the cookie "((?:[^"\\]|\\.)*)" is removed$/
+```
+
+**Examples**
+
+```gherkin
+Given the cookie "the \"last\" visit" is removed
+Given the cookie "\"quoted\"" is removed
+Given the cookie "say \"hi\"" is removed
+  When I reload the page
+Given the cookie "the \"beta\" flag" is removed
+Given the cookie "\"consent\"" is removed
+  And I am on the homepage
+```
+
+## 12. Given the local storage "prefs" is set to "{\"theme\":\"dark\"}"
+
+Set a local storage key whose name or value holds a double quote, written
+\", such as a JSON value.
+
+**Keyword**: `Given`
+
+**Pattern**
+
+```js
+/^(?=.*\\")(?:the )?local storage "((?:[^"\\]|\\.)*)" is set to "((?:[^"\\]|\\.)*)"$/
+```
+
+**Examples**
+
+```gherkin
+Given the local storage "prefs" is set to "{\"theme\":\"dark\"}"
+Given local storage "cart" is set to "[{\"sku\":\"A-1\",\"qty\":2}]"
+Given the local storage "greeting" is set to "say \"hi\""
+Given the local storage "layout" is set to "{\"columns\":2}"
+  When I reload the page
+Given the local storage "the \"last\" note" is set to "draft"
+  And I reload the page
+```
+
+## 13. Given the local storage "the \"last\" note" is removed
+
+Remove a local storage key whose name holds a double quote, written \".
+
+**Keyword**: `Given`
+
+**Pattern**
+
+```js
+/^(?=.*\\")(?:the )?local storage "((?:[^"\\]|\\.)*)" is removed$/
+```
+
+**Examples**
+
+```gherkin
+Given the local storage "the \"last\" note" is removed
+Given local storage "\"draft\"" is removed
+Given the local storage "say \"hi\"" is removed
+  When I reload the page
+Given the local storage "the \"beta\" flag" is removed
+Given local storage "\"prefs\"" is removed
+  And I reload the page
+```
+
+## 14. Given the session storage "the \"last\" note" is set to "say \"hi\""
+
+Set a session storage key whose name or value holds a double quote,
+written \", such as a JSON value.
+
+**Keyword**: `Given`
+
+**Pattern**
+
+```js
+/^(?=.*\\")(?:the )?session storage "((?:[^"\\]|\\.)*)" is set to "((?:[^"\\]|\\.)*)"$/
+```
+
+**Examples**
+
+```gherkin
+Given the session storage "the \"last\" note" is set to "say \"hi\""
+Given session storage "wizard" is set to "{\"step\":2}"
+Given the session storage "filters" is set to "{\"type\":\"article\"}"
+Given the session storage "greeting" is set to "\"hello\""
+  When I reload the page
+Given session storage "\"draft\"" is set to "yes"
+  And I reload the page
+```
+
+## 15. Given the session storage "the \"last\" note" is removed
+
+Remove a session storage key whose name holds a double quote, written \".
+
+**Keyword**: `Given`
+
+**Pattern**
+
+```js
+/^(?=.*\\")(?:the )?session storage "((?:[^"\\]|\\.)*)" is removed$/
+```
+
+**Examples**
+
+```gherkin
+Given the session storage "the \"last\" note" is removed
+Given session storage "\"draft\"" is removed
+Given the session storage "say \"hi\"" is removed
+  When I reload the page
+Given the session storage "the \"beta\" flag" is removed
+Given session storage "\"wizard\"" is removed
+  And I reload the page
 ```

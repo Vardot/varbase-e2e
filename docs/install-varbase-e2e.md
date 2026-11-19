@@ -4,14 +4,26 @@
 **Install Varbase E2E on your project. Simply execute the following command:**
 
 ```
-npm add varbase-e2e
+npm install @vardot/varbase-e2e
 ```
+
+The install script of the package scaffolds the test project: `cucumber.js`, `playwright.config.ts`, a `tests/` folder with a starter feature, the `test` scripts of `package.json`, and Chromium. When npm skips it (npm warns that @vardot/varbase-e2e has "install scripts not yet covered by allowScripts", or `--ignore-scripts` is set), scaffold it with:
+
+```
+npx init-varbase-e2e
+```
+
+`npm install-scripts approve @vardot/varbase-e2e` lets the install script run on the next installs.
 
 ## Automated Functional Acceptance Testing
 
+The starter feature opens the home page of your site:
+
 ```
-npm test
+LAUNCH_URL=https://your-site.example npm test
 ```
+
+Without `LAUNCH_URL` the suite opens `http://localhost:8080`.
 
 ### Boost your site's success with automated testing
 

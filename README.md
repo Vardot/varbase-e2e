@@ -17,6 +17,14 @@ All you need to know is in [`docs/`](docs/README.md).
 npm install @vardot/varbase-e2e
 ```
 
+The install script of the package scaffolds the test project. When npm skips it (npm warns that @vardot/varbase-e2e has "install scripts not yet covered by allowScripts", or `--ignore-scripts` is set), scaffold it with:
+
+```
+npx init-varbase-e2e
+```
+
+`npm install-scripts approve @vardot/varbase-e2e` lets the install script run on the next installs.
+
 ## Automated Functional Acceptance Testing
 
 The install scaffolds the test project (`cucumber.js`, `playwright.config.ts`, `tests/`) with a starter feature that opens the home page of your site:

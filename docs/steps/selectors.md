@@ -536,7 +536,9 @@ Then I see wrapper outside of inner
 
 ## 15. Then I see modal over content
 
-Assert a subject locator overlaps another via intersection and z-index.
+Assert a subject locator overlaps another via intersection and z-index:
+the two bounding boxes intersect and the z-index of the subject is not
+lower than the z-index of the other.
 
 **Keyword**: `Then`
 

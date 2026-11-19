@@ -128,7 +128,10 @@ Then the field "[name=internal_only]" should not exist
 
 ## 5. Then the field "username" should have "enabled" state
 
-Assert a field's enabled / disabled state.
+Assert a field's state: `enabled`, `disabled`, `editable` (enabled and not
+read-only) or `read-only` (enabled, but its value cannot be changed;
+`readonly` works too). Any other word fails the step with the list of the
+states it can check.
 
 **Keyword**: `Then`
 
@@ -146,6 +149,8 @@ Then the field "Email" should have "disabled" state
 And the field "#search" should have "enabled" state
 Then the field "Password" should have "disabled" state
 Then the field "Country" should have "enabled" state
+Then the field "Reference" should have "read-only" state
+Then the field "Display name" should have "editable" state
 ```
 
 ## 6. Then the field "username" should be required

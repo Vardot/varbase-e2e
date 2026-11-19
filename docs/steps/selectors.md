@@ -109,8 +109,9 @@ Attribute + position — last nav item:
 
 ## 3. When I add selectors from "selectors.json" file
 
-Load CSS and XPath selectors from a JSON file.
-File path is relative to worldParameters.selectors.filesPath.
+Load CSS and XPath selectors from a JSON file. The file is looked for in the
+folder of worldParameters.selectors.filesPath (default ./tests/selectors/)
+first, then as written from the project root.
 
 **Keyword**: `When`
 

@@ -118,6 +118,10 @@ control it labels. The text is not a CSS selector: for a selector use
 "should not see" is the opposite of "should see": it passes when no element
 named that way is visible, so an element that is hidden does not fail it.
 
+An argument that looks like a selector (`.news-item`, `#main`, `header`) is
+still read as a text: a failure says so, and the negative prints a warning
+when it passes while that selector matches a visible element.
+
 **Keyword**: `Then`
 
 **Pattern**

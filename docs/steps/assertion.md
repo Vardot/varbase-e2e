@@ -374,7 +374,7 @@ When I am on "/about"
 
 Assert that the current page's response status is or is not a given code.
 
-Re-requests the current URL **through the browser's own context**, so the check sees what this user sees: the session cookies travel with the request, and redirects are not followed, so a 3xx can actually be asserted.
+The status is the one **the browser received** for the page it is showing (after any redirect), read from the browser session itself, so it follows the session cookies and the HTTPS settings of the page and sends no second request: a one-time login link or the page a form submission landed on reports what the visitor got.
 
 **Keyword**: `Then`
 
@@ -389,10 +389,10 @@ Re-requests the current URL **through the browser's own context**, so the check 
 ```gherkin
 Then the response status code should be 200
 And the response status code should not be 404
-Then the response status code should be 301
-When I go to "/no-such-page"
-  Then the response status code should be 404
+Then the response status code should be 404
 Then the response status code should not be 500
+When I am on "/admin"
+  Then the response status code should be 403
 ```
 
 ## 17. Then the page should return HTTP status 200
@@ -415,7 +415,7 @@ Then the page should not return HTTP status 404
 And the page should return HTTP status 403
 When I go to "/no-such-page"
   Then the page should return HTTP status 404
-Then the page should return HTTP status 301
+Then the page should not return HTTP status 500
 ```
 
 Note: the status a page returns is not always what it renders. A Drupal site can answer 200 with an access-denied page, or 404 to keep a route unguessable — see the access assertions in [`navigation.md`](navigation.md) for asserting the refusal itself rather than its status.

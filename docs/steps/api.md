@@ -404,7 +404,9 @@ Then API response code should be 302
 
 ## 13. Then the API response should contain "success"
 
-Checks that API response body contains specific text.
+Checks that the body of the last API response contains a text. Letter case
+does not matter, and placeholders set with `I set placeholder` are replaced
+in the text first. The negative step reads the body the same way.
 
 **Keyword**: `Then`
 
@@ -425,11 +427,14 @@ Then the API response should contain "published"
 Then API response should contain "id"
 Then the API response should contain "email"
 Then API response should contain "hello@un.org"
+Then the API response should contain "{{userId}}"
 ```
 
 ## 14. Then the API response should not contain "error"
 
-Checks that API response body doesn't contain specific text.
+Checks that the body of the last API response does not contain a text.
+Letter case does not matter, and placeholders are replaced first, exactly
+as in the positive step: a text that one finds, the other refuses.
 
 **Keyword**: `Then`
 
@@ -450,6 +455,7 @@ Then the API response should not contain "password"
 Then API response should not contain "secret"
 Then the API response should not contain "exception"
 Then API response should not contain "stack trace"
+Then the API response should not contain "{{apiKey}}"
 ```
 
 ## 15. Then the API response should contain json:

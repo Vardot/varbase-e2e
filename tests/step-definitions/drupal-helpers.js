@@ -19,7 +19,7 @@ const { smartSettle, friendly, gotoUrl, waitForPageLoad } = require('./varbase-e
 // (steps that name a file find it with resolveAssetFile()). This hook keeps
 // the trailing separator a project step may rely on when it joins
 // `this.assetsFolder + name` by hand.
-Before({ order: 1 }, function () {
+Before(function () {
   this.assetsFolder = path.resolve(process.cwd(), 'tests/assets') + path.sep;
 });
 
@@ -33,7 +33,7 @@ Before({ order: 1 }, function () {
 // with "found none" even though CKEditor had booted correctly. Load the same
 // JSON selector files Varbase E2E uses and flatten their `css` maps here so the
 // registry the custom steps consult is actually populated.
-Before({ order: 2 }, function () {
+Before(function () {
   // Varbase E2E's OWN Before hook (selectors.steps.js) already populated
   // this.__selectorsCss from the JSON preset files. We must NOT early-return on
   // that being non-empty — the previous guard did, so the "field body" default

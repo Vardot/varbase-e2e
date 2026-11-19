@@ -15,7 +15,7 @@ npx init-varbase-e2e
 
 `npm install-scripts approve @vardot/varbase-e2e` lets the install script run on the next installs.
 
-A project upgraded from a Nightwatch-based 1.x test setup has a `test` script that runs Nightwatch: the scaffold replaces it with the cucumber-js suite, keeps the old command as `npm run test:nightwatch`, and says so. `npx init-varbase-e2e --force` rewrites the scaffold's files and scripts, but never `tests/step-definitions/custom.js`, which holds the project's own steps.
+`npx init-varbase-e2e --force` rewrites the scaffold's files and scripts, but never `tests/step-definitions/custom.js`, which holds the project's own steps.
 
 ## Automated Functional Acceptance Testing
 

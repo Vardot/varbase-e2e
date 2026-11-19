@@ -12,9 +12,7 @@
 //   3. a feature named on the command line runs alone,
 //   4. a second scaffold run changes nothing, and a `test` script the project
 //      chose itself is kept,
-//   5. a `test` script that runs Nightwatch (a project from a Nightwatch 1.x setup)
-//      is replaced by the suite and kept as `test:nightwatch`,
-//   6. `--force` rewrites the scaffold's files but keeps the project's own
+//   5. `--force` rewrites the scaffold's files but keeps the project's own
 //      steps in tests/step-definitions/custom.js.
 //
 // The browser install is skipped (--skip-browsers): Chromium must be in the
@@ -189,23 +187,6 @@ async function main() {
     const ownPkg = JSON.parse(fs.readFileSync(path.join(own, 'package.json'), 'utf8'));
     if (ownPkg.scripts.test !== 'node my-own-tests.js') problems.push(`the scaffold replaced a test script of the project: ${ownPkg.scripts.test}`);
     if (!ownPkg.scripts['test:chromium']) problems.push('the scaffold did not add test:chromium beside an existing test script');
-
-    // A project from a Nightwatch 1.x setup: its test script runs Nightwatch.
-    const legacy = path.join(tmp, 'from-1x');
-    fs.mkdirSync(legacy);
-    const nightwatch = 'nightwatch --format @cucumber/pretty-formatter --format json:./tests/reports/cucumber-report.json';
-    fs.writeFileSync(path.join(legacy, 'package.json'), JSON.stringify({ name: 'from-1x', version: '1.0.0', scripts: { test: nightwatch } }, null, 2));
-    const legacyRun = scaffold(legacy);
-    const legacyPkg = JSON.parse(fs.readFileSync(path.join(legacy, 'package.json'), 'utf8'));
-    if (legacyPkg.scripts.test !== 'cucumber-js --config cucumber.js') {
-      problems.push(`the scaffold kept a Nightwatch test script from 1.x: "npm test" is still ${legacyPkg.scripts.test}`);
-    }
-    if (legacyPkg.scripts['test:nightwatch'] !== nightwatch) {
-      problems.push(`the scaffold did not keep the old Nightwatch command as test:nightwatch: ${legacyPkg.scripts['test:nightwatch']}`);
-    }
-    if (legacyPkg.scripts.test !== nightwatch && !/nightwatch/i.test(legacyRun.stdout || '')) {
-      problems.push('the scaffold replaced the Nightwatch test script without saying so');
-    }
 
     // --force keeps the project's own steps.
     const customFile = path.join(project, 'tests', 'step-definitions', 'custom.js');

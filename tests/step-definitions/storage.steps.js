@@ -192,3 +192,126 @@ Given(/^(?:the )?session storage "([^"]*)" is removed$/, async function (key) {
 Given(/^session storage is cleared$/, async function () {
   await this.page.evaluate(() => sessionStorage.clear());
 });
+
+// ---------------------------------------------------------------------------
+// Keys and values that hold a double quote
+// ---------------------------------------------------------------------------
+//
+// A quoted key or value may hold a double quote written \" (a JSON value, a
+// quoted cookie value), read the way {string} reads it in the cookie
+// assertions: \" is a double quote and \' a single one. These definitions take
+// a step only when it holds \" (the lookahead), which the definitions above
+// cannot match, so every step that ran before keeps its own definition.
+
+function unquote(text) {
+  return String(text === undefined || text === null ? '' : text).replace(/\\"/g, '"').replace(/\\'/g, "'");
+}
+
+/**
+ * Set a cookie whose name or value holds a double quote, written \".
+ *
+ * Example #1: Given the cookie "consent" is set to "\"accepted\""
+ * Example #2: Given the cookie "prefs" is set to "{\"theme\":\"dark\"}"
+ * Example #3: Given cookie "greeting" is set to "say \"hi\""
+ * Example #4: Given the cookie "banner" is set to "\"closed\""
+ *               And I am on the homepage
+ * Example #5: Given the cookie "layout" is set to "{\"columns\":2}"
+ *               When I reload the page
+ *
+ */
+Given(/^(?=.*\\")(?:the cookie|cookie) "((?:[^"\\]|\\.)*)" is set to "((?:[^"\\]|\\.)*)"$/, async function (name, value) {
+  const url = this.page.url() && this.page.url() !== 'about:blank' ? this.page.url() : (this.launchUrl || 'http://localhost');
+  const u = new URL(url);
+  await this.context.addCookies([{
+    name: unquote(name),
+    value: unquote(value),
+    domain: u.hostname,
+    path: '/',
+  }]);
+});
+
+/**
+ * Remove a cookie whose name holds a double quote, written \".
+ *
+ * Example #1: Given the cookie "the \"last\" visit" is removed
+ * Example #2: Given the cookie "\"quoted\"" is removed
+ * Example #3: Given the cookie "say \"hi\"" is removed
+ *               When I reload the page
+ * Example #4: Given the cookie "the \"beta\" flag" is removed
+ * Example #5: Given the cookie "\"consent\"" is removed
+ *               And I am on the homepage
+ *
+ */
+Given(/^(?=.*\\")the cookie "((?:[^"\\]|\\.)*)" is removed$/, async function (name) {
+  const wanted = unquote(name);
+  const cookies = await this.context.cookies();
+  const remaining = cookies.filter((c) => c.name !== wanted);
+  await this.context.clearCookies();
+  if (remaining.length) await this.context.addCookies(remaining);
+});
+
+/**
+ * Set a local storage key whose name or value holds a double quote, written
+ * \", such as a JSON value.
+ *
+ * Example #1: Given the local storage "prefs" is set to "{\"theme\":\"dark\"}"
+ * Example #2: Given local storage "cart" is set to "[{\"sku\":\"A-1\",\"qty\":2}]"
+ * Example #3: Given the local storage "greeting" is set to "say \"hi\""
+ * Example #4: Given the local storage "layout" is set to "{\"columns\":2}"
+ *               When I reload the page
+ * Example #5: Given the local storage "the \"last\" note" is set to "draft"
+ *               And I reload the page
+ *
+ */
+Given(/^(?=.*\\")(?:the )?local storage "((?:[^"\\]|\\.)*)" is set to "((?:[^"\\]|\\.)*)"$/, async function (key, value) {
+  await this.page.evaluate(({ k, v }) => localStorage.setItem(k, v), { k: unquote(key), v: unquote(value) });
+});
+
+/**
+ * Remove a local storage key whose name holds a double quote, written \".
+ *
+ * Example #1: Given the local storage "the \"last\" note" is removed
+ * Example #2: Given local storage "\"draft\"" is removed
+ * Example #3: Given the local storage "say \"hi\"" is removed
+ *               When I reload the page
+ * Example #4: Given the local storage "the \"beta\" flag" is removed
+ * Example #5: Given local storage "\"prefs\"" is removed
+ *               And I reload the page
+ *
+ */
+Given(/^(?=.*\\")(?:the )?local storage "((?:[^"\\]|\\.)*)" is removed$/, async function (key) {
+  await this.page.evaluate((k) => localStorage.removeItem(k), unquote(key));
+});
+
+/**
+ * Set a session storage key whose name or value holds a double quote,
+ * written \", such as a JSON value.
+ *
+ * Example #1: Given the session storage "the \"last\" note" is set to "say \"hi\""
+ * Example #2: Given session storage "wizard" is set to "{\"step\":2}"
+ * Example #3: Given the session storage "filters" is set to "{\"type\":\"article\"}"
+ * Example #4: Given the session storage "greeting" is set to "\"hello\""
+ *               When I reload the page
+ * Example #5: Given session storage "\"draft\"" is set to "yes"
+ *               And I reload the page
+ *
+ */
+Given(/^(?=.*\\")(?:the )?session storage "((?:[^"\\]|\\.)*)" is set to "((?:[^"\\]|\\.)*)"$/, async function (key, value) {
+  await this.page.evaluate(({ k, v }) => sessionStorage.setItem(k, v), { k: unquote(key), v: unquote(value) });
+});
+
+/**
+ * Remove a session storage key whose name holds a double quote, written \".
+ *
+ * Example #1: Given the session storage "the \"last\" note" is removed
+ * Example #2: Given session storage "\"draft\"" is removed
+ * Example #3: Given the session storage "say \"hi\"" is removed
+ *               When I reload the page
+ * Example #4: Given the session storage "the \"beta\" flag" is removed
+ * Example #5: Given session storage "\"wizard\"" is removed
+ *               And I reload the page
+ *
+ */
+Given(/^(?=.*\\")(?:the )?session storage "((?:[^"\\]|\\.)*)" is removed$/, async function (key) {
+  await this.page.evaluate((k) => sessionStorage.removeItem(k), unquote(key));
+});

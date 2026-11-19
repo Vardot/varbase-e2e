@@ -710,6 +710,14 @@ This index lists every public step grouped by source file, with one Gherkin exam
 - *^(?:the )?session storage "([^"]*)" is set to "([^"]*)"$*  ·  Example: `Given the session storage "checkout step" is set to "2"`
 - *^(?:the )?session storage "([^"]*)" is removed$*  ·  Example: `Given the session storage "checkout step" is removed`
 - *^session storage is cleared$*  ·  Example: `Given session storage is cleared`
+- *^(?=.*\\")(?:the cookie|cookie) "((?:[^"\\]|\\.)*)" is set to "((?:[^"\\]|\\.)*)"$*  ·  Example: `Given the cookie "consent" is set to "\"accepted\""`
+- *^(?=.*\\")the cookie "((?:[^"\\]|\\.)*)" is removed$*  ·  Example: `Given the cookie "the \"last\" visit" is removed`
+- *^(?=.*\\")(?:the )?local storage "((?:[^"\\]|\\.)*)" is set to "((?:[^"\\]|\\.)*)"$*  ·  Example: `Given the local storage "prefs" is set to "{\"theme\":\"dark\"}"`
+- *^(?=.*\\")(?:the )?local storage "((?:[^"\\]|\\.)*)" is removed$*  ·  Example: `Given the local storage "the \"last\" note" is removed`
+- *^(?=.*\\")(?:the )?session storage "((?:[^"\\]|\\.)*)" is set to "((?:[^"\\]|\\.)*)"$*  ·  Example: `Given the session storage "the \"last\" note" is set to "say \"hi\""`
+- *^(?=.*\\")(?:the )?session storage "((?:[^"\\]|\\.)*)" is removed$*  ·  Example: `Given the session storage "the \"last\" note" is removed`
+
+A key or a value may hold a double quote written `\"`, as in a JSON value: `Given the local storage "prefs" is set to "{\"theme\":\"dark\"}"`. A step that holds `\"` is read by the last six forms (`\"` is a double quote, `\'` a single one); a step without one by the forms above, as before.
 
 ### table.steps.js
 

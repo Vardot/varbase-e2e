@@ -435,7 +435,9 @@ Then the XML element "/orders/order" should have 3 elements
 
 ## 18. Then the XML should use the namespace "http://www.w3.org/2005/Atom"
 
-Assert the XML root declares an `xmlns:*` namespace URI.
+Assert the XML document uses a namespace: an element declares it
+(`xmlns="..."` or `xmlns:p="..."`) anywhere in the document, or an element
+or an attribute is in it.
 
 **Keyword**: `Then`
 
@@ -457,7 +459,8 @@ Then the XML should use the namespace "http://www.opengis.net/gml"
 
 ## 19. Then the XML should not use the namespace "http://example.com/legacy"
 
-Assert the XML root does NOT declare a namespace URI.
+Assert the XML document does NOT use a namespace: no element declares it
+and no element or attribute is in it.
 
 **Keyword**: `Then`
 

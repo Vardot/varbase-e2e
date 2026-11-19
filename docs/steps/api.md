@@ -335,7 +335,9 @@ When we send a POST request to "/contacts" with body:
 
 ## 11. When I send a POST request to "/login" with form data:
 
-Sends HTTP request to specific URL with form data.
+Sends HTTP request to specific URL with form data: one `name=value` field
+per line, split on the first "=" only, so a value keeps every "=" after it
+(a query string, a base64 token). Blank lines are skipped.
 
 **Keyword**: `When`
 

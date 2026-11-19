@@ -67,7 +67,9 @@ Then there should be no JavaScript warnings
 
 Assert that no collected JavaScript error message matches a regular
 expression. Useful when some noise is unavoidable but a specific bug
-pattern must never appear.
+pattern must never appear. Like the other two checks, it handles the
+errors it read: the end-of-scenario report, in "fail" mode too, does not
+fail the scenario on the noise the step tolerated.
 
 **Keyword**: `Then`
 

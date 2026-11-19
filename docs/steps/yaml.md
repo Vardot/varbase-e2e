@@ -611,7 +611,8 @@ Then the YAML value at "/spec/replicas" should not be empty
 
 ## 24. Then the YAML value at "/spec/replicas" should be greater than 0
 
-Assert a numeric YAML node is greater than a value.
+Assert a numeric YAML node is greater than a value. Only a YAML number
+compares: a quoted "3", true or null fails, as in every numeric step below.
 
 **Keyword**: `Then`
 

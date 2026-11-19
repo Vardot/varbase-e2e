@@ -192,12 +192,6 @@ const TEST_SCRIPTS = {
 // the project, so the scaffold replaces it.
 const NPM_PLACEHOLDER_TEST = /^echo "Error: no test specified" && exit 1$/;
 
-// A `test` script that runs Nightwatch is what a project's 1.x test setup
-// (Nightwatch and Cucumber) gave it. varbase-e2e runs on cucumber-js and
-// Playwright and brings no Nightwatch, so the scaffold replaces it and keeps
-// it as `test:nightwatch`.
-const NIGHTWATCH_TEST = /(^|[\s;&|/])nightwatch(\s|$)/i;
-
 // Files of the scaffold that hold the project's own code once written: never
 // overwritten, not even with --force.
 const PROJECT_FILES = new Set(['tests/step-definitions/custom.js']);
@@ -300,16 +294,9 @@ function ensurePackageJson(projectPath, opts) {
   }
 
   pkg.scripts = pkg.scripts || {};
-  let replacedNightwatch = null;
   for (const [name, cmd] of Object.entries(TEST_SCRIPTS)) {
-    const current = String(pkg.scripts[name] || '').trim();
-    const placeholder = name === 'test' && NPM_PLACEHOLDER_TEST.test(current);
-    const nightwatch = name === 'test' && NIGHTWATCH_TEST.test(current);
-    if (nightwatch && current !== cmd) {
-      if (!pkg.scripts['test:nightwatch']) pkg.scripts['test:nightwatch'] = pkg.scripts.test;
-      replacedNightwatch = pkg.scripts.test;
-    }
-    if (opts.force || !pkg.scripts[name] || placeholder || nightwatch) {
+    const placeholder = name === 'test' && NPM_PLACEHOLDER_TEST.test(String(pkg.scripts[name] || '').trim());
+    if (opts.force || !pkg.scripts[name] || placeholder) {
       pkg.scripts[name] = cmd;
     }
   }
@@ -320,7 +307,7 @@ function ensurePackageJson(projectPath, opts) {
   }
 
   fs.writeFileSync(pkgPath, JSON.stringify(pkg, null, 2) + '\n', 'utf8');
-  return { created: !existed, replacedNightwatch };
+  return { created: !existed };
 }
 
 // The browser itself goes into the Playwright cache of the user: no special
@@ -380,16 +367,6 @@ function run(argv) {
   console.log(
     `  [${pkgResult.created ? 'wrote ' : 'merged'}] package.json`
   );
-  if (pkgResult.replacedNightwatch) {
-    console.log(
-      [
-        '',
-        '  [varbase-e2e] "npm test" ran Nightwatch (a 1.x test setup). It now runs',
-        '  cucumber-js: cucumber-js --config cucumber.js',
-        '  The old command is kept as "npm run test:nightwatch".',
-      ].join('\n')
-    );
-  }
 
   const browsersInstalled = opts.skipBrowsers || installBrowsers(projectPath);
 

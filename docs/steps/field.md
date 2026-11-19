@@ -552,10 +552,12 @@ Given browser validation for the form "[data-testid=newsletter]" is disabled
 
 Fill paired `<input type=date>` + `<input type=time>` controls for a label.
 
-The field is named by its visible label or the legend of its fieldset; an
-input whose name or aria-label contains that text is found too, whatever
-the letter case. When an input is not found within 30 seconds the step
-fails and fills nothing.
+The field is named by the exact text of its label or of the legend of its
+fieldset (white space and letter case aside), and only its own inputs are
+filled: the one inside the label, the one the label is for, or the ones
+that follow the label before the next field. An input whose name or
+aria-label contains that text is found too. When an input is not found
+within 30 seconds the step fails and fills nothing.
 
 **Keyword**: `When`
 
@@ -623,8 +625,9 @@ When I fill in the time part of the datetime field "Departure" with "06:15"
 
 Fill the `start` half of a date-range pair.
 
-The range is named by its label or the legend of its fieldset; of its
-inputs, the ones whose name contains "start" are filled.
+The range is named by the exact text of its label or of the legend of its
+fieldset; of its inputs, the ones whose name, id or aria-label contains
+"start" are filled.
 
 **Keyword**: `When`
 
@@ -648,8 +651,9 @@ When I fill in the start datetime field "Booking" with date "2026-09-15" and tim
 
 Fill the `end` half of a date-range pair.
 
-The range is named by its label or the legend of its fieldset; of its
-inputs, the ones whose name contains "end" are filled.
+The range is named by the exact text of its label or of the legend of its
+fieldset; of its inputs, the ones whose name, id or aria-label contains
+"end" are filled.
 
 **Keyword**: `When`
 

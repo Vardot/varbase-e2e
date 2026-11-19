@@ -25,7 +25,7 @@ Cucumber-js loads every `*.steps.js` in that directory automatically — you nev
 | 17 | `Then the JSON response should have property "id"` |
 | 18 | `Then the JSON response should not have property "password"` |
 | 19 | `Then the response should be valid JSON` |
-| 20 | `Then the response header "Content-Type" should be "application/json"` |
+| 20 | `Then the response header "Content-Type" should be "application/json; charset=utf-8"` |
 | 21 | `Then print API response` |
 | 22 | `Then the API response should contain the header "ETag"` |
 | 23 | `Given I set placeholder "{{userId}}" to "123"` |
@@ -617,29 +617,31 @@ When I send a POST request to "/api/orders"
   Then the response should be valid JSON
 ```
 
-## 20. Then the response header "Content-Type" should be "application/json"
+## 20. Then the response header "Content-Type" should be "application/json; charset=utf-8"
 
-Verify response header value.
+Verify a header of the last API response. "should be" compares the whole
+value (white space around it trimmed); "should contain" looks for a part of
+it. The header name is matched in any letter case.
 
 **Keyword**: `Then`
 
 **Pattern**
 
 ```js
-/^(?:the response header|the header) "([^"]*)" should (?:be|contain) "([^"]*)"$/
+/^(?:the response header|the header) "([^"]*)" should (be|contain) "([^"]*)"$/
 ```
 
 **Examples**
 
 ```gherkin
-Then the response header "Content-Type" should be "application/json"
+Then the response header "Content-Type" should be "application/json; charset=utf-8"
 Then the header "Cache-Control" should contain "no-cache"
 Then the response header "Content-Type" should contain "charset=utf-8"
 Then the header "X-Powered-By" should be "Vardot"
 Then the response header "ETag" should contain "etag"
 Then the header "Location" should contain "/users/1"
 Then the response header "Access-Control-Allow-Origin" should be "*"
-Then the header "Content-Length" should contain "0"
+Then the header "Content-Length" should be "0"
 ```
 
 ## 21. Then print API response

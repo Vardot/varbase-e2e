@@ -81,7 +81,10 @@ Given I set header "If-None-Match" with value "etag-xyz"
 
 ## 3. Given the API base URL is "https://jsonplaceholder.typicode.com"
 
-Set the base URL for API calls. Accepts full URLs or paths relative to LAUNCH_URL.
+Set the base URL of the API requests of this scenario. A full URL is used as
+written; a path is joined to the launch URL of the run (worldParameters
+launchUrl, which LAUNCH_URL sets). The base URL is reset before every
+scenario: set it in each scenario, or in a Background.
 
 **Keyword**: `Given`
 

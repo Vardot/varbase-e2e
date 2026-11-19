@@ -152,7 +152,9 @@ Given I am on "/long-article"
 
 ## 5. Then I save screenshot with name "homepage.png"
 
-Save a screenshot using an explicit filename (tokens supported).
+Save a screenshot using an explicit filename (tokens supported). The step
+writes `<name>.png` and `<name>.html`; a name that already ends with
+`.png`, `.jpg`, `.jpeg` or `.html` keeps that one extension.
 
 **Keyword**: `When`
 
@@ -183,6 +185,8 @@ Then I save screenshot with name "contact-form-before-submit.png"
 ## 6. Then I save fullscreen screenshot with name "homepage-full.png"
 
 Save a full-page screenshot using an explicit filename (tokens supported).
+A name that already ends with `.png`, `.jpg`, `.jpeg` or `.html` keeps that
+one extension.
 
 **Keyword**: `When`
 

@@ -190,7 +190,11 @@ Then the element "input" with the attribute "name" and the value containing "_le
 
 ## 8. Then the element "#header" should be at the top of the viewport
 
-Assert an element is positioned within the top 100 px of the viewport.
+Assert an element is at the top of the viewport: the top of its box is
+between 0 and 100 pixels from the top of the viewport. The element gets
+up to 30 seconds to be on the page and visible; once it is, the step looks
+again for up to 5 seconds, so an element still on its way after a smooth
+scroll gets there.
 
 **Keyword**: `Then`
 
@@ -209,6 +213,8 @@ And the element ".sticky-nav" should be at the top of the viewport
 When I scroll to the top
   Then the element "#hero" should be at the top of the viewport
 Then the element "[role=banner]" should be at the top of the viewport
+When I click "Go to section 3"
+  Then the element "#section-3" should be at the top of the viewport
 ```
 
 ## 9. Then the element ".hero" should be centered in the viewport

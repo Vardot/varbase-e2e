@@ -206,6 +206,9 @@ But I print xpath selectors
 
 Define named CSS selectors in bulk for the current scenario.
 
+The table may start with a header row that names its columns
+(`| name | css selector |`): that row registers nothing.
+
 **Keyword**: `Given`
 
 **Pattern**
@@ -282,11 +285,20 @@ Layered page-shell selectors:
     | nav     | nav[role=navigation] |
     | main    | main            |
     | footer  | footer          |
+
+A header row names the columns and registers nothing:
+  Given I define css selectors:
+  | name    | css selector    |
+  | heading | h1              |
+  | list    | ul              |
 ```
 
 ## 7. /^(I |we )*define xpath selectors:$/
 
 Define named XPath selectors in bulk for the current scenario.
+
+The table may start with a header row that names its columns
+(`| name | xpath selector |`): that row registers nothing.
 
 **Keyword**: `Given`
 
@@ -321,6 +333,10 @@ Given I define xpath selectors:
     | language switcher | //ul[contains(@class,'language-switcher')] |
 Given I define xpath selectors:
     | user menu | //*[@id='user-menu'] |
+
+Given I define xpath selectors:
+    | name          | xpath selector       |
+    | first heading | //h1[1]              |
 ```
 
 ## 8. Given I am viewing the site on a xl screen

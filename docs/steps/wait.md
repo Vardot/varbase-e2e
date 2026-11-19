@@ -87,7 +87,8 @@ When I press "Search"
 
 ## 3. When I wait 1 second
 
-Wait UP TO a number of seconds for the page to settle.
+Wait UP TO a number of seconds for the page to settle. A number with no
+unit is read as seconds.
 
 **Keyword**: `When`
 
@@ -108,11 +109,13 @@ And wait 2 seconds
 When we wait 1 second
 When we wait 5 seconds
 When we wait 4s
+When I wait 2
 ```
 
 ## 4. When I wait max of 1 second
 
-Wait UP TO a maximum number of seconds for the page to settle.
+Wait UP TO a maximum number of seconds for the page to settle. A number with
+no unit is read as seconds.
 
 **Keyword**: `When`
 
@@ -133,18 +136,20 @@ And wait max of 2 seconds
 When we wait max of 1 second
 When we wait max of 5 seconds
 When we wait max of 4s
+When I wait max of 2
 ```
 
 ## 5. When I wait 1 minute
 
-Wait UP TO a number of minutes for the page to settle.
+Wait UP TO a number of minutes for the page to settle. The unit is required:
+a number with no unit is read as seconds.
 
 **Keyword**: `When`
 
 **Pattern**
 
 ```js
-/^(I |we )*wait (\d+)( minute| minutes|m)?$/
+/^(I |we )*wait (\d+)( minute| minutes|m)$/
 ```
 
 **Examples**
@@ -159,14 +164,15 @@ And wait 2 minutes
 
 ## 6. When I wait max of 1 minute
 
-Wait UP TO a maximum number of minutes for the page to settle.
+Wait UP TO a maximum number of minutes for the page to settle. The unit is
+required: a number with no unit is read as seconds.
 
 **Keyword**: `When`
 
 **Pattern**
 
 ```js
-/^(I |we )*wait max of (\d+)( minute| minutes|m)?$/
+/^(I |we )*wait max of (\d+)( minute| minutes|m)$/
 ```
 
 **Examples**

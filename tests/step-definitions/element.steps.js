@@ -1,11 +1,17 @@
 'use strict';
 
-const { friendly, failure, ELEMENT_LOOKUP_MS } = require('./varbase-e2e');
+const { friendly, failure, ELEMENT_LOOKUP_MS, registeredNameHint } = require('./varbase-e2e');
 
 // Element interactions and visual / positional assertions using Playwright.
 
 const { Given, When, Then } = require('@cucumber/cucumber');
 const assert = require('assert');
+
+// The hint for an element step given a name of the selector registry: the same
+// step with the selector the name stands for.
+function elementRegistryHint(world, sel, step) {
+  return registeredNameHint(world, sel, { withSelector: (selector) => step.replace('{selector}', selector) });
+}
 
 /**
  * Assert element A is positioned vertically below element B (greater Y).
@@ -221,7 +227,8 @@ Then('the element {string} should be at the top of the viewport', async function
   }
   if (state === 'missing') {
     throw failure(this.page, `No element matches "${sel}" after ${ELEMENT_LOOKUP_MS / 1000} seconds.`, {
-      hint: 'the argument is a CSS selector, such as "#hero" or "header.site-header".',
+      hint: elementRegistryHint(this, sel, 'the element "{selector}" should be at the top of the viewport') ||
+        'the argument is a CSS selector, such as "#hero" or "header.site-header".',
     });
   }
   if (state === 'hidden') {
@@ -276,7 +283,7 @@ When(/^(I |we )*click on the element "([^"]*)"$/, async function (pronoun, sel) 
     throw friendly({
       action: `click on the element "${sel}"`,
       cause: e,
-      hint: `check that the element exists on the page, is visible, and is clickable.`,
+      hint: elementRegistryHint(this, sel, 'I click on the element "{selector}"') || `check that the element exists on the page, is visible, and is clickable.`,
     });
   }
 });
@@ -301,7 +308,7 @@ When(/^(I |we )*trigger the JS event "([^"]*)" on the element "([^"]*)"$/, async
     throw friendly({
       action: `trigger the "${event}" event on "${sel}"`,
       cause: e,
-      hint: `use a standard event name like click, change, input, focus, or blur.`,
+      hint: elementRegistryHint(this, sel, `I trigger the JS event "${event}" on the element "{selector}"`) || `use a standard event name like click, change, input, focus, or blur.`,
     });
   }
 });
@@ -323,7 +330,7 @@ When(/^(I |we )*scroll to the element "([^"]*)"$/, async function (pronoun, sel)
     throw friendly({
       action: `scroll to "${sel}"`,
       cause: e,
-      hint: `check the element exists on the page and was not removed before scrolling.`,
+      hint: elementRegistryHint(this, sel, 'I scroll to the element "{selector}"') || `check the element exists on the page and was not removed before scrolling.`,
     });
   }
 });
@@ -345,7 +352,7 @@ When(/^(I |we )*hover over the element "([^"]*)"$/, async function (pronoun, sel
     throw friendly({
       action: `hover over "${sel}"`,
       cause: e,
-      hint: `check the element exists, is visible, and is not covered by another element.`,
+      hint: elementRegistryHint(this, sel, 'I hover over the element "{selector}"') || `check the element exists, is visible, and is not covered by another element.`,
     });
   }
 });
@@ -367,7 +374,7 @@ When(/^(I |we )*focus on the element "([^"]*)"$/, async function (pronoun, sel) 
     throw friendly({
       action: `focus on "${sel}"`,
       cause: e,
-      hint: `the element must be focusable — an input, button, link, or have a tabindex.`,
+      hint: elementRegistryHint(this, sel, 'I focus on the element "{selector}"') || `the element must be focusable — an input, button, link, or have a tabindex.`,
     });
   }
 });

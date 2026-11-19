@@ -210,7 +210,8 @@ When wait until page loaded
 
 ## 8. When I wait for AJAX to finish
 
-Wait for active XHR/fetch requests to complete.
+Wait for active XHR/fetch requests to complete. The lower-case form,
+`wait for ajax to finish`, is a step of drupal-core.steps.js.
 
 **Keyword**: `When`
 
@@ -227,6 +228,8 @@ When I wait for AJAX to finish
 And I wait for AJAX to finish
 When we wait for AJAX to finish
 And wait for AJAX to finish
+When I press "Load more"
+  And I wait for AJAX to finish
 ```
 
 ## 9. When I wait for the modal to appear

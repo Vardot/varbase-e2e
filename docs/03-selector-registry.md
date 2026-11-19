@@ -95,3 +95,9 @@ To keep tests portable, every preset exposes the same core names. See `tests/sel
 - Modifier first (`active tab`, `danger button`, `first list item`).
 - Synonyms collapse to canonical names (`alert success` / `notification success` / `callout success` → `notice success`).
 - `data table` for HTML tables; `data list` for `ul`/`ol` collections.
+
+## Bare names and your own steps
+
+The steps that take registered names without quotes (`When I click primary button`, `Then I see visible header, footer`, `Then I don't see promo banner`, `Then I see header above footer`, `Then I see search input has focus`) match any unquoted words after their verb, so that every registered name works, `sign in button` and `log in link` included. A custom step of your project that starts the same way with unquoted words matches them too: `When I click save button in dialog` is ambiguous between your step and the bare-name click, and cucumber-js stops at it. (varbase-e2e keeps its own three such steps, `I click the delete button`, `I click on tasks in the toolbar` and `I click next button in tour`, out of the bare-name click with a negative lookahead.)
+
+Write such a step with a quoted argument and words of its own around it (`When I click "Save" in the dialog`), or start it with other words (`When I save the dialog`). Or register the element and use the built-in step: `When I add "dialog save button" selector for ".dialog .save" css selector`, then `When I click dialog save button`. After adding a step, `npx cucumber-js --dry-run` lists every step that is ambiguous.

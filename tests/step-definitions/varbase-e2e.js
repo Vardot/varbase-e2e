@@ -180,9 +180,13 @@ async function smartSettle(page, timeout) {
       const ajax = window.__varbaseE2eAjaxCount;
       const timers = window.__varbaseE2ePendingTimers;
       const last = window.__varbaseE2eLastMutation;
+      const now = typeof window.__varbaseE2eNow === 'function' ? window.__varbaseE2eNow() : Date.now();
+      // Under a fake clock the page's timers are the clock's and run only
+      // when it moves; the ones the probes count are the clock's own.
+      const fakeClock = !!(window.Date && window.Date.isFake);
       if (typeof ajax === 'number' && ajax > 0) return false;
-      if (typeof timers === 'number' && timers > 0) return false;
-      if (typeof last === 'number' && Date.now() - last < quietMs) return false;
+      if (!fakeClock && typeof timers === 'number' && timers > 0) return false;
+      if (typeof last === 'number' && now - last < quietMs) return false;
       return true;
     },
     250,
@@ -1167,9 +1171,14 @@ const MIN_WAIT_TIME = Object.freeze({
 function smartWaitProbes() {
   if (window.__varbaseE2eAjaxInstalled) return;
   window.__varbaseE2eAjaxInstalled = true;
+  // The time of the probes is real time: a fake clock (Playwright's
+  // page.clock) replaces Date later, and its Date.now() may stand still or
+  // lie in the past.
+  const realNow = Date.now.bind(Date);
+  window.__varbaseE2eNow = realNow;
   window.__varbaseE2eAjaxCount = 0;
   window.__varbaseE2ePendingTimers = 0;
-  window.__varbaseE2eLastMutation = Date.now();
+  window.__varbaseE2eLastMutation = realNow();
 
   // Track in-flight fetch requests.
   const origFetch = window.fetch;
@@ -1230,7 +1239,7 @@ function smartWaitProbes() {
   const startObserver = () => {
     if (!document || !document.documentElement) return false;
     try {
-      new MutationObserver(() => { window.__varbaseE2eLastMutation = Date.now(); })
+      new MutationObserver(() => { window.__varbaseE2eLastMutation = realNow(); })
         .observe(document.documentElement, { childList: true, subtree: true, attributes: true, characterData: true });
       return true;
     } catch (e) { return false; }

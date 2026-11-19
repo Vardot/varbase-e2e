@@ -996,6 +996,12 @@ When(/^(I |we )*select "([^"]*)" text in "([^"]*)" field$/, async function (pron
 /**
  * Click one or more named components — uses locator.click() which auto-scrolls.
  *
+ * The names are read without quotes, so the step matches any unquoted words
+ * after "click" (registered names such as "sign in button" need that). A
+ * custom step that starts the same way, such as "I click save button in
+ * dialog", is ambiguous with this one: give a custom step a quoted argument
+ * and words of its own ("I click "Save" in the dialog") instead.
+ *
  * The negative lookahead keeps three phrasings out of this greedy pattern —
  * "the delete button", "on tasks in the toolbar" and "next button in tour" —
  * because drupal-core / drupal-moderation / varbase own those exact steps and

@@ -512,7 +512,8 @@ Then API response should contain json:
 
 ## 16. Then the JSON response should have "name" equal to "John Doe"
 
-Alternative syntax for JSON property verification.
+Alternative syntax for JSON property verification. The property is named by
+a dot path (`user.role`, `data[0].id`) or a JSON Pointer (`/user/role`).
 
 **Keyword**: `Then`
 
@@ -533,11 +534,12 @@ Then the API response should have "email" equal to "hello@un.org"
 Then the JSON property "count" should be 42
 Then the JSON response should have "user.role" equal to "admin"
 Then the JSON property "published" should be false
+Then the JSON response should have "/data/0/type" equal to "articles"
 ```
 
 ## 17. Then the JSON response should have property "id"
 
-Verify a JSON property exists.
+Verify a JSON property exists, named by a dot path or a JSON Pointer.
 
 **Keyword**: `Then`
 
@@ -558,11 +560,13 @@ Then the JSON response should have property "user.org"
 Then the API response should contain property "meta.total"
 Then the JSON response should have property "createdAt"
 Then the API response should contain property "links.self"
+Then the JSON response should have property "/links/self"
 ```
 
 ## 18. Then the JSON response should not have property "password"
 
-Verify a JSON property does not exist.
+Verify a JSON property does not exist, named by a dot path or a JSON
+Pointer.
 
 **Keyword**: `Then`
 
@@ -583,6 +587,7 @@ Then the JSON response should not have property "user.password"
 Then the API response should not contain property "internal"
 Then the JSON response should not have property "debug"
 Then the API response should not contain property "stack"
+Then the JSON response should not have property "/user/password"
 ```
 
 ## 19. Then the response should be valid JSON

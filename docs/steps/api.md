@@ -128,7 +128,8 @@ Given I set the header "Cache-Control" to "no-cache"
 
 ## 5. Given I set the following headers:
 
-Set multiple headers using a table.
+Set multiple headers using a table: one `| name | value |` row per header,
+every row sent (a first row that names the columns is left out).
 
 **Keyword**: `Given`
 
@@ -188,7 +189,9 @@ Given I set the request body to '{"status": "published"}'
 
 ## 7. Given I set the request body with:
 
-Set request body using a table.
+Set request body using a table: one `| field | value |` row per field,
+every row sent (a first row that names the columns is left out). "true",
+"false" and numbers are sent as JSON booleans and numbers.
 
 **Keyword**: `Given`
 

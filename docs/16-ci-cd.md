@@ -27,7 +27,7 @@ GitHub's native CI/CD. Free tier: 2,000 minutes per month for private repos,
 
 ### Workflow contents
 
-Runs on a push to `2.0.x`, on a pull request to `2.0.x` and by hand (`Actions → Github Actions → Run workflow`). The token is read-only (`permissions: contents: read`). A newer push to the same pull request cancels the run in progress; a run on `2.0.x` is never cancelled.
+Runs on a push to `2.0.x`, on a pull request to `2.0.x` and by hand (`Actions → Github Actions → Run workflow`). The token is read-only (`permissions: contents: read`). A newer push to the same pull request cancels the run in progress. A run on `2.0.x` and a run started by hand have a concurrency group of their own: they are never queued behind another run and never cancelled.
 
 Single job `build` on `ubuntu-latest`, 45-minute limit:
 

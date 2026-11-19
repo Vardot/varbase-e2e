@@ -227,6 +227,12 @@ When I fill in the following: by its "name" attribute
 
 Select an option from a dropdown by label, id, class, or name.
 
+The select list is named by the exact text of its label (one word or
+several), by its name, by its id, or by a CSS selector that starts with
+`#`, `.` or `[`. The option is named by its text, else by its value. A
+select list that is not on the page after 30 seconds, or that has no such
+option, fails the step with the options it has.
+
 **Keyword**: `When`
 
 **Pattern**
@@ -242,6 +248,7 @@ When I select "Mercedes" from "Cars"
 When I select "saab" from "#cars"
 When I select "Mercedes" from "cars"
 And we select "English" from "Language"
+When I select "Red" from "filters[colour]"
 ```
 
 ## 10. When I additionally select "Red" from "Colors"

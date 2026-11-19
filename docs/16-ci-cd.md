@@ -27,18 +27,18 @@ GitHub's native CI/CD. Free tier: 2,000 minutes per month for private repos,
 
 ### Workflow contents
 
-Single job `build` on `ubuntu-latest`:
+Runs on a push to `2.0.x`, on a pull request to `2.0.x` and by hand (`Actions → Github Actions → Run workflow`). The token is read-only (`permissions: contents: read`). A newer push to the same pull request cancels the run in progress; a run on `2.0.x` is never cancelled.
 
-1. `actions/checkout@v4` — pulls the repo.
-2. `actions/setup-node@v4` — Node 24.x.
+Single job `build` on `ubuntu-latest`, 45-minute limit:
+
+1. `actions/checkout@v7` — pulls the repo.
+2. `actions/setup-node@v7` — Node 24.x, with the npm cache keyed on `package.json`.
 3. `npm install`.
 4. `npx playwright install --with-deps chromium`.
 5. `npm start &` — backgrounds the fixture server.
-6. `sleep 3`.
+6. Waits until the server answers on port 8080 (30 seconds at most).
 7. `npm test`.
-8. `actions/upload-artifact@v4` — the HTML/JSON report and the failure screenshots, on every run.
-
-Triggers: `push`, `pull_request` and `workflow_dispatch`. The `pull_request` trigger is what puts a check on a PR; `workflow_dispatch` lets you start a run from the Actions tab or over the API.
+8. `actions/upload-artifact@v7` — uploads the report, screenshots and videos, on success and on failure.
 
 `FORCE_COLOR=1` is set on the job so cucumber-js v10 emits ANSI colours.
 
@@ -54,25 +54,33 @@ The badge follows the workflow file name and branch — no extra setup.
 
 ### Reports
 
-The workflow uploads a `cucumber-report` artifact on every run, pass or fail:
+Every run, passed or failed, uploads one artifact named `cucumber-report`, kept 14 days (`run page → Artifacts`):
 
 ```yaml
-- name: Upload the report and screenshots
+- uses: actions/upload-artifact@v7
   if: always()
   uses: actions/upload-artifact@v4
   with:
     name: cucumber-report
     path: |
-      tests/reports/cucumber_report.html
-      tests/reports/cucumber_report.json
+      tests/reports/
       screenshots/
+      videos/
+    retention-days: 14
     if-no-files-found: ignore
 ```
+
+- `tests/reports/` — `cucumber_report.json` and the HTML report `cucumber_report.html`.
+- `screenshots/` — the screenshot of each failed step (`failed_*.png`) and the ones the screenshot steps save.
+- `videos/` — the recordings, when `VARBASE_E2E_VIDEO` or a `@video` tag turns recording on.
+
+For a PDF next to the HTML report, add `npx generate-reports --format pdf` as a step with `if: always()` before the upload.
 
 ### Notes
 
 - **A fork does not run workflows until someone says so.** If this repository is still a fork, GitHub blocks every run until the owner presses "I understand my workflows, go ahead and enable them" once in the Actions tab. There is no API for that button, and enabling Actions in the repository settings does not replace it.
 - The fixture server is a tiny `http-server` static site on port 8080 — no Docker daemon required on the runner.
+- The repository tracks no `package-lock.json`, so the npm cache is keyed on `package.json` (`cache-dependency-path`).
 - For a per-browser matrix: add `strategy.matrix.browser: [chromium, firefox, webkit]` + `BROWSER: ${{ matrix.browser }}` to the env block, and replace `chromium` in the playwright install line with `${{ matrix.browser }}`.
 
 ### Running the suite on another provider

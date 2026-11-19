@@ -72,7 +72,8 @@ Given on the frontpage
 
 ## 3. Given I am on "/about-us.html"
 
-Open a specific page under the launch URL.
+Open a specific page: a path is opened under the launch URL, an absolute
+`http://` or `https://` URL is opened as written.
 
 **Keyword**: `Given`
 
@@ -121,7 +122,8 @@ When we navigate to the homepage
 
 ## 5. When I go to "/contact-us.html"
 
-Navigate to a specific page.
+Navigate to a specific page: a path is opened under the launch URL, an
+absolute `http://` or `https://` URL is opened as written.
 
 **Keyword**: `When`
 
@@ -140,6 +142,7 @@ When I navigate to "/admin/dashboard"
 When navigating to "/products"
 When we go to "/products"
 When we navigate to "/terms"
+When I go to "https://un.org"
 ```
 
 ## 6. When I move forward one page

@@ -1,0 +1,4 @@
+Varbase E2E release notes
+
+- Added: steps for file downloads.
+- Fixed: nothing to see here.

@@ -1,0 +1,4 @@
+name,role,status
+Varbase Tester,editor,active
+Varbase Admin,administrator,active
+Varbase Guest,visitor,blocked

@@ -43,6 +43,7 @@ suite — nearly every bundled feature loads a static fixture from `examples/`.
 | `npm run test:must-fail` | Runs the scenarios of `tests/must-fail/` (they must fail) and checks each failure message: what was looked for, the page, a hint. Needs `npm start`. |
 | `npm run test:paths` | No browser: a feature or a scenario (`file:line`) named on the command line runs alone; naming none runs the whole suite. |
 | `npm run test:config` | A `cucumber.js` whose `worldParameters` carry only the launch URL runs a scenario green and the run ends by itself. |
+| `npm run test:exit-report` | Needs browsers, no server: the HTML report built at the end of a run is built once with `--parallel`, from a JSON report written elsewhere, and says so in one line when there is none. |
 | `npm run generate-reports` | HTML (+ optional PDF) report from `tests/reports/cucumber_report.json`. |
 
 Targeting a subset:
@@ -58,7 +59,7 @@ HEADLESS=false SLOW_MO=800 npx cucumber-js tests/features/x.feature   # watch a 
 ```
 
 Env vars: `LAUNCH_URL`, `BROWSER`, `HEADLESS`, `SLOW_MO`, `FORCE_COLOR`,
-`VARBASE_E2E_AUTO_SETTLE`, `VARBASE_E2E_REPORT_DISABLE`, `VARBASE_E2E_REPORT_ARGS`,
+`VARBASE_E2E_AUTO_SETTLE`, `VARBASE_E2E_STEP_TIMEOUT`, `VARBASE_E2E_REPORT_DISABLE`, `VARBASE_E2E_REPORT_ARGS`, `VARBASE_E2E_REPORT_JSON`,
 `VARBASE_E2E_FILTER_HOOK_LINES`, `VARBASE_E2E_SCREENSHOT_*`, `VARBASE_E2E_VIDEO*`,
 `VARBASE_E2E_JS_ERROR_*`, `VARBASE_E2E_SELECTORS_OFFSET`,
 `VARBASE_E2E_SELECTORS_BREAKPOINTS`. Every one of them mirrors a
@@ -119,7 +120,10 @@ Everything shared lives here; every `*.steps.js` does
   (`VARBASE_E2E_FILTER_HOOK_LINES=off` to disable), and a `process.on('exit')`
   hook that auto-generates the HTML report via `bin/generate-reports`
   (`VARBASE_E2E_REPORT_DISABLE=1` to disable, `VARBASE_E2E_REPORT_ARGS` to pass
-  flags).
+  flags). It runs only in the process that runs cucumber-js, never in a
+  `--parallel` worker, and reads the JSON report the run wrote
+  (`VARBASE_E2E_REPORT_JSON`, else the `json:` formatter of the command line or
+  of `cucumber.js`, else `tests/reports/cucumber_report.json`).
 
 ### 2.3 Config layering
 

@@ -274,6 +274,12 @@ Then the color field "Theme" should have the value "#ffaa00"
 
 Fill a CKEditor / contenteditable rich-text field with HTML.
 
+The field is found by the name or the id of its form control, by the text
+of its label, or by the accessible name of its editable area
+(`aria-label` / `aria-labelledby`). The editable area that is filled is the
+one that belongs to that field, so a page with several editors is filled in
+the right place. A page with a single editor is filled whatever the name.
+
 **Keyword**: `When`
 
 **Pattern**

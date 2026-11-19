@@ -904,7 +904,9 @@ Then the YAML should use the namespace "openapi: 3.0.3"
 
 ## 37. Then the YAML should not use the namespace "v0"
 
-Assert the YAML document does NOT declare a namespace value.
+Assert the YAML document does NOT declare a namespace value: the exact
+opposite of the step above (no top-level value equal to it, and the raw
+text does not carry it).
 
 **Keyword**: `Then`
 

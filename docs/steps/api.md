@@ -1,6 +1,6 @@
 # API (long form) steps
 
-22 steps, defined in `tests/step-definitions/api.steps.js`.
+23 steps, defined in `tests/step-definitions/api.steps.js`.
 
 Cucumber-js loads every `*.steps.js` in that directory automatically — you never `require()` a step file from a feature.
 
@@ -27,7 +27,8 @@ Cucumber-js loads every `*.steps.js` in that directory automatically — you nev
 | 19 | `Then the response should be valid JSON` |
 | 20 | `Then the response header "Content-Type" should be "application/json"` |
 | 21 | `Then print API response` |
-| 22 | `Given I set placeholder "{{userId}}" to "123"` |
+| 22 | `Then the API response should contain the header "ETag"` |
+| 23 | `Given I set placeholder "{{userId}}" to "123"` |
 
 ---
 
@@ -669,7 +670,32 @@ When I send a DELETE request to "/api/orders/1"
   Then print API response
 ```
 
-## 22. Given I set placeholder "{{userId}}" to "123"
+## 22. Then the API response should contain the header "ETag"
+
+Verify the last API response has, or has not, a header, whatever its value.
+The name is matched in any letter case. To check the value, use
+`the response header "X" should be "Y"` or `should contain "Y"`.
+
+**Keyword**: `Then`
+
+**Pattern**
+
+```js
+/^(?:the )?API response should( not)? contain the header "([^"]*)"$/
+```
+
+**Examples**
+
+```gherkin
+Then the API response should contain the header "ETag"
+Then the API response should contain the header "Location"
+Then API response should contain the header "Content-Type"
+Then the API response should not contain the header "X-Powered-By"
+Then the API response should not contain the header "Server"
+And API response should not contain the header "Set-Cookie"
+```
+
+## 23. Given I set placeholder "{{userId}}" to "123"
 
 Sets placeholder for replacement in URLs, requests, and responses.
 

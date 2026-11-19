@@ -34,6 +34,9 @@ Cucumber-js loads every `*.steps.js` in that directory automatically — you nev
 
 Wait UP TO N seconds for the page to settle. Returns early on idle.
 
+Like every wait whose length the scenario gives, it runs for that length
+even past the step timeout (45 s, VARBASE_E2E_STEP_TIMEOUT).
+
 "Settle" = DOM ready, no in-flight fetch/XHR, no pending setTimeout
 callbacks, and no MutationObserver activity for at least 250 ms.
 

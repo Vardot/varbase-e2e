@@ -55,6 +55,14 @@ npx init-varbase-e2e
 npm install-scripts approve @vardot/varbase-e2e
 ```
 
+The scaffold never replaces a file or a `test` script the project already
+has, with two exceptions: npm's "no test specified" placeholder, and a
+`test` script that runs Nightwatch (a project upgraded from a Nightwatch
+1.x setup), which becomes the cucumber-js suite while the old command stays
+available as `npm run test:nightwatch`. `npx init-varbase-e2e --force`
+rewrites the scaffold's files and scripts, but never
+`tests/step-definitions/custom.js`, which holds the project's own steps.
+
 Firefox and WebKit are optional: `npx playwright install firefox webkit`.
 
 ## 60-second first test

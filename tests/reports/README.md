@@ -20,9 +20,9 @@ Override paths with env vars:
 | `VARBASE_E2E_REPORT_DISABLE` | _unset_ | `1` to skip HTML generation |
 | `VARBASE_E2E_REPORT_THEME` | `bootstrap` | `bootstrap` / `hierarchy` / `foundation` / `simple` |
 | `VARBASE_E2E_REPORT_TITLE` | `Test Report` | Brand title in the HTML header |
-| `VARBASE_E2E_REPORT_APP_VERSION` | `2.0.0` | Metadata field |
+| `VARBASE_E2E_REPORT_APP_VERSION` | the `version` of the project's `package.json` | Metadata field |
 | `VARBASE_E2E_REPORT_ENV` | `development` | Test-environment metadata |
-| `VARBASE_E2E_REPORT_EXECUTED` | `Remote` | Execution location metadata |
+| `VARBASE_E2E_REPORT_EXECUTED` | `Remote` when `CI` is set, else `Local` | Execution location metadata |
 
 ## Regenerate manually
 

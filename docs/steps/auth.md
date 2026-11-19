@@ -48,9 +48,12 @@ When I save the auth state to "/tmp/admin-state.json"
 Restore cookies + localStorage from a previously saved JSON file.
 
 The current browser context is closed and a fresh one is opened with the
-saved state. The varbase-e2e init script (AJAX/timer/mutation tracker) is
-re-installed automatically so smart waits keep working. Subsequent steps
-proceed against the restored, authenticated session.
+saved state, through the same path as the first one of the scenario: the
+smart waits (the AJAX / timer / mutation tracker), the viewport of an
+@mobile / @desktop tag, video recording while it is on, JavaScript-error
+capture, the response tracker and a running request log all go on with
+the new page. The page starts blank: open the page you need next. Routes
+stubbed before this step belong to the closed context: stub them after it.
 
 **Keyword**: `Given`
 

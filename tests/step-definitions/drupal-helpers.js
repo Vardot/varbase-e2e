@@ -15,9 +15,10 @@ const fs = require('fs');
 const { Before } = require('@cucumber/cucumber');
 const { smartSettle, friendly, gotoUrl, waitForPageLoad } = require('./varbase-e2e');
 
-// Resolve the assets folder to the repo's own tests/assets/ (Varbase E2E
-// defaults `this.assetsFolder` to its own package dir, so `I attach the file
-// "flag-earth.jpg"` looked for node_modules/Varbase E2E/tests/assets/…).
+// The assets folder is the project's own tests/assets/, as the World sets it
+// (steps that name a file find it with resolveAssetFile()). This hook keeps
+// the trailing separator a project step may rely on when it joins
+// `this.assetsFolder + name` by hand.
 Before({ order: 1 }, function () {
   this.assetsFolder = path.resolve(process.cwd(), 'tests/assets') + path.sep;
 });

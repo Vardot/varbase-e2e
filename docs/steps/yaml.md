@@ -49,7 +49,8 @@ Cucumber-js loads every `*.steps.js` in that directory automatically — you nev
 
 ## 1. Given the YAML response content from the file "config.yml"
 
-Load YAML response content from a file under `tests/assets/`.
+Load YAML response content from a file under `tests/assets/` of the
+project, or from a path from the project root.
 
 Multi-document streams (`---`) are parsed via `loadAll`. The first document
 becomes the default; switch with `Given the active YAML document is N`.

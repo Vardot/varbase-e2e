@@ -156,8 +156,10 @@ When I follow "Next"
 
 Attach a file from tests/assets/ to a file input.
 
-The file path is resolved against `this.assetsFolder` (default
-`tests/assets/`). The target selector must address an `<input type="file">`.
+A file name is looked for in the project's `tests/assets/`
+(`this.assetsFolder`), then as written from the project root; a file that
+is in neither fails with the paths tried. The target selector must address
+an `<input type="file">`.
 
 **Keyword**: `When`
 

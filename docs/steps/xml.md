@@ -31,7 +31,8 @@ Cucumber-js loads every `*.steps.js` in that directory automatically — you nev
 
 ## 1. Given the response content from the file "feed.xml"
 
-Load XML response content from a file under `tests/assets/`.
+Load XML response content from a file under `tests/assets/` of the project,
+or from a path from the project root.
 
 **Keyword**: `Given`
 

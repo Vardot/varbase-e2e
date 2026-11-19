@@ -70,9 +70,9 @@ Given I will dismiss the next dialog
   Then I should be on the homepage
 Given I will dismiss the next dialog
   When I press "Delete"
-  Then "<.row>" should still be visible
+  Then ".row" should be visible
 Given I will dismiss the next dialog
-  When I close the tab
+  When I reload the page
 ```
 
 ## 3. Given I will accept the next dialog with "alice@example.com"

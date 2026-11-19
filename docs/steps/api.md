@@ -1,6 +1,6 @@
 # API (long form) steps
 
-23 steps, defined in `tests/step-definitions/api.steps.js`.
+24 steps, defined in `tests/step-definitions/api.steps.js`.
 
 Cucumber-js loads every `*.steps.js` in that directory automatically — you never `require()` a step file from a feature.
 
@@ -29,6 +29,7 @@ Cucumber-js loads every `*.steps.js` in that directory automatically — you nev
 | 21 | `Then print API response` |
 | 22 | `Then the API response should contain the header "ETag"` |
 | 23 | `Given I set placeholder "{{userId}}" to "123"` |
+| 24 | `When I save the JSON property "token" as placeholder "{{token}}"` |
 
 ---
 
@@ -720,4 +721,30 @@ Given I set placeholder "{{email}}" to "hello@un.org"
 Given we set placeholder "{{apiKey}}" to "secret-xyz"
 Given I set placeholder "{{version}}" to "v2"
 Given we set placeholder "{{locale}}" to "en-US"
+```
+
+## 24. When I save the JSON property "token" as placeholder "{{token}}"
+
+Save a JSON property of the last API response as a placeholder, to carry a
+value the API returned (a token, the id of a new record) into the URLs,
+headers and bodies of the next requests and into the checks. The property
+is named the way the other JSON property steps name it.
+
+**Keyword**: `When`
+
+**Pattern**
+
+```js
+/^(I |we )*save the JSON property "([^"]*)" as placeholder "([^"]*)"$/
+```
+
+**Examples**
+
+```gherkin
+When I save the JSON property "token" as placeholder "{{token}}"
+When we save the JSON property "id" as placeholder "{{postId}}"
+And I save the JSON property "data.0.id" as placeholder "{{articleId}}"
+When I save the JSON property "user.email" as placeholder "{{email}}"
+Then I save the JSON property "meta.total" as placeholder "{{total}}"
+  And I send a GET request to "/items?count={{total}}"
 ```

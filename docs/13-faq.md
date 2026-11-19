@@ -138,6 +138,10 @@ Then I should see "Welcome, Alice"               # ✅ user behaviour
 Behaviour-tested code is refactor-friendly. Implementation-tested code
 breaks every time the schema changes.
 
+## Does `I should see` care about letter case or hidden text?
+
+`I should see` and `eventually I should see` ignore letter case; `I should not see` keeps it, as it always has. Otherwise the three read the page the same way: white space is collapsed, and the text of hidden elements counts (the text of `<script>` and `<style>` does not). On a page that reads "Next page", `I should see "next page"` passes, `I should not see "next page"` passes too, and `I should not see "Next page"` fails. For the text a visitor can see, with its letter case, use `I wait for the text "Next page" to appear`; for an element, `"<selector>" should be visible`.
+
 ## How do I name selectors I'll reuse?
 
 In `tests/selectors/my-app.json`:

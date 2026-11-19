@@ -28,7 +28,21 @@ Cucumber-js loads every `*.steps.js` in that directory automatically — you nev
 
 ## 1. Then I should see "Welcome"
 
-Assert that text is or is not present on the page.
+Assert that a text is, or is not, on the page.
+
+Both polarities read the page the same way, as `eventually I should see`
+does: the text of the page as Playwright's text matching reads it, runs of
+white space collapsed, the text of hidden elements included, the text of
+`<script>` and `<style>` left out. "should see" ignores letter case;
+"should not see" keeps it, as it always has: on a page that reads "Next
+page", `I should see "next page"` passes, `I should not see "next page"`
+passes and `I should not see "Next page"` fails. "should see" waits up to
+5 seconds for the text to come, "should not see" up to 5 seconds for it to
+go.
+
+For the text a visitor can see, with its letter case, use `I wait for the
+text "..." to appear` or `... to disappear`; for an element,
+`"<selector>" should be visible`.
 
 **Keyword**: `Then`
 
@@ -45,6 +59,9 @@ Then I should see "Welcome"
 Then we should see "Your accounts for the group is public"
 Then I should not see "Access denied"
 Then we should not see "Edit layout"
+When I press "Save"
+  Then I should see "Saved"
+  And I should not see "Saving"
 ```
 
 ## 2. Then I should see text matching "^T\w+"

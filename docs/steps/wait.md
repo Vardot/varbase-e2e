@@ -535,7 +535,15 @@ When I press "Toast"
 
 ## 21. Then eventually I should see "Done"
 
-Pollable text assertion — retries the inner step until passing or timeout.
+Text assertion that waits longer: `I should see` with a budget of its own,
+10 seconds unless the step says "within N seconds".
+
+It reads the page exactly as `I should see` and `I should not see` do: the
+text of the page as Playwright's text matching reads it, letter case
+ignored, runs of white space collapsed, the text of hidden elements
+included, the text of `<script>` and `<style>` left out. For the text a
+visitor can see, with its letter case, use `I wait for the text "..." to
+appear`.
 
 Use sparingly; prefer explicit edge waits (`wait for "X" to appear`).
 

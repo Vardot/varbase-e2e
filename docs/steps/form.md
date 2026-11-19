@@ -25,6 +25,7 @@ Cucumber-js loads every `*.steps.js` in that directory automatically — you nev
 ## 1. When I fill in "Username" with "John Smith"
 
 Fill an input field located by its label, placeholder, or name.
+An empty value ("") empties the field.
 
 **Keyword**: `When`
 
@@ -45,7 +46,8 @@ And I fill in "Password" with "1234"
 
 ## 2. When I fill in "#uname" with "John Smith" by attr
 
-Fill an input field located by its attribute.
+Fill an input field located by its attribute. An empty value ("") empties
+the field.
 
 **Keyword**: `When`
 
@@ -107,7 +109,8 @@ And I fill in "Your full name" with: by its "placeholder" attribute
 
 ## 5. When I fill in "jon-smith" for "Username"
 
-Fill an input field located by label (reverse syntax).
+Fill an input field located by label (reverse syntax). An empty value ("")
+empties the field.
 
 **Keyword**: `When`
 
@@ -127,7 +130,8 @@ And I fill in "1234" for "Password"
 
 ## 6. When I fill in "John Smith" for "#uname" by attr
 
-Fill an input field located by attribute (reverse syntax).
+Fill an input field located by attribute (reverse syntax). An empty value
+("") empties the field.
 
 **Keyword**: `When`
 

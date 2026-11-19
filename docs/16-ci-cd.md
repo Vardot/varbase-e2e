@@ -81,6 +81,7 @@ For a PDF next to the HTML report, add `npx generate-reports --format pdf` as a 
 
 - **A fork does not run workflows until someone says so.** If this repository is still a fork, GitHub blocks every run until the owner presses "I understand my workflows, go ahead and enable them" once in the Actions tab. There is no API for that button, and enabling Actions in the repository settings does not replace it.
 - The fixture server is a tiny `http-server` static site on port 8080 — no Docker daemon required on the runner.
+- After the suite, `npm run test:scaffold` scaffolds a new project in a temporary folder the way the post-install does after `npm init -y`, checks its files and scripts, and runs its first `npm test` against the `examples/` pages.
 - The repository tracks no `package-lock.json`, so the npm cache is keyed on `package.json` (`cache-dependency-path`).
 - For a per-browser matrix: add `strategy.matrix.browser: [chromium, firefox, webkit]` + `BROWSER: ${{ matrix.browser }}` to the env block, and replace `chromium` in the playwright install line with `${{ matrix.browser }}`.
 

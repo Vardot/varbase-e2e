@@ -437,7 +437,11 @@ When I clear the select "#features"
 
 ## 18. When I check the checkbox "#agree"
 
-Check a CSS-addressed checkbox.
+Check a checkbox.
+
+The checkbox is named by a CSS selector, the exact text of its label, its
+name, its id or its value; one that is not found within 30 seconds fails
+the step plainly.
 
 **Keyword**: `When`
 
@@ -459,7 +463,11 @@ When I check the checkbox "[data-testid=privacy-checkbox]"
 
 ## 19. When I uncheck the checkbox "#newsletter"
 
-Uncheck a CSS-addressed checkbox.
+Uncheck a checkbox.
+
+The checkbox is named by a CSS selector, the exact text of its label, its
+name, its id or its value; one that is not found within 30 seconds fails
+the step plainly.
 
 **Keyword**: `When`
 
@@ -481,7 +489,11 @@ When I uncheck the checkbox "[data-testid=privacy-checkbox]"
 
 ## 20. When I choose the radio button "#gender-male"
 
-Select a CSS-addressed radio button.
+Select a radio button.
+
+The radio button is named by a CSS selector, the exact text of its label,
+its id or its value (not its name, which its whole group shares); one that
+is not found within 30 seconds fails the step plainly.
 
 **Keyword**: `When`
 
@@ -503,7 +515,10 @@ When I choose the radio button "[data-testid=annual]"
 
 ## 21. When I fill in the field "#username" with "alice"
 
-Fill a CSS-addressed input/textarea with a value.
+Fill an input or a textarea with a value. The field is named by a CSS
+selector, the exact text of its label, its name or its id; one that is not
+found within 30 seconds, or that is hidden, disabled or read-only, fails the
+step plainly.
 
 **Keyword**: `When`
 

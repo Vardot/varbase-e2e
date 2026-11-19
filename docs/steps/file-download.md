@@ -152,7 +152,9 @@ Then the downloaded file name should contain "export"
 
 ## 6. Then the downloaded file should be a zip archive containing the following files named:
 
-(Pending) Assert the downloaded ZIP archive contains the listed filenames exactly.
+Assert the downloaded ZIP archive contains every listed file. A name
+matches a file by its full path in the archive ("reports/summary.csv")
+or by its file name alone ("summary.csv"). Other files may be present.
 
 **Keyword**: `Then`
 
@@ -180,7 +182,8 @@ Then the downloaded file should be a zip archive containing the following files 
 
 ## 7. Then the downloaded file should be a zip archive containing the following files partially named:
 
-(Pending) Assert the downloaded ZIP contains files whose names contain the listed substrings.
+Assert the downloaded ZIP contains, for every listed text, a file whose
+path in the archive contains it.
 
 **Keyword**: `Then`
 
@@ -208,7 +211,8 @@ Then the downloaded file should be a zip archive containing the following files 
 
 ## 8. Then the downloaded file should be a zip archive not containing the following files partially named:
 
-(Pending) Assert the downloaded ZIP does NOT contain files whose names contain the listed substrings.
+Assert the downloaded ZIP has no file whose path in the archive contains
+one of the listed texts.
 
 **Keyword**: `Then`
 

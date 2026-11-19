@@ -39,7 +39,7 @@ For the **full catalogue**, with every step's pattern and at least five valid Gh
 
 | Step | Notes |
 | --- | --- |
-| `When I fill in "Label" with "value"` | Resolves by label / placeholder / name |
+| `When I fill in "Label" with "value"` | Resolves by label / placeholder / name. `with ""` empties the field, in every fill form |
 | `When I fill in "value" for "Label"` | Reverse phrasing |
 | `When I fill in "value" for "selector" by attr` | By attribute |
 | `When I fill in the following:` (table) | Bulk fill |

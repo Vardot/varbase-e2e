@@ -1,6 +1,6 @@
 # Element interactions steps
 
-19 steps, defined in `tests/step-definitions/element.steps.js`.
+20 steps, defined in `tests/step-definitions/element.steps.js`.
 
 Cucumber-js loads every `*.steps.js` in that directory automatically — you never `require()` a step file from a feature.
 
@@ -8,23 +8,24 @@ Cucumber-js loads every `*.steps.js` in that directory automatically — you nev
 | --- | --- |
 | 1 | `Then the element "#footer" should appear after the element "#main"` |
 | 2 | `Then the text "Sign in" should appear after the text "Welcome"` |
-| 3 | `Then the element "a" with the attribute "href" and the value "/about" should exist` |
-| 4 | `Then the element "a" with the attribute "href" and the value containing "/about" should exist` |
-| 5 | `Then the element "a" with the attribute "href" and the value "/admin" should not exist` |
-| 6 | `Then the element "a" with the attribute "href" and the value containing "/old" should not exist` |
-| 7 | `Then the element "#header" should be at the top of the viewport` |
-| 8 | `Then the element ".hero" should be centered in the viewport` |
-| 9 | `When I click on the element "#sign-in"` |
-| 10 | `When I trigger the JS event "click" on the element "#cta"` |
-| 11 | `When I scroll to the element "#footer"` |
-| 12 | `When I hover over the element ".tooltip-trigger"` |
-| 13 | `When I focus on the element "#email"` |
-| 14 | `Then the element "#dashboard" should be displayed` |
-| 15 | `Then the element "#loading-spinner" should not be displayed` |
-| 16 | `Then the element "#hero" should be displayed within a viewport` |
-| 17 | `Then the element "#hero" should be displayed within a viewport with a top offset of 60 pixels` |
-| 18 | `Then the element "#footer" should not be displayed within a viewport with a top offset of 60 pixels` |
-| 19 | `Then the element "#footer" should not be displayed within a viewport` |
+| 3 | `Then the text "Products" should appear after the text "Home" in the "nav.breadcrumb" element` |
+| 4 | `Then the element "a" with the attribute "href" and the value "/about" should exist` |
+| 5 | `Then the element "a" with the attribute "href" and the value containing "/about" should exist` |
+| 6 | `Then the element "a" with the attribute "href" and the value "/admin" should not exist` |
+| 7 | `Then the element "a" with the attribute "href" and the value containing "/old" should not exist` |
+| 8 | `Then the element "#header" should be at the top of the viewport` |
+| 9 | `Then the element ".hero" should be centered in the viewport` |
+| 10 | `When I click on the element "#sign-in"` |
+| 11 | `When I trigger the JS event "click" on the element "#cta"` |
+| 12 | `When I scroll to the element "#footer"` |
+| 13 | `When I hover over the element ".tooltip-trigger"` |
+| 14 | `When I focus on the element "#email"` |
+| 15 | `Then the element "#dashboard" should be displayed` |
+| 16 | `Then the element "#loading-spinner" should not be displayed` |
+| 17 | `Then the element "#hero" should be displayed within a viewport` |
+| 18 | `Then the element "#hero" should be displayed within a viewport with a top offset of 60 pixels` |
+| 19 | `Then the element "#footer" should not be displayed within a viewport with a top offset of 60 pixels` |
+| 20 | `Then the element "#footer" should not be displayed within a viewport` |
 
 ---
 
@@ -52,7 +53,11 @@ Then the element "[data-testid=cta]" should appear after the element ".hero"
 
 ## 2. Then the text "Sign in" should appear after the text "Welcome"
 
-Assert text A appears after text B in the document body's text order.
+Assert text A appears after text B in the visible text of the page.
+
+The first place each text appears on the whole page is compared, so a text
+that a menu or a header also holds is found there first. To compare two
+texts inside one part of the page, add `in the "<selector>" element`.
 
 **Keyword**: `Then`
 
@@ -72,7 +77,30 @@ Then the text "Privacy" should appear after the text "Terms"
 Then the text "Step 3" should appear after the text "Step 2"
 ```
 
-## 3. Then the element "a" with the attribute "href" and the value "/about" should exist
+## 3. Then the text "Products" should appear after the text "Home" in the "nav.breadcrumb" element
+
+Assert text A appears after text B inside one element: the first place each
+text appears in the visible text of the first element the selector matches.
+
+**Keyword**: `Then`
+
+**Pattern**
+
+```js
+'the text {string} should appear after the text {string} in the {string} element'
+```
+
+**Examples**
+
+```gherkin
+Then the text "Products" should appear after the text "Home" in the "nav.breadcrumb" element
+Then the text "Total" should appear after the text "Subtotal" in the "#cart" element
+And the text "Step 3" should appear after the text "Step 2" in the ".wizard" element
+Then the text "Privacy" should appear after the text "Terms" in the "footer" element
+Then the text "Reply" should appear after the text "Comment" in the "article" element
+```
+
+## 4. Then the element "a" with the attribute "href" and the value "/about" should exist
 
 Assert at least one element matching `<selector>[<attr>="<value>"]` exists.
 
@@ -94,7 +122,7 @@ Then the element "div" with the attribute "data-testid" and the value "user-list
 Then the element "img" with the attribute "alt" and the value "Logo" should exist
 ```
 
-## 4. Then the element "a" with the attribute "href" and the value containing "/about" should exist
+## 5. Then the element "a" with the attribute "href" and the value containing "/about" should exist
 
 Assert at least one element with attribute value containing a substring exists.
 
@@ -116,7 +144,7 @@ Then the element "img" with the attribute "src" and the value containing ".png" 
 Then the element "div" with the attribute "aria-label" and the value containing "card" should exist
 ```
 
-## 5. Then the element "a" with the attribute "href" and the value "/admin" should not exist
+## 6. Then the element "a" with the attribute "href" and the value "/admin" should not exist
 
 Assert NO element matches `<selector>[<attr>="<value>"]`.
 
@@ -138,7 +166,7 @@ Then the element "div" with the attribute "data-testid" and the value "error" sh
 Then the element "img" with the attribute "alt" and the value "" should not exist
 ```
 
-## 6. Then the element "a" with the attribute "href" and the value containing "/old" should not exist
+## 7. Then the element "a" with the attribute "href" and the value containing "/old" should not exist
 
 Assert NO element has attribute value containing a substring.
 
@@ -160,7 +188,7 @@ Then the element "img" with the attribute "src" and the value containing "tracki
 Then the element "input" with the attribute "name" and the value containing "_legacy" should not exist
 ```
 
-## 7. Then the element "#header" should be at the top of the viewport
+## 8. Then the element "#header" should be at the top of the viewport
 
 Assert an element is positioned within the top 100 px of the viewport.
 
@@ -183,7 +211,7 @@ When I scroll to the top
 Then the element "[role=banner]" should be at the top of the viewport
 ```
 
-## 8. Then the element ".hero" should be centered in the viewport
+## 9. Then the element ".hero" should be centered in the viewport
 
 Assert an element is horizontally centered in the viewport (±10% tolerance).
 
@@ -205,7 +233,7 @@ Then the element "h1" should be centered in the viewport
 Then the element ".loader" should be centered in the viewport
 ```
 
-## 9. When I click on the element "#sign-in"
+## 10. When I click on the element "#sign-in"
 
 Click an element addressed by CSS selector.
 
@@ -227,7 +255,7 @@ When I click on the element "li.nav-item:first-child a"
 When I click on the element "button[aria-label='Close']"
 ```
 
-## 10. When I trigger the JS event "click" on the element "#cta"
+## 11. When I trigger the JS event "click" on the element "#cta"
 
 Dispatch a synthetic JavaScript event on a CSS-addressed element.
 
@@ -252,7 +280,7 @@ When I trigger the JS event "focus" on the element "#email"
 When I trigger the JS event "blur" on the element "#name"
 ```
 
-## 11. When I scroll to the element "#footer"
+## 12. When I scroll to the element "#footer"
 
 Scroll a CSS-addressed element into view (uses Playwright's auto-scroll).
 
@@ -274,7 +302,7 @@ When I scroll to the element "tbody tr:nth-child(20)"
 When I scroll to the element ".testimonial:last-child"
 ```
 
-## 12. When I hover over the element ".tooltip-trigger"
+## 13. When I hover over the element ".tooltip-trigger"
 
 Hover the mouse pointer over a CSS-addressed element.
 
@@ -296,7 +324,7 @@ When I hover over the element "img.preview"
 When I hover over the element "li.menu-item"
 ```
 
-## 13. When I focus on the element "#email"
+## 14. When I focus on the element "#email"
 
 Move keyboard focus to a CSS-addressed element.
 
@@ -318,7 +346,7 @@ When I focus on the element "textarea#message"
 When I focus on the element "button.primary"
 ```
 
-## 14. Then the element "#dashboard" should be displayed
+## 15. Then the element "#dashboard" should be displayed
 
 Wait for a CSS-addressed element to become visible (display !== none, etc.).
 
@@ -341,7 +369,7 @@ When I press "Save"
   Then the element ".toast-success" should be displayed
 ```
 
-## 15. Then the element "#loading-spinner" should not be displayed
+## 16. Then the element "#loading-spinner" should not be displayed
 
 Assert a CSS-addressed element is hidden or absent.
 
@@ -364,7 +392,7 @@ When I press "Submit"
   Then the element ".pending-badge" should not be displayed
 ```
 
-## 16. Then the element "#hero" should be displayed within a viewport
+## 17. Then the element "#hero" should be displayed within a viewport
 
 Assert an element is fully inside the current viewport rectangle.
 
@@ -387,7 +415,7 @@ When I scroll to the element "#footer"
   Then the element "#footer" should be displayed within a viewport
 ```
 
-## 17. Then the element "#hero" should be displayed within a viewport with a top offset of 60 pixels
+## 18. Then the element "#hero" should be displayed within a viewport with a top offset of 60 pixels
 
 Assert an element is fully inside the viewport, allowing a top offset.
 Useful for sticky headers — pass the header height as the offset.
@@ -410,7 +438,7 @@ Then the element "h1" should be displayed within a viewport with a top offset of
 Then the element "#summary" should be displayed within a viewport with a top offset of 64 pixels
 ```
 
-## 18. Then the element "#footer" should not be displayed within a viewport with a top offset of 60 pixels
+## 19. Then the element "#footer" should not be displayed within a viewport with a top offset of 60 pixels
 
 Assert an element is NOT inside the viewport (top-offset variant).
 
@@ -432,7 +460,7 @@ Then the element "#cookies-banner" should not be displayed within a viewport wit
 Then the element ".low-priority" should not be displayed within a viewport with a top offset of 64 pixels
 ```
 
-## 19. Then the element "#footer" should not be displayed within a viewport
+## 20. Then the element "#footer" should not be displayed within a viewport
 
 Assert an element is NOT inside the viewport rectangle.
 

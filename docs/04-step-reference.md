@@ -45,9 +45,9 @@ For the **full catalogue**, with every step's pattern and at least five valid Gh
 | `When I fill in the following:` (table) | Bulk fill |
 | `When I select "Option" from "Label"` | `<select>` by the exact text of its label, its name, its id, or a CSS selector (`#`, `.`, `[`); the option by its text or value |
 | `When I additionally select "Option" from "Label"` | Multi-select |
-| `When I check the checkbox "#agree"` | |
-| `When I uncheck the checkbox "#agree"` | |
-| `When I choose the radio button "#radio"` | |
+| `When I check the checkbox "#agree"` | By CSS selector, label, name, id or value |
+| `When I uncheck the checkbox "#agree"` | By CSS selector, label, name, id or value |
+| `When I choose the radio button "#radio"` | By CSS selector, label, id or value |
 
 ## Waits — see [BBR](02-bbr-smart-waits.md)
 

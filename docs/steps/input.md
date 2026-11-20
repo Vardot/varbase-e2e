@@ -198,8 +198,10 @@ When I set the viewport size to 320x568
 
 ## 9. When I tap on "#cta"
 
-Touch-tap a CSS-addressed element. Falls back to a regular click if the
-browser context was not opened with `hasTouch: true`.
+Touch-tap a CSS-addressed element. A scenario tagged @touch opens with
+touch on, so the tap fires the touch events (touchstart, touchend) a
+mobile control listens to. Without touch the browser context cannot tap:
+the step clicks instead and says so once per scenario.
 
 **Keyword**: `When`
 

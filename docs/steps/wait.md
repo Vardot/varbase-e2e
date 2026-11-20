@@ -514,6 +514,10 @@ and any UI flow that schedules a delayed update without making a network
 request. Reads `window.__varbaseE2ePendingTimers`, the counter installed by
 varbase-e2e.js's init script.
 
+Under a fake clock (`Given the system time is "…"`, or a clock step that
+installed one) the page's timers belong to the clock and run only when it
+moves, so the step fails at once and says so: advance the clock instead.
+
 **Keyword**: `When`
 
 **Pattern**

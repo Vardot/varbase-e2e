@@ -176,12 +176,15 @@ When(/^(I |we )*wait until( the)* page( is)* loaded*$/, async function (pronounC
 });
 
 /**
- * Wait for active XHR/fetch requests to complete.
+ * Wait for active XHR/fetch requests to complete. The lower-case form,
+ * `wait for ajax to finish`, is a step of drupal-core.steps.js.
  *
  * Example #1: When I wait for AJAX to finish
  * Example #2: And I wait for AJAX to finish
  * Example #3: When we wait for AJAX to finish
  * Example #4: And wait for AJAX to finish
+ * Example #5: When I press "Load more"
+ *               And I wait for AJAX to finish
  *
  */
 When(/^(I |we )*wait for AJAX to finish$/, async function (pronounCase) {

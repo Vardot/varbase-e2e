@@ -199,7 +199,14 @@ Then the field "Twitter handle" should not be required
 
 ## 8. When I fill in the multi-value field "tags" with the following values:
 
-Fill a multi-value form field (e.g. `name[]` array inputs) from a table.
+Fill a multi-value form field from a table, one value per input, in the
+order of the page.
+
+The field is named by the name of its inputs (`tags` for `tags[]`,
+`tags[0]` or `tags[0][value]`), by the legend of its fieldset, or by its
+label (the inputs from the one the label is for up to the next field).
+A field that is not found within 30 seconds, or that has fewer inputs than
+values, fails the step before anything is filled.
 
 **Keyword**: `When`
 
@@ -229,6 +236,9 @@ When I fill in the multi-value field "categories" with the following values:
   | tech    |
   | devops  |
   | testing |
+When I fill in the multi-value field "Phone numbers" with the following values:
+  | 0790000000 |
+  | 0791111111 |
 ```
 
 ## 9. When I fill in the color field "favorite" with the value "#ff0000"

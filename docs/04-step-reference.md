@@ -273,10 +273,10 @@ Mode semantics:
 
 | Mode | Behaviour |
 | --- | --- |
-| `off` (default) | No recording. |
+| `off` (default) | No recording, except the scenarios tagged `@video`. |
 | `on` | Every scenario produces a `webm`. |
-| `on-failure` | Every scenario records; only failures are kept on disk. |
-| `tag` | Only scenarios tagged `@video` record. |
+| `on-failure` | Every scenario records; only failures are kept on disk, with the `@video` scenarios and the videos whose name `I save the current video as` reserved. |
+| `tag` | The same as `off`: only scenarios tagged `@video` record. |
 
 Settings (`worldParameters.video`):
 
@@ -284,10 +284,10 @@ Settings (`worldParameters.video`):
 | --- | --- | --- | --- |
 | `mode` | `VARBASE_E2E_VIDEO` | `off` | Activation mode. |
 | `dir` | `VARBASE_E2E_VIDEO_DIR` | `./videos` | Output directory (created automatically). |
-| `size` | _none_ | `{ width: 1280, height: 720 }` | Recording resolution. |
-| `filenamePattern` | _none_ | `{datetime}.{feature_file}.{scenario}.{status}.{ext}` | Per-scenario filename. Tokens: `{datetime} {feature_file} {feature} {scenario} {status} {ext}`. |
+| `size` | `VARBASE_E2E_VIDEO_SIZE` (`1280x720`) | `{ width: 1280, height: 720 }` | Recording resolution. |
+| `filenamePattern` | _none_ | `{datetime}.{feature_file}.{scenario}.{status}.{ext}` | Per-scenario filename. Tokens: `{datetime}` (when the recording started) `{feature_file} {feature} {scenario} {status}` (`passed`, `failed`, … in lower case; `manual` for a recording `stop video recording` ended) `{ext}`. |
 
-The `start` / `stop` mid-scenario steps open a new browser context (Playwright records at context creation only). The cookies and local storage, the viewport of an `@mobile` / `@desktop` tag, the smart waits, JavaScript-error capture and a running request log go on with it; the page itself starts blank — call `start` BEFORE any navigation, and open the page again after `stop`. `videos/` is gitignored.
+`print video path` prints the path the video is saved under when the scenario ends (`<status>` stands for the result still to come). `start video recording` on a scenario that already records changes nothing. The `start` / `stop` mid-scenario steps open a new browser context (Playwright records at context creation only). The cookies and local storage, the viewport of an `@mobile` / `@desktop` tag, the smart waits, JavaScript-error capture and a running request log go on with it; the page itself starts blank — call `start` BEFORE any navigation, and open the page again after `stop`. `videos/` is gitignored.
 
 ## Date tokens
 

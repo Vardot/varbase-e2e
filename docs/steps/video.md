@@ -15,8 +15,9 @@ Cucumber-js loads every `*.steps.js` in that directory automatically — you nev
 
 ## 1. When I start video recording
 
-Start recording the browser as a webm video. Closes the current page +
-context and reopens with `recordVideo` enabled. Place BEFORE any
+Start recording the browser as a webm video. Opens a new browser context
+with `recordVideo` enabled; the cookies, the local storage, the viewport
+and the page setups go on, the page starts blank. Place BEFORE any
 navigation in the scenario.
 
 **Keyword**: `When`
@@ -39,9 +40,10 @@ Then I start video recording
 
 ## 2. When I stop video recording
 
-Stop recording. Closes the current page + context (which flushes the
-webm to disk) and reopens a fresh, non-recording browser so the rest
-of the scenario can continue.
+Stop recording. Closes the current browser context (which flushes the
+webm to disk), saves the video, and opens a new context that does not
+record, with the same cookies, local storage, viewport and page setups,
+so the rest of the scenario can continue (the page starts blank).
 
 **Keyword**: `When`
 
